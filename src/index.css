@@ -1,0 +1,114 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sunflower:wght@300;500;700&display=swap');
+
+
+
+
+@theme {
+    
+    --font-sans: "Mona Sans", sans-serif;
+    --font-Barlow: "Barlow Condensed ", sans-serif;
+    --font-serif: "DM Serif Text", serif;
+}
+@layer base {
+  @font-face {
+    font-family: "circular-web";
+    src: url("/fonts/circularweb-book.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "General Sans";
+    src: url("/fonts/general.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Modern Negra";
+    src: url("/fonts/Modern Negra Demo.ttf") format("truetype");
+}
+  @font-face {
+    font-family: "robert-medium";
+    src: url("/fonts/robert-medium.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "performa";
+    src: url("/fonts/performa.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "maison-neue";
+    src: url("/fonts/maison-neue.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "aldine";
+    src: url("/fonts/Aldine.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "octagonica";
+    src: url("/fonts/octagonica.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "fs-me";
+    src: url("/fonts/fs-me.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "robert-regular";
+    src: url("/fonts/robert-regular.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "zentry";
+    src: url("/font/zentry-regular.woff2") format("woff2");
+  }
+}
+@layer utilities {
+  @keyframes ticker {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .ticker-track {
+    animation: ticker 20s linear infinite;
+  }
+  .font-zentry {
+    font-family: zentry, sans-serif;
+  }
+  @keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+@keyframes float {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(1.3);
+  }
+}
+
+.animate-pop {
+  animation: pop 0.9s ease-out;
+}
+
+.animate-float {
+  animation: float 1s ease-out forwards;
+}
+}

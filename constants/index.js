@@ -1,0 +1,147 @@
+const programs = [
+  {
+    title: "Tennis Coaching",
+    image: "/img/bball.jpg",
+    synopsis:
+      "Personalized one-on-one coaching focused on technique, footwork, and match confidence.",
+  },
+  {
+    title: "Tennis for Kids",
+    image: "/img/bball.jpg",
+    synopsis:
+      "Fun, structured sessions helping kids build fundamentals, discipline, and love for the game.",
+  },
+  {
+    title: "Squash Coaching",
+    image: "/img/bball.jpg",
+    synopsis:
+      "High-intensity squash training focused on agility, precision, and competitive play.",
+  },
+  {
+    title: "Private Group",
+    image: "/img/bball.jpg",
+    synopsis:
+      "Train with friends or teammates in a focused group environment led by a professional coach.",
+  },
+];
+ const events = [
+    {
+      id: 1,
+      title: "The state of the nation show TV47",
+      date: "2026-01-22T00:00:00",
+      day:"22 January 2026",
+      comments: 2,
+      description:
+        "Tomorrow, as the National Teacher, Fred Ogola, I will address the nation about the state of the country—especially the economy, governance, education, and national development—via TV47, particularly after Kenya was ranked as the 10th country in the world with the highest levels of extreme poverty, while the current administration continues to mislead Kenyans into believing that we are on the path to achieving Singapore’s status.",
+      image: "/img/bball.jpg",
+      link:"https://youtu.be/gqB6ILXeEv0?si=YdqdtY5-gzFY2NzU"
+     
+    },
+    {
+      id: 2,
+      title: "Linda Jamii initiative meeting",
+      date: "2026-01-19T00:00:00",
+      day:"19 January 2026",
+      comments: 2,
+      description:
+        "Prof. Fred Ogola, CEO of Operation Linda Jamii and the Liberal Democratic Party, is flanked by Dr. Rev. Jeconiah Musembi, Religious Liaison of Operation Linda Jamii, before the Departmental Committee on Finance and National Planning, jointly with the Select Committee on Public Debt and Privatization. The session, chaired by Molo MP Kimani Kuria and Balambala MP Abdi Shurie, discussed the partial divestiture of the Government of Kenya’s shareholding in Safaricom PLC at Glee Hotel, Kiambu Road.",
+      image: "/img/bball.jpg",
+      
+    },
+    {
+              id: 3,
+      title: "Breaking Colonial Chains: How Western Approaches Propel Africa Toward Policy Independence",
+      date: "2026-01-23T00:00:00",
+      day:"23 January 2026",
+      comments: 2,
+      description:
+        "This podcast examines the dual pressures of economic conditionalities and unresolved colonial disputes pushing African nations toward strategic autonomy. We analyze the continent's deliberate shift towards independent policy formulation and its growing opposition to unipolar world politics.",
+      image: "/img/bball.jpg",
+      link:"https://en.sputniknews.africa/20260123/breaking-colonial-chains-how-western-approaches-propel-africa-toward-policy-independence-1082750832.html"
+      
+    },
+    {
+      id: 4,
+      title: "A Message to Kenyans on the recent events",
+      date: "2026-01-25T00:00:00",
+      day:"25 January 2026",
+      comments: 2,
+      description:
+        "",
+      image: "/img/bball.jpg",
+      link:"https://vt.tiktok.com/ZSaPBSbjT/"
+      
+    },
+      {
+      id: 5,
+      title: "How to finish tribalism in Kenya",
+      date: "2026-01-19T00:00:00",
+      day:"19 January 2026",
+      comments: 2,
+      description:"",
+      image: "/img/bball.jpg",
+      link:"https://www.tiktok.com/@proffredogola/video/7597839531840343308?_r=1&_t=ZS-93GCcMQNrVI"
+    },
+      
+  ];
+  const merch=[
+    {
+        id:1,
+        name:'Urbanville T-shirt', 
+        price:'ksh 1000',
+        img:'/img/redtee.jpeg',
+        images:['/img/bluetee.jpeg','/img/yellowtee.jpeg','/img/navytee.jpeg','/img/redtee.jpeg'],
+        alt:'Urbanville red t-shirt',
+        colors:["Navy, Yellow, Green"],
+        sizes:["XS","S","M","L"],
+        badge:"OUT OF STOCK",
+        notice:"This item has a 10% discount",
+        description:"Heavyweight cotton hoodie....",
+        sizeFit:[
+            {"Model's height": "177cm / 5' 9½''"},
+            {"Model is wearing": "W26 L32 - UK 8 L32"}
+        ]
+             
+
+        
+       
+    },
+      {
+        id:2,
+        img:'img/kenyatee.jpeg',
+        alt:'Kenya t-shirt',
+        name:'Kenya T-shirt',
+        price:'ksh 1000'
+    },
+    {
+        id:3,
+        img:'img/warmer.jpeg',
+        alt:'Kenya t-shirt',
+        name:'Urbanville Warmer',
+        price:'ksh 2000'
+    },{
+        id:4,
+        img:'img/shorts.jpeg',
+        alt:'Kenya t-shirt',
+        name:'Urbanville Shorts',
+        price:'ksh 1000'
+    },{
+        id:5,
+        img:'img/ubvthreads.jpeg',
+        alt:'Kenya t-shirt',
+        name:'UBV Threads (White)',
+        price:'ksh 1000'
+    },{
+        id:6,
+        img:'img/yellowtee.jpeg',
+        alt:'Kenya t-shirt',
+        name:'UrbanVille Yellow T-shirt',
+        price:'ksh 1000'
+    },
+
+  ]
+export{
+    programs,
+    events,
+    merch
+}
