@@ -12,8 +12,8 @@ const Shop = () => {
 
 
   return (
-    <div className='min-h-screen  w-full '>
-      <div className='mx-auto mb-6 text-left px-4 py-8'>
+    <div className='min-h-screen  w-full py-16 '>
+      <div className='mx-auto mb-6 text-left px-4 py-16'>
         <h1 className='text-4xl lg:text-5xl mb-4 font-bold '>
             Get Our Merch
         </h1>

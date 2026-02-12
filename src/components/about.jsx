@@ -29,7 +29,7 @@ const Hero = () => {
             <div className="relative z-10 w-64 sm:w-72 md:w-88 h-80 sm:h-[28rem] md:h-[36rem] 
                             overflow-hidden rounded-xl shadow-2xl">
               <img
-                src="img/about1.jpeg"
+                src="img/about2.jpeg"
                 alt="Coach training player"
                 className="w-full h-full object-cover"
               />

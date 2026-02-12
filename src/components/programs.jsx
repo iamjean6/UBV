@@ -74,7 +74,7 @@ useGSAP(() => {
     
       <div
         className="relative min-h-screen bg-cover bg-center"
-        style={{ backgroundImage: "url('/img/bball.jpg')" }}
+        style={{ backgroundImage: "url('/img/badge2.jpeg')" }}
       >
         <div className="absolute inset-0 bg-black/50" />
 

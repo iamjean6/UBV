@@ -89,7 +89,7 @@ const Hero = () => {
 
     {/* CTA */}
     <button className="bg-transparent border-1 border-orange  hover:text-white hover:cursor-pointer text-orange-500 font-semibold uppercase tracking-wide px-8 py-4 rounded-md transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02]">
-      Join Urbanville Fan Club
+      Join The Urbanville Fan Club
     </button>
 
 

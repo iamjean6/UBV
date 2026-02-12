@@ -138,10 +138,119 @@ const programs = [
         name:'UrbanVille Yellow T-shirt',
         price:'ksh 1000'
     },
+    
 
   ]
+  const statusStyles = {
+  HOME: {
+    bg: "bg-green-50",
+    text: "text-green-600",
+    border: "border-green-200",
+  },
+  AWAY: {
+    bg: "bg-orange-50",
+    text: "text-orange-600",
+    border: "border-orange-200",
+  },
+   FINAL: {
+    bg: "bg-gray-100",
+    text: "text-gray-700",
+    border: "border-gray-300"
+  }
+};
+const resultStyles = {
+  W: "text-green-600",
+  L: "text-red-600",
+};
+
+const games = [
+  {
+    day: "Wednesday",
+    date: "Feb 11",
+    time: "6:00 PM CST",
+    venue: "Jomo Kenyatta Sports Ground",
+    city: "Kisumu, Kenya",
+    tv: "FanDuel Sports Network - Wisconsin",
+    radio: "620 AM/103.3 FM WTMJ",
+    opponent: "Orlando Magic",
+    logo: "/img/magic.png",
+    jersey: "/img/jersey.png",
+    status: "HOME",
+    type:  "UPCOMING"
+   
+
+  },
+  {
+    day: "Wednesday",
+    date: "Feb 11",
+    time: "6:00 PM CST",
+    venue: "Don Bosco",
+    city: "Nairobi, Kenya",
+    tv: "FanDuel Sports Network - Wisconsin",
+    radio: "620 AM/103.3 FM WTMJ",
+    opponent: "Orlando Magic",
+    logo: "/img/magic.png",
+    jersey: "/img/jersey.png",
+    status: "AWAY",
+    type:  "UPCOMING"
+    
+  },{
+    day: "Wednesday",
+    date: "Feb 11",
+    time: "6:00 PM CST",
+    venue: "Police Canteen",
+    city: "Kakamega, Kenya",
+    tv: "FanDuel Sports Network - Wisconsin",
+    radio: "620 AM/103.3 FM WTMJ",
+    opponent: "Orlando Magic",
+    logo: "/img/magic.png",
+    jersey: "/img/jersey.png",
+    status: "AWAY",
+    type:  "FINAL",
+    result: "W",      // only if FINAL
+    homeScore: 110,
+    awayScore: 98,
+  },{
+    day: "Wednesday",
+    date: "Feb 11",
+    time: "6:00 PM CST",
+    venue: "Nyayo National Gymnasium",
+    city: "Nairobi, Kenya",
+    tv: "FanDuel Sports Network - Wisconsin",
+    radio: "620 AM/103.3 FM WTMJ",
+    opponent: "Orlando Magic",
+    logo: "/img/magic.png",
+    jersey: "/img/jersey.png",
+    status: "HOME",
+    type:  "FINAL",
+    result: "L",      // only if FINAL
+    homeScore: 32,
+    awayScore: 40,
+  },{
+    day: "Wednesday",
+    date: "Feb 11",
+    time: "6:00 PM CST",
+    venue: "United States International University",
+    city: "Nairobi, Kenya",
+    tv: "FanDuel Sports Network - Wisconsin",
+    radio: "620 AM/103.3 FM WTMJ",
+    opponent: "Orlando Magic",
+    logo: "/img/magic.png",
+    jersey: "/img/jersey.png",
+    status: "HOME",
+    type:  "FINAL",
+    result: "W",      // only if FINAL
+    homeScore: 60,
+    awayScore: 53,
+  },
+];
+
+
 export{
     programs,
     events,
-    merch
+    merch,
+    statusStyles,
+    games,
+    resultStyles
 }

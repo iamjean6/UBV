@@ -14,10 +14,10 @@ const Navbar = () => {
         <div className=" mx-auto px-4 sm:px-6 text-black lg:px-8">
             <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-3 px-2 py-4 '>
-                    <img src="img/logo.png" alt="Urbanville Logo" 
+                    <img src="img/badge1.jpeg" alt="Urbanville Logo" 
                     className='w-15 h-15 bg-white rounded-full flex-shrink-0'
                     />
-                    <p className=' font-zentry text-white text-2xl font-bold uppercase tracking-wide'>
+                    <p className=' font-zentry text-white text-xl font-bold uppercase tracking-wide'>
                         Urbanville Basketball
                     </p>
                 </div>
@@ -45,7 +45,7 @@ const Navbar = () => {
             Contact Us
           </NavLink>
            </div>
-            <div className='flex items-center gap-4'>
+            <div className='hidden lg:flex items-center gap-4'>
                 <div>
                     <CiSearch  
                     className="w-10 h-10 text-white/80 hover:text-blue-900 transition-colors cursor-pointer"
