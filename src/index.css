@@ -63,6 +63,10 @@
     font-family: "zentry";
     src: url("/font/zentry-regular.woff2") format("woff2");
   }
+  @font-face{
+    font-family: "Industry-Bold";
+    src: url("/font/Industry-Bold.woff2") format("woff2");
+  }
 }
 @layer utilities {
   @keyframes ticker {
@@ -79,6 +83,9 @@
   }
   .font-zentry {
     font-family: zentry, sans-serif;
+  }
+  .font-industry{
+    font-family: Industry-Bold, sans-serif;
   }
   @keyframes pop {
   0% {

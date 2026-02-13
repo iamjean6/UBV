@@ -60,29 +60,7 @@ const programs = [
       link:"https://en.sputniknews.africa/20260123/breaking-colonial-chains-how-western-approaches-propel-africa-toward-policy-independence-1082750832.html"
       
     },
-    {
-      id: 4,
-      title: "A Message to Kenyans on the recent events",
-      date: "2026-01-25T00:00:00",
-      day:"25 January 2026",
-      comments: 2,
-      description:
-        "",
-      image: "/img/bball.jpg",
-      link:"https://vt.tiktok.com/ZSaPBSbjT/"
-      
-    },
-      {
-      id: 5,
-      title: "How to finish tribalism in Kenya",
-      date: "2026-01-19T00:00:00",
-      day:"19 January 2026",
-      comments: 2,
-      description:"",
-      image: "/img/bball.jpg",
-      link:"https://www.tiktok.com/@proffredogola/video/7597839531840343308?_r=1&_t=ZS-93GCcMQNrVI"
-    },
-      
+   
   ];
   const merch=[
     {
@@ -245,6 +223,95 @@ const games = [
   },
 ];
 
+const players = [
+  {
+    firstName: "Jericho",
+    lastName: "Sims",
+    number: "00",
+    position: "CENTER",
+    height: "6'10\"",
+    weight: "250 lbs",
+    age: 27,
+    yearsPro: 4,
+    country: "USA",
+    image: "/img/myles.avif",
+    stats: {
+      gp: 39,
+      ppg: 3.7,
+      apg: 0.8,
+      rpg: 4.3,
+    },
+  },
+   {
+    firstName: "Jericho",
+    lastName: "Sims",
+    number: "00",
+    position: "CENTER",
+    height: "6'10\"",
+    weight: "250 lbs",
+    age: 27,
+    yearsPro: 4,
+    country: "USA",
+    image: "/img/myles.avif",
+    stats: {
+      gp: 39,
+      ppg: 3.7,
+      apg: 0.8,
+      rpg: 4.3,
+    },
+  }, {
+    firstName: "Jericho",
+    lastName: "Sims",
+    number: "00",
+    position: "CENTER",
+    height: "6'10\"",
+    weight: "250 lbs",
+    age: 27,
+    yearsPro: 4,
+    country: "USA",
+    image: "/img/myles.avif",
+    stats: {
+      gp: 39,
+      ppg: 3.7,
+      apg: 0.8,
+      rpg: 4.3,
+    },
+  }, {
+    firstName: "Jericho",
+    lastName: "Sims",
+    number: "00",
+    position: "CENTER",
+    height: "6'10\"",
+    weight: "250 lbs",
+    age: 27,
+    yearsPro: 4,
+    country: "USA",
+    image: "/img/myles.avif",
+    stats: {
+      gp: 39,
+      ppg: 3.7,
+      apg: 0.8,
+      rpg: 4.3,
+    },
+  }, {
+    firstName: "Jericho",
+    lastName: "Sims",
+    number: "00",
+    position: "CENTER",
+    height: "6'10\"",
+    weight: "250 lbs",
+    age: 27,
+    yearsPro: 4,
+    country: "USA",
+    image: "/img/myles.avif",
+    stats: {
+      gp: 39,
+      ppg: 3.7,
+      apg: 0.8,
+      rpg: 4.3,
+    },
+  },
+];
 
 export{
     programs,
@@ -252,5 +319,6 @@ export{
     merch,
     statusStyles,
     games,
-    resultStyles
+    resultStyles,
+    players
 }

@@ -45,14 +45,14 @@ const Contacts = () => {
               <div className="flex items-center gap-4">
                 <PhoneCall className="text-xl text-blue-500" />
                 <p className="font-semibold text-lg">
-                  +254712345678
+                  +254723 866886
                 </p>
               </div>
 
               <div className="flex items-center gap-4">
                 <Mail className="text-xl text-blue-500" />
                 <p className="text-gray-600">
-                  info@email.com
+                  urbanvillebasketball2021@gmail.com
                 </p>
               </div>
 

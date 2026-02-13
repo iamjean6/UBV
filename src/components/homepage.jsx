@@ -10,6 +10,7 @@ import Display from "./display";
 import Footer from "./footer";
 
 
+
 const Home=()=>{
     return(
         <>
@@ -20,9 +21,9 @@ const Home=()=>{
       <Blog />
       <Shop />
       <Contacts />
-      <Games />
+      <Games />  
       <Display />
-      <Footer />
+    
         </>
     )
 }

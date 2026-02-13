@@ -5,7 +5,7 @@ import { HiChevronDown } from "react-icons/hi";
 
 const Hero = () => {
   return (
-    <div id="Home" className='relative w-full h-dvh overflow-hidden bg-black isolate'>
+    <div id="Home" className='pt-24 relative w-full h-dvh overflow-hidden bg-black isolate'>
       
        
        {/* 
@@ -60,7 +60,7 @@ const Hero = () => {
         */}
      
        
-       <Navbar className="mt-8" />
+       
       <div
       className='absolute inset-0 bg-cover bg-center bg-no-repeat'>
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/80 z-10"></div>
@@ -76,24 +76,18 @@ const Hero = () => {
         <div className="absolute inset-0 z-20 flex items-center justify-center">
   <div className="flex flex-col mt-20 items-center text-center px-6 max-w-5xl -translate-y-10">
     
-    
-    {/* Main Headline */}
     <h1 className="text-white  font-extrabold text-4xl uppercase sm:text-5xl md:text-5xl lg:text-7xl leading-tight mb-3">
       Play With Purpose
     </h1>
 
-    {/* Supporting Line */}
     <p className="text-white/80 text-base md:text-lg max-w-xl mb-5">
        Building disciplined athletes for life and sport.
     </p>
 
-    {/* CTA */}
+    
     <button className="bg-transparent border-1 border-orange  hover:text-white hover:cursor-pointer text-orange-500 font-semibold uppercase tracking-wide px-8 py-4 rounded-md transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02]">
       Join The Urbanville Fan Club
     </button>
-
-
-
   </div>
 </div>
 

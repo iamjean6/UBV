@@ -1,23 +1,38 @@
-import { React} from 'react';
+import { React, useEffect, useState} from 'react';
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import Button from '../components/button';
 import { TiLocationArrow } from "react-icons/ti";
+import { FaLess } from 'react-icons/fa';
 
 const Navbar = () => {
+
+  const location = useLocation()
+  const isHome =location.pathname === "/"
+  
+  const navbarBg = isHome  ?"bg-transparent" : "bg-white shadow-md";
+  const textColor =
+  isHome 
+    ? "text-white"
+    : "text-black";
+
     const linkClass=({ isActive})=>
         ` text-2xl font-bold uppercase font-zentry tracking-wider hover:text-blue-900 transition-colors
-        ${isActive ? 'text-blue-900' : 'text-white/70'}`;
+        ${isActive ? 'text-blue-900'
+           : isHome 
+        ? "text-white/80"
+        : "text-gray-800"
+          }`;
 
   return (
-    <nav className='relative w-full mt-4  z-50'>
-        <div className=" mx-auto px-4 sm:px-6 text-black lg:px-8">
+   <nav className={`w-full z-50 transition-all duration-300   ${isHome ? "absolute top-0 left-0" : "relative"} ${navbarBg}`}>
+      <div className=" mx-auto px-4 sm:px-6 text-black lg:px-8">
             <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-3 px-2 py-4 '>
                     <img src="img/badge1.jpeg" alt="Urbanville Logo" 
                     className='w-15 h-15 bg-white rounded-full flex-shrink-0'
                     />
-                    <p className=' font-zentry text-white text-xl font-bold uppercase tracking-wide'>
+                    <p className={`font-zentry text-xl font-bold uppercase tracking-wide ${textColor}`}>
                         Urbanville Basketball
                     </p>
                 </div>

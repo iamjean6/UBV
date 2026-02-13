@@ -1,7 +1,7 @@
 import {useEffect } from 'react';
 import Button from './button';
 import { TiLocationArrow } from 'react-icons/ti';
-
+import { Link } from 'react-router-dom';
 const Team = () => {
   return (
     <div className='min-h-screen bg-gray-50 w-full py-24 px-4'>
@@ -51,7 +51,9 @@ const Team = () => {
 
       </div>
       <div className='flex items-center justify-center py-8'>
-        <Button 
+        
+        <Link to="/roster">
+         <Button 
         id="Meet the Team"
         title="Meet the Team"
          leftIcon={<TiLocationArrow />}
@@ -68,6 +70,8 @@ const Team = () => {
           transition
             "
         />
+        </Link>
+       
 
       </div>
     </div>
