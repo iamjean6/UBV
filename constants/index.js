@@ -62,63 +62,139 @@ const programs = [
     },
    
   ];
-  const merch=[
-    {
-        id:1,
-        name:'Urbanville T-shirt', 
-        price:'ksh 1000',
-        img:'/img/redtee.jpeg',
-        images:['/img/bluetee.jpeg','/img/yellowtee.jpeg','/img/navytee.jpeg','/img/redtee.jpeg'],
-        alt:'Urbanville red t-shirt',
-        colors:["Navy, Yellow, Green"],
-        sizes:["XS","S","M","L"],
-        badge:"OUT OF STOCK",
-        notice:"This item has a 10% discount",
-        description:"Heavyweight cotton hoodie....",
-        sizeFit:[
-            {"Model's height": "177cm / 5' 9½''"},
-            {"Model is wearing": "W26 L32 - UK 8 L32"}
-        ]
-             
+  const merch = [
+  {
+    id: 1,
+    name: "Urbanville T-shirt",
+    price: "ksh 1000",
+    priceValue: 1000,
+    img: "/img/redtee.jpeg",
+    images: [
+      "/img/bluetee.jpeg",
+      "/img/yellowtee.jpeg",
+      "/img/navytee.jpeg",
+      "/img/redtee.jpeg"
+    ],
+    alt: "Urbanville red t-shirt",
+    colors: ["Navy", "Yellow", "Green", "Red"],
+    sizes: ["XS", "S", "M", "L"],
+    inStock: false,
+    badge: "OUT OF STOCK",
+    notice: "This item has a 10% discount",
+    description:
+      "Premium heavyweight cotton t-shirt designed for comfort and durability. Perfect for everyday wear.",
+    sizeFit: {
+      modelHeight: "177cm / 5' 9½''",
+      modelWearing: "Size M"
+    }
+  },
 
-        
-       
-    },
-      {
-        id:2,
-        img:'img/kenyatee.jpeg',
-        alt:'Kenya t-shirt',
-        name:'Kenya T-shirt',
-        price:'ksh 1000'
-    },
-    {
-        id:3,
-        img:'img/warmer.jpeg',
-        alt:'Kenya t-shirt',
-        name:'Urbanville Warmer',
-        price:'ksh 2000'
-    },{
-        id:4,
-        img:'img/shorts.jpeg',
-        alt:'Kenya t-shirt',
-        name:'Urbanville Shorts',
-        price:'ksh 1000'
-    },{
-        id:5,
-        img:'img/ubvthreads.jpeg',
-        alt:'Kenya t-shirt',
-        name:'UBV Threads (White)',
-        price:'ksh 1000'
-    },{
-        id:6,
-        img:'img/yellowtee.jpeg',
-        alt:'Kenya t-shirt',
-        name:'UrbanVille Yellow T-shirt',
-        price:'ksh 1000'
-    },
-    
+  {
+    id: 2,
+    name: "Kenya T-shirt",
+    price: "ksh 1000",
+    priceValue: 1000,
+    img: "/img/kenyatee.jpeg",
+    images: ["/img/kenyatee.jpeg"],
+    alt: "Kenya t-shirt",
+    colors: ["Black", "White"],
+    sizes: ["S", "M", "L", "XL"],
+    inStock: true,
+    badge: null,
+    notice: null,
+    description:
+      "Soft cotton Kenya-themed t-shirt with breathable fabric for daily comfort.",
+    sizeFit: {
+      modelHeight: "180cm",
+      modelWearing: "Size L"
+    }
+  },
 
-  ]
+  {
+    id: 3,
+    name: "Urbanville Warmer",
+    price: "ksh 2000",
+    priceValue: 2000,
+    img: "/img/warmer.jpeg",
+    images: ["/img/warmer.jpeg"],
+    alt: "Urbanville warmer",
+    colors: ["Black", "Grey"],
+    sizes: ["M", "L", "XL"],
+    inStock: true,
+    badge: "BEST SELLER",
+    notice: "Limited stock available",
+    description:
+      "Premium fleece warmer built for comfort during cold weather training sessions.",
+    sizeFit: {
+      modelHeight: "182cm",
+      modelWearing: "Size L"
+    }
+  },
+
+  {
+    id: 4,
+    name: "Urbanville Shorts",
+    price: "ksh 1000",
+    priceValue: 1000,
+    img: "/img/shorts.jpeg",
+    images: ["/img/shorts.jpeg"],
+    alt: "Urbanville shorts",
+    colors: ["Black", "Red"],
+    sizes: ["S", "M", "L"],
+    inStock: true,
+    badge: null,
+    notice: null,
+    description:
+      "Lightweight athletic shorts designed for mobility and comfort during workouts.",
+    sizeFit: {
+      modelHeight: "175cm",
+      modelWearing: "Size M"
+    }
+  },
+
+  {
+    id: 5,
+    name: "UBV Threads (White)",
+    price: "ksh 1000",
+    priceValue: 1000,
+    img: "/img/ubvthreads.jpeg",
+    images: ["/img/ubvthreads.jpeg"],
+    alt: "UBV Threads white t-shirt",
+    colors: ["White"],
+    sizes: ["XS", "S", "M", "L"],
+    inStock: true,
+    badge: "NEW",
+    notice: "New arrival",
+    description:
+      "Classic UBV Threads white edition made from high-quality cotton blend.",
+    sizeFit: {
+      modelHeight: "178cm",
+      modelWearing: "Size M"
+    }
+  },
+
+  {
+    id: 6,
+    name: "UrbanVille Yellow T-shirt",
+    price: "ksh 1000",
+    priceValue: 1000,
+    img: "/img/yellowtee.jpeg",
+    images: ["/img/yellowtee.jpeg"],
+    alt: "Urbanville yellow t-shirt",
+    colors: ["Yellow"],
+    sizes: ["S", "M", "L"],
+    inStock: true,
+    badge: null,
+    notice: "Buy 2 get 1 free",
+    description:
+      "Bright yellow UrbanVille tee designed for bold streetwear style.",
+    sizeFit: {
+      modelHeight: "176cm",
+      modelWearing: "Size M"
+    }
+  }
+];
+
   const statusStyles = {
   HOME: {
     bg: "bg-green-50",
@@ -222,19 +298,46 @@ const games = [
     awayScore: 53,
   },
 ];
-
+const management=[
+  {
+    firstName:"Oliver",
+    lastName:'Nyawanda',
+    position:"Head Coach",
+     img:"img/picture.avif",
+    audio:"/audio/jean.mp4"
+  },
+  {
+    firstName:"Oliver",
+    lastName:'Nyawanda',
+    img:"img/picture.avif",
+    position:"Head Coach",
+    audio:"/audio/jean.mp4"
+  },{
+    firstName:"Oliver",
+    lastName:'Nyawanda',
+    position:"Head Coach",
+     img:"img/picture.avif",
+    audio:"/audio/jean.mp4"
+  },{
+    firstName:"Oliver",
+    lastName:'Nyawanda',
+    position:"Head Coach",
+     img:"img/picture.avif",
+    audio:"/audio/jean.mp4"
+  },
+]
 const players = [
   {
-    firstName: "Jericho",
-    lastName: "Sims",
-    number: "00",
-    position: "CENTER",
-    height: "6'10\"",
-    weight: "250 lbs",
+    firstName: "Antony",
+    lastName: "William",
+    number: "23",
+    position: "FOWARD/CENTER",
+    height: "6'4\"",
+    weight: "80kg",
     age: 27,
-    yearsPro: 4,
-    country: "USA",
-    image: "/img/myles.avif",
+    nickname: "Anto",
+    team: "ubv",
+    image: "/img/antony.png",
     stats: {
       gp: 39,
       ppg: 3.7,
@@ -243,16 +346,16 @@ const players = [
     },
   },
    {
-    firstName: "Jericho",
-    lastName: "Sims",
-    number: "00",
-    position: "CENTER",
-    height: "6'10\"",
-    weight: "250 lbs",
-    age: 27,
-    yearsPro: 4,
-    country: "USA",
-    image: "/img/myles.avif",
+    firstName: "Moses",
+    lastName: "Odhiambo",
+    number: "3",
+    position: "POINT GUARD",
+    height: "5'8\"",
+    weight: " 60kg",
+    age: 26,
+    nickname: "Msanii",
+    team: "ubv",
+    image: "/img/moses.png",
     stats: {
       gp: 39,
       ppg: 3.7,
@@ -260,16 +363,16 @@ const players = [
       rpg: 4.3,
     },
   }, {
-    firstName: "Jericho",
-    lastName: "Sims",
-    number: "00",
-    position: "CENTER",
-    height: "6'10\"",
-    weight: "250 lbs",
-    age: 27,
-    yearsPro: 4,
-    country: "USA",
-    image: "/img/myles.avif",
+    firstName: "Bradley",
+    lastName: "Joshua",
+    number: "12",
+    position: "POINT GUARD",
+    height: "5'10\"",
+    weight: "70kg",
+    age: 22,
+    nickname: "",
+    team: "ubv",
+    image: "/img/brad.png",
     stats: {
       gp: 39,
       ppg: 3.7,
@@ -277,16 +380,16 @@ const players = [
       rpg: 4.3,
     },
   }, {
-    firstName: "Jericho",
-    lastName: "Sims",
-    number: "00",
-    position: "CENTER",
-    height: "6'10\"",
-    weight: "250 lbs",
-    age: 27,
-    yearsPro: 4,
-    country: "USA",
-    image: "/img/myles.avif",
+    firstName: "Carl",
+    lastName: "Kanga",
+    number: "5",
+    position: "COMBO GUARD",
+    height: "6'00\"",
+    weight: " 72kg",
+    age: 23,
+    nickname: "Kanga blaq",
+    team: "ubv",
+    image: "/img/carl.png",
     stats: {
       gp: 39,
       ppg: 3.7,
@@ -294,16 +397,16 @@ const players = [
       rpg: 4.3,
     },
   }, {
-    firstName: "Jericho",
-    lastName: "Sims",
-    number: "00",
-    position: "CENTER",
-    height: "6'10\"",
-    weight: "250 lbs",
-    age: 27,
-    yearsPro: 4,
-    country: "USA",
-    image: "/img/myles.avif",
+    firstName: "Mark",
+    lastName: "Obondi",
+    number: "10",
+    position: "CENTER/FORWARD",
+    height: "6'3\"",
+    weight: "87 kg",
+    age: "24",
+    nickname: "",
+    team: "ubv",
+    image: "/img/picture.avif",
     stats: {
       gp: 39,
       ppg: 3.7,
@@ -311,6 +414,148 @@ const players = [
       rpg: 4.3,
     },
   },
+   {
+    firstName: "Cyrille",
+    lastName: "Akongo",
+    number: "4",
+    position: "SHOOTING GUARD/FORWARD",
+    height: "6'1\"",
+    weight: "80 kg",
+    age: "23",
+    nickname: "",
+    team: "ubv",
+    image: "/img/picture.avif",
+    stats: {
+      gp: 39,
+      ppg: 3.7,
+      apg: 0.8,
+      rpg: 4.3,
+    },
+  },
+  {
+    firstName: "Geoffrey",
+    lastName: "Aduda",
+    number: "8",
+    position: "CENTER",
+    height: "6'4\"",
+    weight: "84 kg",
+    age: "21",
+    nickname: "",
+    team: "ubv",
+    image: "/img/jeff.png",
+    stats: {
+      gp: 39,
+      ppg: 3.7,
+      apg: 0.8,
+      rpg: 4.3,
+    },
+  },{
+    firstName: "Dwayne",
+    lastName: "Israel",
+    number: "30",
+    position: "POINT GUARD",
+    height: "5'5\"",
+    weight: " 65 kg",
+    age: "22",
+    nickname: "",
+    team: "ubv",
+    image: "/img/israel.png",
+    stats: {
+      gp: 39,
+      ppg: 3.7,
+      apg: 0.8,
+      rpg: 4.3,
+    },
+  },
+  {
+    firstName: "Edward",
+    lastName: "Kizito",
+    number: "7",
+    position: "SMALL FORWARD",
+    height: "5'11\"",
+    weight: " 70 kg",
+    age: "36",
+    nickname: "Tedize",
+    team: "ubv",
+    image: "/img/ted.png",
+    stats: {
+      gp: 39,
+      ppg: 3.7,
+      apg: 0.8,
+      rpg: 4.3,
+    },
+  },{
+    firstName: "Nelson",
+    lastName: "Onyimbi",
+    number: "24",
+    position: "SHOOTING GUARD",
+    height: "5'9\"",
+    weight: " 70 kg",
+    age: "31",
+    nickname: "Nel",
+    team: "ubv",
+    image: "/img/nelson.png",
+    stats: {
+      gp: 39,
+      ppg: 3.7,
+      apg: 0.8,
+      rpg: 4.3,
+    },
+  },
+  {
+    firstName: "Peter",
+    lastName: "Muhati",
+    number: "34",
+    position: "SMALL FORWARD",
+    height: "6'1\"",
+    weight: " 76 kg",
+    age: "23",
+    nickname: "",
+    team: "ubv",
+    image: "/img/israel (6).png",
+    stats: {
+      gp: 39,
+      ppg: 3.7,
+      apg: 0.8,
+      rpg: 4.3,
+    },
+  },{
+    firstName: "Milton",
+    lastName: "Hamadi",
+    number: "32",
+    position: "SHOOTING GUARD",
+    height: "6'00\"",
+    weight: " 69 kg",
+    age: "22",
+    nickname: "",
+    team: "ubv",
+    image: "/img/milton.png",
+    stats: {
+      gp: 39,
+      ppg: 3.7,
+      apg: 0.8,
+      rpg: 4.3,
+    },
+  },
+  {
+    firstName: "Jean",
+    lastName: "Powell",
+    number: "",
+    position: "SHOOTING GUARD/SMALL FORWARD",
+    height: "6'00\"",
+    weight: " 75kg",
+    age: "22",
+    nickname: "Jay/Jay Bale",
+    team: "ubv",
+    image: "/img/picture.avif",
+    stats: {
+      gp: 39,
+      ppg: 3.7,
+      apg: 0.8,
+      rpg: 4.3,
+    },
+    audio:"/audio/jean.mp4"
+  }
 ];
 
 export{
@@ -320,5 +565,6 @@ export{
     statusStyles,
     games,
     resultStyles,
-    players
+    players,
+    management
 }

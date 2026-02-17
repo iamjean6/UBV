@@ -2,6 +2,11 @@ import { ExternalLink, ShoppingCart, Volume, Volume2, VolumeIcon } from 'lucide-
 import { useState } from 'react';
 
 const PlayerCard = ({ player }) => {
+  const handlePlayAudio = () => {
+  const audio = new Audio(player.audio);
+  audio.play();
+};
+
   return (
     <div className='w-full bg-white font-industry rounded-xl shadow-md overflow-hidden border border-gray-200'>
       <div className='flex justify-between items-start font-medium px-4 py-4'>
@@ -38,13 +43,13 @@ const PlayerCard = ({ player }) => {
       </div>
 
       <div className="flex justify-between border-b border-gray-600 pb-1">
-        <span className="font-semibold">YEARS PRO</span>
-        <span className='text-gray-600'>{player.yearsPro}</span>
+        <span className="font-semibold">NICKNAME</span>
+        <span className='text-gray-600 uppercase'>{player.nickname}</span>
       </div>
 
       <div className="flex justify-between border-b  border-gray-600 pb-1">
-        <span className="font-semibold">COUNTRY</span>
-        <span className='text-gray-600'>{player.country}</span>
+        <span className="font-semibold">TEAM</span>
+        <span className='text-gray-600 uppercase'>{player.team}</span>
       </div>
     </div>
   </div>
@@ -93,8 +98,10 @@ const PlayerCard = ({ player }) => {
             <ExternalLink className='text-sm ' />
         </div>
          <div className='flex items-center gap-2 text-orange-600 hover:cursor-pointer'> 
+            <button className='hover:cursor-pointer' onClick={handlePlayAudio}>
+              <Volume2 className='text-sm ' />
+            </button>
             
-            <Volume2 className='text-sm ' />
         </div>
         <div className='flex items-center gap-2 text-orange-600 hover:cursor-pointer'>
             <button className='text-sm font-medium hover:underline hover:cursor-pointer'>

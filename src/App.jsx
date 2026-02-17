@@ -5,6 +5,7 @@ import ProductPage from './components/products'
 import Roster from './pages/roster'
 import Layout from './components/layout'
 import { Routes,Route, BrowserRouter } from 'react-router-dom'
+import Merch from './pages/merch'
 function App() {
   
 
@@ -12,7 +13,7 @@ function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/shop" element={<Shop />} />
+        <Route path="/merch" element={<Merch />} />
         <Route path="/shop/:id" element={<ProductPage />} />
         <Route path="/roster" element={<Roster />} />
       </Route>

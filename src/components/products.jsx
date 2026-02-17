@@ -1,12 +1,15 @@
 import { useParams } from "react-router-dom";
 import { merch } from "../../constants";
+import { FiHeart } from "react-icons/fi";
 import { FaHeart, FaShare, FaTruck } from "react-icons/fa";
 import { useState } from "react";
+import { Link } from 'react-router-dom'
 
 const ProductPage = () => {
   const { id } = useParams();
   const [selectedSize, setSelectedSize] = useState("");
-  
+   const [liked, setLiked] = useState({});
+    const [burst, setBurst] = useState(null);
 
   const product = merch.find(item => String(item.id) === String(id));
   const [activeImage, setActiveImage] = useState(product.img);
@@ -132,7 +135,7 @@ const ProductPage = () => {
               </button>
             </div>
 
-            {/* Delivery */}
+            
             <div className="flex items-start gap-3 mt-6 text-sm border p-4">
               <FaTruck className="mt-1" />
               <div className="space-y-1">
@@ -144,7 +147,7 @@ const ProductPage = () => {
               </div>
             </div>
 
-            {/* Accordions */}
+          
             <div className="mt-8 border-t divide-y">
 
               <details className="group py-4">
@@ -175,7 +178,7 @@ const ProductPage = () => {
 </details>
 
 
-              <details className="group py-4">
+              <details className="group py-4 pb-16">
                 <summary className="flex justify-between items-center cursor-pointer list-none">
                   <span className="text-sm font-medium transition-colors duration-200 group-open:text-orange-500">
 
@@ -187,9 +190,73 @@ const ProductPage = () => {
                   {product.description}
                 </p>
               </details>
-
             </div>
           </div>
+        </div>
+      <div className="mt-20 mb-12">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="border-t border-gray-200"></div>
+          </div>
+        </div>
+        <div className="max-w-6xl mx-auto px-4 mb-4">
+           <h2 className="text-xl md:text-2xl font-semibold tracking-wide uppercase">
+            You may also like
+            </h2>
+          </div>
+        <div className=" grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 px-16 py-12">
+           {merch.map((merch)=>{
+            return(
+               <div className='flex flex-col group'>
+            <div className="relative w-full h-[250px] bg-gray-100 overflow-hidden">
+
+  <a
+    href={`/shop/${merch.id}`}
+    target="_parent"
+    rel="noopener noreferrer"
+  >
+    <img
+      src={merch.img}
+      alt={merch.alt}
+      className="w-full h-full object-cover transition duration-500 hover:scale-105"
+    />
+  </a>
+
+  {/* Wishlist Button */}
+  <button
+    onClick={() => {
+      setLiked(prev => ({
+        ...prev,
+        [merch.id]: !prev[merch.id]
+      }));
+      setBurst(merch.id);
+      setTimeout(() => setBurst(null), 600);
+    }}
+    className="absolute bottom-4 right-4 bg-white/90 backdrop-blur p-2 rounded-full shadow hover:scale-110 transition"
+  >
+    {liked[merch.id] ? (
+      <FaHeart className="text-red-500 text-xl" />
+    ) : (
+      <FiHeart className="text-gray-800 text-xl" />
+    )}
+  </button>
+
+</div>
+
+
+           <div className="mt-4 space-y-1">
+  <Link to={`/shop/${merch.id}`}>
+    <h3 className="text-sm font-bold font-zentry hover:underline">
+      {merch.name}
+    </h3>
+  </Link>
+
+  <p className="text-sm text-gray-600">
+    {merch.price}
+  </p>
+</div>
+   
+            </div>)
+        })}
         </div>
       </section>
     </main>

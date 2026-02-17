@@ -10,18 +10,18 @@ const Navbar = () => {
   const location = useLocation()
   const isHome =location.pathname === "/"
   
-  const navbarBg = isHome  ?"bg-transparent" : "bg-white shadow-md";
+  const navbarBg = isHome  ?"bg-transparent" : "bg-blue-800 shadow-md";
   const textColor =
   isHome 
     ? "text-white"
-    : "text-black";
+    : "text-white";
 
     const linkClass=({ isActive})=>
-        ` text-2xl font-bold uppercase font-zentry tracking-wider hover:text-blue-900 transition-colors
-        ${isActive ? 'text-blue-900'
+        ` text-2xl font-bold uppercase font-zentry tracking-wider hover:text-white transition-colors
+        ${isActive ? 'text-orange-600'
            : isHome 
         ? "text-white/80"
-        : "text-gray-800"
+        : "text-black"
           }`;
 
   return (
@@ -32,7 +32,7 @@ const Navbar = () => {
                     <img src="img/badge1.jpeg" alt="Urbanville Logo" 
                     className='w-15 h-15 bg-white rounded-full flex-shrink-0'
                     />
-                    <p className={`font-zentry text-xl font-bold uppercase tracking-wide ${textColor}`}>
+                    <p className={`hidden md:block  font-zentry text-xl font-bold uppercase tracking-wide ${textColor}`}>
                         Urbanville Basketball
                     </p>
                 </div>
@@ -52,7 +52,7 @@ const Navbar = () => {
             Blog
           </NavLink>
 
-          <NavLink to="/shop" className={linkClass}>
+          <NavLink to="/merch" className={linkClass}>
             Shop
           </NavLink>
 

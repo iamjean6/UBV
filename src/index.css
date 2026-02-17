@@ -11,54 +11,7 @@
     --font-serif: "DM Serif Text", serif;
 }
 @layer base {
-  @font-face {
-    font-family: "circular-web";
-    src: url("/fonts/circularweb-book.woff2") format("woff2");
-  }
-
-  @font-face {
-    font-family: "General Sans";
-    src: url("/fonts/general.woff2") format("woff2");
-  }
-  @font-face {
-    font-family: "Modern Negra";
-    src: url("/fonts/Modern Negra Demo.ttf") format("truetype");
-}
-  @font-face {
-    font-family: "robert-medium";
-    src: url("/fonts/robert-medium.woff2") format("woff2");
-  }
-
-  @font-face {
-    font-family: "performa";
-    src: url("/fonts/performa.woff2") format("woff2");
-  }
-
-  @font-face {
-    font-family: "maison-neue";
-    src: url("/fonts/maison-neue.woff2") format("woff2");
-  }
-
-  @font-face {
-    font-family: "aldine";
-    src: url("/fonts/Aldine.woff2") format("woff2");
-  }
-
-  @font-face {
-    font-family: "octagonica";
-    src: url("/fonts/octagonica.woff2") format("woff2");
-  }
-
-  @font-face {
-    font-family: "fs-me";
-    src: url("/fonts/fs-me.woff2") format("woff2");
-  }
-
-  @font-face {
-    font-family: "robert-regular";
-    src: url("/fonts/robert-regular.woff2") format("woff2");
-  }
-
+  
   @font-face {
     font-family: "zentry";
     src: url("/font/zentry-regular.woff2") format("woff2");
@@ -66,6 +19,10 @@
   @font-face{
     font-family: "Industry-Bold";
     src: url("/font/Industry-Bold.woff2") format("woff2");
+  }
+  @font-face{
+    font-family: "Barlow Condensed";
+    src: url("font/barlow-condensed-v13-latin-regular.woff2") format("woff2")
   }
 }
 @layer utilities {
@@ -86,6 +43,9 @@
   }
   .font-industry{
     font-family: Industry-Bold, sans-serif;
+  }
+  .font-barlow{
+    font-family:"Barlow Condensed", sans-serif;
   }
   @keyframes pop {
   0% {
