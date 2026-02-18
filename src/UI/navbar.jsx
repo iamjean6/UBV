@@ -1,15 +1,17 @@
 import { React, useEffect, useState} from 'react';
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { CiSearch } from "react-icons/ci";
+import { Coins, LogIn, ShoppingCart } from 'lucide-react';
 import Button from '../components/button';
 import { TiLocationArrow } from "react-icons/ti";
 import { FaLess } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
 
   const location = useLocation()
   const isHome =location.pathname === "/"
-  
+  const [totalQuantity, setTotalQuantity]= useState(0)
+  const carts =useSelector (store => store.cart.items)
   const navbarBg = isHome  ?"bg-transparent" : "bg-blue-800 shadow-md";
   const textColor =
   isHome 
@@ -23,13 +25,17 @@ const Navbar = () => {
         ? "text-white/80"
         : "text-black"
           }`;
-
+        useEffect(()=>{
+          let total =0
+          carts.forEach(items=> total+= items.quantity)
+          setTotalQuantity(total)
+        },[carts])
   return (
    <nav className={`w-full z-50 transition-all duration-300   ${isHome ? "absolute top-0 left-0" : "relative"} ${navbarBg}`}>
       <div className=" mx-auto px-4 sm:px-6 text-black lg:px-8">
             <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-3 px-2 py-4 '>
-                    <img src="img/badge1.jpeg" alt="Urbanville Logo" 
+                    <img src="/img/badge1.jpeg" alt="Urbanville Logo" 
                     className='w-15 h-15 bg-white rounded-full flex-shrink-0'
                     />
                     <p className={`hidden md:block  font-zentry text-xl font-bold uppercase tracking-wide ${textColor}`}>
@@ -60,28 +66,16 @@ const Navbar = () => {
             Contact Us
           </NavLink>
            </div>
-            <div className='hidden lg:flex items-center gap-4'>
-                <div>
-                    <CiSearch  
-                    className="w-10 h-10 text-white/80 hover:text-blue-900 transition-colors cursor-pointer"
-                    />
-                </div>
-                            <Button
-                            id="Support Us "
-                            title="Support Us"
-                            leftIcon={<TiLocationArrow />}
-                            containerClass="mt-4
-                            inline-flex items-center justify-center 
-                            px-8 py-4 
-                            !bg-orange-500 text-black 
-                            font-bold 
-                            shadow-lg 
-                             gap-2 
-                             hover:bg-green-300 
-                             transition
-                             "
-                             />
-
+            <div className='flex items-center gap-4'>
+              <LogIn className='text-3xl text-white hover:cursor-pointer' />
+              <Coins className='text-3xl text-white hover:cursor-pointer' />
+              <div className=' rounded-full flex justify-center items items-center relative'>
+                <ShoppingCart className='text-3xl text-white hover:cursor-pointer' />   
+                <span className='absolute top-2/3 right-1/4 bg-red-500 text-black text-sm w-5 h-5
+                rounded-full flex justify-center items-center'>{totalQuantity}</span>
+              </div>
+              
+               
             </div>
             </div>
            
