@@ -5,7 +5,7 @@ import { FaHeart, FaShare, FaTruck } from "react-icons/fa";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../store/cart";
-
+import Carttab from "./carttab";
 const ProductPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -92,6 +92,15 @@ const ProductPage = () => {
                 </div>
               )}
             </div>
+            {product.colors && ( <div className="space-y-2">
+               <div className="flex gap-3 items-center"> 
+                <p className="text-sm font-extrabold">Colour :</p> 
+                {product.colors.map((color, index) => ( 
+                  <p key={index} className="px-3 py-1 uppercase text-lg font-medium text-gray-600" >
+                     {color}
+                      </p> ))
+                      } </div> 
+                      </div> )}
             {product.sizes && (
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
@@ -226,7 +235,7 @@ const ProductPage = () => {
             You may also like
             </h2>
           </div>
-        <div className=" grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 px-16 py-12">
+        <div className=" grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 px-8 py-6 mb:px-16 mb:py-12">
            {merch.map((merch)=>{
             return(
                <div className='flex flex-col group'>

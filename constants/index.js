@@ -1,24 +1,50 @@
+
+
 const programs = [
   {
-    title: "Tennis Coaching",
+    title: "2025 DECEMBER HOLIDAY CAMP",
     image: "/img/bball.jpg",
     synopsis:
       "Personalized one-on-one coaching focused on technique, footwork, and match confidence.",
   },
   {
-    title: "Tennis for Kids",
+    title: "KBF DIV 2 LEAGUE",
     image: "/img/bball.jpg",
     synopsis:
       "Fun, structured sessions helping kids build fundamentals, discipline, and love for the game.",
   },
   {
-    title: "Squash Coaching",
+    title: "KISUMU BASKETBALL LEAGUE",
     image: "/img/bball.jpg",
     synopsis:
       "High-intensity squash training focused on agility, precision, and competitive play.",
   },
   {
-    title: "Private Group",
+    title: "KIKWETU 3*3 HANGOUT",
+    image: "/img/bball.jpg",
+    synopsis:
+      "Train with friends or teammates in a focused group environment led by a professional coach.",
+  },
+   {
+    title: "2025 DECEMBER HOLIDAY CAMP",
+    image: "/img/bball.jpg",
+    synopsis:
+      "Personalized one-on-one coaching focused on technique, footwork, and match confidence.",
+  },
+  {
+    title: "KBF DIV 2 LEAGUE",
+    image: "/img/bball.jpg",
+    synopsis:
+      "Fun, structured sessions helping kids build fundamentals, discipline, and love for the game.",
+  },
+  {
+    title: "KISUMU BASKETBALL LEAGUE",
+    image: "/img/bball.jpg",
+    synopsis:
+      "High-intensity squash training focused on agility, precision, and competitive play.",
+  },
+  {
+    title: "KIKWETU 3*3 HANGOUT",
     image: "/img/bball.jpg",
     synopsis:
       "Train with friends or teammates in a focused group environment led by a professional coach.",
@@ -216,87 +242,54 @@ const resultStyles = {
   W: "text-green-600",
   L: "text-red-600",
 };
-
-const games = [
+ const games = [
   {
-    day: "Wednesday",
-    date: "Feb 11",
-    time: "6:00 PM CST",
+    date: "2026-04-11T18:00:00",
     venue: "Jomo Kenyatta Sports Ground",
     city: "Kisumu, Kenya",
-    tv: "FanDuel Sports Network - Wisconsin",
-    radio: "620 AM/103.3 FM WTMJ",
     opponent: "Orlando Magic",
     logo: "/img/magic.png",
-    jersey: "/img/jersey.png",
     status: "HOME",
-    type:  "UPCOMING"
-   
-
+   jersey: "/img/jersey.png",
+    type: "UPCOMING"
   },
   {
-    day: "Wednesday",
-    date: "Feb 11",
-    time: "6:00 PM CST",
+    date: "2026-03-15T16:30:00",
     venue: "Don Bosco",
     city: "Nairobi, Kenya",
-    tv: "FanDuel Sports Network - Wisconsin",
-    radio: "620 AM/103.3 FM WTMJ",
     opponent: "Orlando Magic",
     logo: "/img/magic.png",
-    jersey: "/img/jersey.png",
     status: "AWAY",
-    type:  "UPCOMING"
-    
-  },{
-    day: "Wednesday",
-    date: "Feb 11",
-    time: "6:00 PM CST",
+    jersey: "/img/jersey.png",
+
+    type: "UPCOMING"
+  },
+  {
+    date: "2026-02-18T18:00:00",
     venue: "Police Canteen",
     city: "Kakamega, Kenya",
-    tv: "FanDuel Sports Network - Wisconsin",
-    radio: "620 AM/103.3 FM WTMJ",
     opponent: "Orlando Magic",
     logo: "/img/magic.png",
-    jersey: "/img/jersey.png",
     status: "AWAY",
-    type:  "FINAL",
-    result: "W",      // only if FINAL
+        jersey: "/img/jersey.png",
+    type: "FINAL",
+    result: "W",
     homeScore: 110,
-    awayScore: 98,
-  },{
-    day: "Wednesday",
-    date: "Feb 11",
-    time: "6:00 PM CST",
+    awayScore: 98
+  },
+  {
+    date: "2026-03-01T17:00:00",
     venue: "Nyayo National Gymnasium",
     city: "Nairobi, Kenya",
-    tv: "FanDuel Sports Network - Wisconsin",
-    radio: "620 AM/103.3 FM WTMJ",
     opponent: "Orlando Magic",
     logo: "/img/magic.png",
-    jersey: "/img/jersey.png",
     status: "HOME",
-    type:  "FINAL",
-    result: "L",      // only if FINAL
+    type: "FINAL",
+    jersey: "/img/jersey.png",
+    result: "L",
     homeScore: 32,
-    awayScore: 40,
-  },{
-    day: "Wednesday",
-    date: "Feb 11",
-    time: "6:00 PM CST",
-    venue: "United States International University",
-    city: "Nairobi, Kenya",
-    tv: "FanDuel Sports Network - Wisconsin",
-    radio: "620 AM/103.3 FM WTMJ",
-    opponent: "Orlando Magic",
-    logo: "/img/magic.png",
-    jersey: "/img/jersey.png",
-    status: "HOME",
-    type:  "FINAL",
-    result: "W",      // only if FINAL
-    homeScore: 60,
-    awayScore: 53,
-  },
+    awayScore: 40
+  }
 ];
 const management=[
   {
@@ -557,14 +550,86 @@ const players = [
     audio:"/audio/jean.mp4"
   }
 ];
-
+ const values = [
+    {
+      id: "community",
+      label: "COMMUNITY",
+      description:   "We are committed to making a meaningful difference in the communities we serve, investing in people and programs that create lasting impact."
+      ,bg:'/img/cube.jpg'
+    },
+    {
+      id: "innovation",
+      label: "INNOVATION",
+      description:    "We embrace new ideas, technologies, and approaches that push boundaries and keep us ahead of the game in everything we do.",
+      bg:"/img/einstein.jpg"
+    },
+    {
+      id: "legendary",
+      label: "LEGENDARY",
+      description: "We pursue excellence relentlessly — setting the standard for what it means to be truly great on and off the court.",
+      bg:"/img/hoops.jpg"
+    },
+    {
+      id: "teamwork",
+      label: "TEAMWORK",
+      description:
+        "We foster a collaborative environment that allows for creativity in approach, ideas and suggestions for the greater good of the Orlando Magic and the Central Florida community.",
+      bg:"/img/innovation.jpg"
+      },
+  ];
+const principles = [
+  {
+    id: "01",
+    title: "We over me",
+    description:
+      "We put the mission and the team above personal pride. Success is shared, sacrifice is expected, and no one is bigger than the group.",
+  },
+  {
+    id: "02",
+    title: "Process over results",
+    description:
+      "We focus on daily discipline, preparation, and execution. Results follow consistent habits, not shortcuts or temporary motivation.",
+  },
+  {
+    id: "03",
+    title: "Serving over self-focused",
+    description:
+      "We look for ways to uplift others — on and off the court. True leadership is built on humility, sacrifice, and adding value to those around us.",
+  },
+  {
+    id: "04",
+    title: "Learning over stubbornness",
+    description:
+      "We stay coachable and open to growth. Mistakes are lessons, feedback is fuel, and improvement never stops.",
+  },
+  {
+    id: "05",
+    title: "Encouragement over negativity",
+    description:
+      "We speak life into each other. Energy is contagious — we choose words and attitudes that build confidence, not tear it down.",
+  },
+  {
+    id: "06",
+    title: "Teamwork over individual needs",
+    description:
+      "We value chemistry over ego. Roles may differ, but every role matters. Collective strength always beats individual talent.",
+  },
+  {
+    id: "07",
+    title: "Communication over assumption",
+    description:
+      "We communicate clearly, honestly, and respectfully. We ask, we listen, and we clarify — because misunderstanding weakens unity.",
+  },
+];
 export{
     programs,
+    principles,
     events,
     merch,
     statusStyles,
     games,
     resultStyles,
     players,
-    management
+    management,
+    values
 }

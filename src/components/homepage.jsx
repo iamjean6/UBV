@@ -5,9 +5,10 @@ import Team from "./team";
 import Blog from "./blog";
 import Shop from "./shop";
 import Contacts from "./contacts";
-import Games from "./games";
+import Games from "../pages/games";
 import Display from "./display";
 import Footer from "./footer";
+import ScheduleSection from "./schedule";
 
 
 
@@ -21,7 +22,8 @@ const Home=()=>{
       <Blog />
       <Shop />
       <Contacts />
-      <Games />  
+      {/*<Games />*/}  
+      <ScheduleSection/>
       <Display />
     
         </>

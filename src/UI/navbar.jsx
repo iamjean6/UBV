@@ -1,16 +1,18 @@
 import { React, useEffect, useState} from 'react';
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Coins, LogIn, ShoppingCart } from 'lucide-react';
-import Button from '../components/button';
-import { TiLocationArrow } from "react-icons/ti";
-import { FaLess } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
-
+import { useSelector,useDispatch } from 'react-redux';
+import {toggleStatusTab} from '../store/cart'
 const Navbar = () => {
 
   const location = useLocation()
   const isHome =location.pathname === "/"
   const [totalQuantity, setTotalQuantity]= useState(0)
+  const dispatch = useDispatch()
+  const handleOpenTabCart = () =>{
+    console.log("Cart clicked")
+    dispatch(toggleStatusTab())
+  }
   const carts =useSelector (store => store.cart.items)
   const navbarBg = isHome  ?"bg-transparent" : "bg-blue-800 shadow-md";
   const textColor =
@@ -25,11 +27,12 @@ const Navbar = () => {
         ? "text-white/80"
         : "text-black"
           }`;
-        useEffect(()=>{
+   useEffect(()=>{
           let total =0
           carts.forEach(items=> total+= items.quantity)
           setTotalQuantity(total)
         },[carts])
+ 
   return (
    <nav className={`w-full z-50 transition-all duration-300   ${isHome ? "absolute top-0 left-0" : "relative"} ${navbarBg}`}>
       <div className=" mx-auto px-4 sm:px-6 text-black lg:px-8">
@@ -47,7 +50,7 @@ const Navbar = () => {
              Home
           </NavLink>
 
-        <NavLink to="/about" className={linkClass}>
+        <NavLink to="/aboutus" className={linkClass}>
              About Us
           </NavLink>
           <NavLink to="/programs" className={linkClass}>
@@ -61,8 +64,10 @@ const Navbar = () => {
           <NavLink to="/merch" className={linkClass}>
             Shop
           </NavLink>
-
-          <NavLink to="/contacts" className={linkClass}>
+          <NavLink to="/games" className={linkClass}>
+            Schedule
+          </NavLink>
+          <NavLink to="/contactus" className={linkClass}>
             Contact Us
           </NavLink>
            </div>
@@ -70,7 +75,9 @@ const Navbar = () => {
               <LogIn className='text-3xl text-white hover:cursor-pointer' />
               <Coins className='text-3xl text-white hover:cursor-pointer' />
               <div className=' rounded-full flex justify-center items items-center relative'>
-                <ShoppingCart className='text-3xl text-white hover:cursor-pointer' />   
+                <button className='hover:cursor-pointer' onClick={handleOpenTabCart}>
+                  <ShoppingCart className="text-3xl text-white" />
+                </button>
                 <span className='absolute top-2/3 right-1/4 bg-red-500 text-black text-sm w-5 h-5
                 rounded-full flex justify-center items-center'>{totalQuantity}</span>
               </div>

@@ -10,7 +10,8 @@ const loadCartFromStorage = () => {
 };
 
 const initialState = {
-  items: loadCartFromStorage()
+  items: loadCartFromStorage(),
+  statusTab:false
 };
 
 const cartSlice = createSlice({
@@ -63,6 +64,13 @@ const cartSlice = createSlice({
     clearCart(state) {
       state.items = [];
       localStorage.removeItem("cart");
+    },
+    toggleStatusTab(state){
+      if(state.statusTab === false){
+        state.statusTab = true
+      }else{
+        state.statusTab = false
+      }
     }
   }
 });
@@ -71,7 +79,8 @@ export const {
   addToCart,
   decreaseQuantity,
   removeFromCart,
-  clearCart
+  clearCart,
+  toggleStatusTab
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

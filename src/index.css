@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sunflower:wght@300;500;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 
 
@@ -22,7 +22,11 @@
   }
   @font-face{
     font-family: "Barlow Condensed";
-    src: url("font/barlow-condensed-v13-latin-regular.woff2") format("woff2")
+    src: url("/font/barlow-condensed-v13-latin-regular.woff2") format("woff2")
+  }
+  @font-face{
+    font-family:"Mongoose Regular";
+    src:url("/font/Mongoose-Regular.woff2")
   }
 }
 @layer utilities {
@@ -47,6 +51,9 @@
   .font-barlow{
     font-family:"Barlow Condensed", sans-serif;
   }
+  .font-mongoose{
+    font-family: "Mongoose Regular", sans-serif;
+  }
   @keyframes pop {
   0% {
     transform: scale(1);
@@ -70,6 +77,17 @@
     transform: translateY(-40px) scale(1.3);
   }
 }
+@keyframes floater {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
 
 .animate-pop {
   animation: pop 0.9s ease-out;
@@ -78,4 +96,140 @@
 .animate-float {
   animation: float 1s ease-out forwards;
 }
+
+
+.contact-title {
+  font-size: clamp(4.5rem, 17vw, 14rem);
+  line-height: 0.88;
+  letter-spacing: -0.01em;
 }
+
+.faq-answer-wrapper {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.36s ease;
+}
+.faq-answer-wrapper--open {
+  max-height: 300px;
+}
+
+.claim-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 38vw;
+  min-height: 280px;
+  max-height: 520px;
+  background: #fff;
+  border-top: 1px solid #e8e8e8;
+}
+
+/* ── Model images ── */
+.claim-model--left,
+.claim-model--right {
+  width: 24%;
+  max-width: 280px;
+  height: 115%;
+}
+
+
+.claim-cta-link {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  transform-origin: center;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    letter-spacing 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.claim-cta-link:hover {
+  transform: scaleX(1.1);
+  letter-spacing: 0.35em;
+}
+
+.claim-cta-text {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  letter-spacing: 0.18em;
+  display: inline-block;
+}
+
+.claim-cta-arrow {
+  font-size: clamp(1.2rem, 2.4vw, 1.8rem);
+  display: inline-block;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.claim-cta-link:hover .claim-cta-arrow {
+  transform: translateX(10px);
+}
+
+@keyframes slide-in-left {
+  from { transform: translateX(-60px); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+@keyframes slide-in-right {
+  from { transform: translateX(60px);  opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+@keyframes fade-up {
+  from { transform: translateY(18px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* Default state — hidden before viewport trigger */
+.claim-model--left,
+.claim-model--right {
+  opacity: 0;
+}
+
+.claim-cta-link {
+  opacity: 0;
+}
+
+/* Fired state */
+.banner-visible .claim-model--left {
+  animation: slide-in-left 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+
+.banner-visible .claim-model--right {
+  animation: slide-in-right 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+
+.banner-visible .claim-cta-link {
+  animation: fade-up 0.7s ease 0.55s forwards;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .contact-title {
+    font-size: clamp(3.8rem, 22vw, 6rem);
+  }
+
+  .claim-banner {
+    height: 60vw;
+    min-height: 220px;
+  }
+
+  .claim-model--left,
+  .claim-model--right {
+    width: 36%;
+  }
+
+  .claim-cta-text {
+    font-size: clamp(0.75rem, 5vw, 1rem);
+    letter-spacing: 0.1em;
+  }
+
+  /* Toned down stretch on mobile — less dramatic */
+  .claim-cta-link:hover {
+    transform: scaleX(1.05);
+    letter-spacing: 0.22em;
+  }
+}
+}
+
