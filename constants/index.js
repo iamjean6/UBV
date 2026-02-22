@@ -44,7 +44,7 @@ const programs = [
       "High-intensity squash training focused on agility, precision, and competitive play.",
   },
   {
-    title: "KIKWETU 3*3 HANGOUT",
+    title: "KIKWETU 4*3 HANGOUT",
     image: "/img/bball.jpg",
     synopsis:
       "Train with friends or teammates in a focused group environment led by a professional coach.",
@@ -105,6 +105,7 @@ const programs = [
     colors: ["Navy", "Yellow", "Green", "Red"],
     sizes: ["XS", "S", "M", "L"],
     inStock: false,
+    discount: 0.2,
     badge: "OUT OF STOCK",
     notice: "This item has a 10% discount",
     description:
@@ -126,6 +127,7 @@ const programs = [
     colors: ["Black", "White"],
     sizes: ["S", "M", "L", "XL"],
     inStock: true,
+    discount: 0.3,
     badge: null,
     notice: null,
     description:
@@ -147,6 +149,7 @@ const programs = [
     colors: ["Black", "Grey"],
     sizes: ["M", "L", "XL"],
     inStock: true,
+    discount: 0,
     badge: "BEST SELLER",
     notice: "Limited stock available",
     description:
@@ -168,6 +171,7 @@ const programs = [
     colors: ["Black", "Red"],
     sizes: ["S", "M", "L"],
     inStock: true,
+    discount: 0,
     badge: null,
     notice: null,
     description:
@@ -189,6 +193,7 @@ const programs = [
     colors: ["White"],
     sizes: ["XS", "S", "M", "L"],
     inStock: true,
+    discount: 0.2,
     badge: "NEW",
     notice: "New arrival",
     description:
@@ -211,6 +216,7 @@ const programs = [
     sizes: ["S", "M", "L"],
     inStock: true,
     badge: null,
+    discount: 0.1,
     notice: "Buy 2 get 1 free",
     description:
       "Bright yellow UrbanVille tee designed for bold streetwear style.",

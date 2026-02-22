@@ -4,6 +4,7 @@ import { useGSAP } from "@gsap/react";
 import { HiX } from "react-icons/hi";
 import { programs } from "../../constants";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Pagination from "../UI/pagination";
 
 gsap.registerPlugin(ScrollTrigger)
 const Programs = () => {
@@ -11,13 +12,13 @@ const Programs = () => {
   const modalRef = useRef(null);
 
   const [activeCard, setActiveCard] = useState(null);
-
-  /* ---------------- Open modal ---------------- */
-  const openCard = (program) => {
+  const [currentPage, setCurrentPage] = useState(1)
+  const [postsPerPage, setPostsPerPage] = useState(4)
+  
+   const openCard = (program) => {
     setActiveCard(program);
   };
 
-  /* ---------------- Close modal ---------------- */
   const closeCard = () => {
     gsap.to(modalRef.current, {
       opacity: 0,
@@ -68,7 +69,12 @@ useGSAP(() => {
       );
     }
   }, [activeCard]);
-
+useEffect(() => {
+  cardsRef.current = [];
+}, [currentPage]);
+  const lastPostIndex = currentPage * postsPerPage
+  const firstPostIndex = lastPostIndex - postsPerPage
+  const currentPosts = programs.slice(firstPostIndex, lastPostIndex)
   return (
     <section className="relative w-full">
     
@@ -79,7 +85,7 @@ useGSAP(() => {
         <div className="absolute inset-0 bg-black/50" />
 
         <div className="relative z-10 px-6 py-16">
-          {/* Header */}
+       
           <div className="text-center text-white mb-12 space-y-3">
             <h2 className="text-sm font-semibold tracking-widest uppercase opacity-80">
               Our Programs
@@ -89,9 +95,8 @@ useGSAP(() => {
             </p>
           </div>
 
-          {/* Grid */}
           <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
-            {programs.map((program, i) => (
+            {currentPosts.map((program, i) => (
               <div
                 key={i}
                 ref={(el) => (cardsRef.current[i] = el)}
@@ -112,15 +117,19 @@ useGSAP(() => {
               </div>
             ))}
           </div>
+          <Pagination 
+          totalPosts ={programs.length}
+          postsPerPage ={postsPerPage}
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+          />
 
-          {/* ---------------- MODAL ---------------- */}
           {activeCard && (
             <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center px-4">
               <div
                 ref={modalRef}
                 className="bg-neutral-900 text-white max-w-4xl w-full h-[420px] rounded-xl overflow-hidden grid grid-cols-2 "
               >
-                {/* Image LEFT */}
                 <div className="relative h-[420px] md:h-full">
                   <img
                     src={activeCard.image}
@@ -137,8 +146,6 @@ useGSAP(() => {
 
                   <div className="absolute inset-0 bg-black/20" />
                 </div>
-
-                {/* Content RIGHT */}
                 <div className="p-6 md:p-8 flex flex-col justify-center space-y-4">
                   <h3 className="text-2xl md:text-3xl font-bold">
                     {activeCard.title}
@@ -151,7 +158,6 @@ useGSAP(() => {
               </div>
             </div>
           )}
-          {/* ---------------- END MODAL ---------------- */}
         </div>
       </div>
     </section>

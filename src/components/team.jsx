@@ -41,29 +41,22 @@ const Team = () => {
     </p>
   </div>
 
-  <div>
+  <div className='flex items-center gap-2'>
     <button className="px-8 py-3 border border-white text-sm text-white font-semibold uppercase tracking-wide hover:bg-blue-800 hover:text-black hover:cursor-pointer transition">
       View Profile
     </button>
-  </div>
-        </div>
-        </div>
-
-      </div>
-      <div className='flex items-center justify-center py-8'>
-        
-        <Link to="/roster">
+    <Link to="/roster">
          <Button 
         id="Meet the Team"
         title="Meet the Team"
          leftIcon={<TiLocationArrow />}
-         containerClass="mt-4
+         containerClass="
           inline-flex items-center justify-center 
           px-8 py-4 
-          !bg-orange-500 
+          !bg-white/90
           text-black 
           font-bold 
-          !rounded-lg
+          !rounded-xs
           shadow-lg 
           gap-2 
           !hover:bg-green-300 
@@ -71,6 +64,14 @@ const Team = () => {
             "
         />
         </Link>
+  </div>
+        </div>
+        </div>
+
+      </div>
+      <div className='flex items-center justify-center py-8'>
+        
+        
        
 
       </div>

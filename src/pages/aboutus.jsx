@@ -321,18 +321,6 @@ const Aboutus = () => {
         </div>
     </div> 
      
-      </div><div className="bg-black overflow-hidden py-3" aria-hidden="true">
-        <div className="ticker-track flex whitespace-nowrap w-max">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <span
-              key={i}
-              className="inline-flex items-center gap-3 text-white uppercase tracking-[0.2em] text-[11px] px-6 flex-shrink-0 font-barlow"
-            >
-              GOD FAMILY CAREER FRIENDSHIP BASKETBALL
-              <span className="opacity-50 text-[10px]">✦</span>
-            </span>
-          ))}
-        </div>
       </div>
     </div>
   );

@@ -9,11 +9,27 @@ import {
   Calendar,
   ArrowUp,
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 import { MdWhatsapp } from "react-icons/md";
 
 const Footer = () => {
-  return (
+  return (<>
+  
+   <div className="bg-black overflow-hidden py-3" aria-hidden="true">
+        <div className="ticker-track flex whitespace-nowrap w-max">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <span
+              key={i}
+              className="inline-flex items-center gap-3 text-white uppercase tracking-[0.2em] text-[11px] px-6 flex-shrink-0 font-barlow"
+            >
+              GOD FAMILY CAREER FRIENDSHIP BASKETBALL
+              <span className="opacity-50 text-[10px]">✦</span>
+            </span>
+          ))}
+        </div>
+      </div>
     <footer className="relative bg-black text-white pt-24 pb-10 px-6">
+      
       <div className="max-w-7xl mx-auto">
 
         {/* Top Grid */}
@@ -58,23 +74,33 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Column 3 */}
-          <div>
-            <h3 className="uppercase text-sm font-extrabold tracking-widest mb-6">
-              Links
-            </h3>
+{/* Column 3 */}
+<div>
+  <h3 className="uppercase text-sm font-extrabold tracking-widest mb-6">
+    Links
+  </h3>
 
-            <ul className="space-y-4 text-gray-400">
-              {["Home", "About", "Blog", "Shop", "Contact"].map((item) => (
-                <li
-                  key={item}
-                  className="hover:text-white cursor-pointer transition duration-200"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
+  <ul className="space-y-4 text-gray-400">
+    {[
+      { name: "Home", path: "/" },
+      { name: "About Us", path: "/aboutus" },
+      { name: "Programs", path: "/programs" },
+      { name: "Blog", path: "/blog" },
+      { name: "Shop", path: "/merch" },
+      { name: "Schedule", path: "/games" },
+      { name: "Contact Us", path: "/contactus" },
+    ].map((link) => (
+      <li key={link.name}>
+        <NavLink
+          to={link.path}
+          className="hover:text-white transition duration-200"
+        >
+          {link.name}
+        </NavLink>
+      </li>
+    ))}
+  </ul>
+</div>
 
           {/* Column 4 */}
           <div>
@@ -129,6 +155,8 @@ const Footer = () => {
       </div>
 
     </footer>
+  </>
+      
   );
 };
 

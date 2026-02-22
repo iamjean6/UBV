@@ -3,6 +3,7 @@ import { merch } from '../../constants';
 import { FiHeart } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import Pagination from '../UI/pagination';
 
 const Merch = () => {
     const [liked, setLiked] = useState({});
@@ -11,6 +12,11 @@ const Merch = () => {
     const [sortBy, setSortBy] = useState("Featured");
     const [availability, setAvailability] = useState("All");
     const [priceRange, setPriceRange] = useState("All");
+    const [currentPage, setCurrentPage] = useState(1)
+    const [postsPerPage, setPostsPerPage] = useState(8)
+     const lastPostIndex = currentPage * postsPerPage
+  const firstPostIndex = lastPostIndex - postsPerPage
+  const currentPosts = products.slice(firstPostIndex, lastPostIndex)
     const applyFiltersAndSort = () => {
   let updated = [...merch];
 
@@ -171,7 +177,18 @@ useEffect(() => {
             </Link>
             </div>)
         })}
+          
       </div>
+      <div className="py-4 px-6 items-center justify-center">
+        <Pagination 
+      
+          totalPosts ={products.length}
+          postsPerPage ={postsPerPage}
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+          />
+      </div>
+      
     </div>
   );
 };

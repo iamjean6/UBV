@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { MdOutlineTimer, MdOutlineCalendarToday,MdOutlineChatBubbleOutline} from "react-icons/md";
 import { events } from '../../constants/index.js';
+import { MessageCircle, Pencil, Type } from 'lucide-react';
 
 const Blog = () => {
   return (
@@ -16,8 +17,7 @@ const Blog = () => {
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10'>
                 {events.map((event)=>{
                     return(
-                 <div className="bg-white rounded-sm flex flex-col group">
-  
+   <div className="bg-white relative rounded-sm flex flex-col group">
   <div className="relative w-full h-72 lg:h-80 overflow-hidden">
     <img
       src={event.image}
@@ -44,12 +44,23 @@ const Blog = () => {
     </p>
     
     <div className="w-12 h-px bg-gray-300 mb-4"></div>
-    <div className="flex items-center text-sm text-gray-400 gap-2">
-      <span>by {event.author}</span>
+    <div className="flex items-center   text-gray-400 gap-4 py-4">
+      <div className='flex items-center gap-2 text-sm text-blue-700 hover:text-orange-600 '>
+        <Pencil />
+         <span>by {event.author}</span>
+      </div>
       <span>/</span>
-      <span>{event.category}</span>
+      <div className='flex items-center gap-2 text-sm text-blue-700 hover:text-orange-600'>
+        <Type />
+        <span>{event.category}</span>
+      </div>
+      
       <span>/</span>
-      <span>{event.comments} Comments</span>
+      <div className='flex items-center gap-2 text-sm text-blue-700 hover:text-orange-600'>
+        <MessageCircle />
+        <span>{event.comments} Comments</span>
+      </div>
+      
     </div>
   </div>
 </div>

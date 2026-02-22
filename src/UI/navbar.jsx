@@ -3,6 +3,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Coins, LogIn, ShoppingCart } from 'lucide-react';
 import { useSelector,useDispatch } from 'react-redux';
 import {toggleStatusTab} from '../store/cart'
+import Sidebar from './sidebar';
 const Navbar = () => {
 
   const location = useLocation()
@@ -35,6 +36,7 @@ const Navbar = () => {
  
   return (
    <nav className={`w-full z-50 transition-all duration-300   ${isHome ? "absolute top-0 left-0" : "relative"} ${navbarBg}`}>
+      
       <div className=" mx-auto px-4 sm:px-6 text-black lg:px-8">
             <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-3 px-2 py-4 '>
@@ -72,7 +74,7 @@ const Navbar = () => {
           </NavLink>
            </div>
             <div className='flex items-center gap-4'>
-              <LogIn className='text-3xl text-white hover:cursor-pointer' />
+              
               <Coins className='text-3xl text-white hover:cursor-pointer' />
               <div className=' rounded-full flex justify-center items items-center relative'>
                 <button className='hover:cursor-pointer' onClick={handleOpenTabCart}>
@@ -81,7 +83,11 @@ const Navbar = () => {
                 <span className='absolute top-2/3 right-1/4 bg-red-500 text-black text-sm w-5 h-5
                 rounded-full flex justify-center items-center'>{totalQuantity}</span>
               </div>
+              <div className='lg:hidden'>
+                <Sidebar />
+              </div>
               
+
                
             </div>
             </div>

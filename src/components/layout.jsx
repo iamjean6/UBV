@@ -1,13 +1,13 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../UI/navbar";
 import Footer from "./footer";
-import Carttab from "./carttab";
+import Cart from "../UI/cart"
 
 const Layout = () => {
   return (
     <>
       <Navbar />
-      <Carttab />
+      <Cart />
       <Outlet />
       <Footer />
     </>

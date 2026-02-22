@@ -1,6 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate()
+  const  goToAbout = () =>{
+    navigate("/aboutus")
+  }
   return (
     <section id="about" className="relative overflow-hidden min-h-screen overflow-hidden bg-neutral-100">
         
@@ -8,14 +13,12 @@ const Hero = () => {
      
       <div className="absolute inset-y-0 right-0 w-full lg:w-[60%] bg-neutral-900 z-0"></div>
 
-      {/* Content wrapper */}
+      
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 py-10 lg:py-14">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
-          {/* Media Section */}
+         
           <div className="relative flex gap-6 justify-center lg:justify-start">
-
-            {/* Secondary Image (crosses boundary) */}
             <div className="relative z-20 relative z-10 w-64 sm:w-72 md:w-88 h-80 sm:h-[28rem] md:h-[36rem] 
                             overflow-hidden rounded-xl shadow-xl translate-y-8">
               <img
@@ -25,7 +28,7 @@ const Hero = () => {
               />
             </div>
 
-            {/* Primary Image */}
+           
             <div className="relative z-10 w-64 sm:w-72 md:w-88 h-80 sm:h-[28rem] md:h-[36rem] 
                             overflow-hidden rounded-xl shadow-2xl">
               <img
@@ -37,7 +40,7 @@ const Hero = () => {
 
           </div>
 
-          {/* Content Section */}
+          
           <div className="flex flex-col gap-6 max-w-xl text-white">
 
             <span className="text-sm uppercase tracking-widest text-blue-800 font-semibold">
@@ -84,7 +87,9 @@ const Hero = () => {
             </ul>
 
             <div className="mt-6">
-              <button className="bg-transparent border-1 text-neutral-white font-semibold 
+              <button 
+              onClick={goToAbout}
+              className="bg-transparent border-1 text-neutral-white font-semibold 
                                  px-8 py-4 rounded-lg 
                                  hover:bg-orange-600 hover:cursor-pointer transition-colors duration-300">
                 Learn More
