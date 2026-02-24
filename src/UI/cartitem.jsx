@@ -46,7 +46,7 @@ export default function CartItem({ data }) {
           </div>
 
           <div className="mt-3 flex items-center justify-between">
-            <h1 className="text-2xl font-semibold xl:text-3xl">
+            <h1 className="text-xl font-semibold xl:text-xl">
               KES {detail.priceValue}
             </h1>
 
@@ -60,7 +60,7 @@ export default function CartItem({ data }) {
                 <ChevronLeft />
               </button>
 
-              <span className="text-xl">{quantity}</span>
+              <span className="text-lg">{quantity}</span>
 
               <button
                 className="bx bx-plus cursor-pointer text-xl"

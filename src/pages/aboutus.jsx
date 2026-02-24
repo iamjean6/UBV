@@ -300,12 +300,11 @@ const Aboutus = () => {
           key={principle.id}
           className="flex gap-4 items-start p-6"
         >
-          {/* Number badge */}
+          
           <div className="border border-gray-400 bg-gray-200 px-5 rounded-xs py-5 shrink-0">
             <span className="text-3xl italic font-black font-industry">{principle.id}</span>
           </div>
 
-          {/* Content */}
           <div className="flex flex-col gap-2">
             <h3 className="text-2xl leading-tight  uppercase text-orange-600 font-black leading-tight">
               {principle.title}

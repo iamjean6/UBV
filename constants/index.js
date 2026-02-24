@@ -2,53 +2,177 @@
 
 const programs = [
   {
+    id:0,
     title: "2025 DECEMBER HOLIDAY CAMP",
     image: "/img/bball.jpg",
     synopsis:
       "Personalized one-on-one coaching focused on technique, footwork, and match confidence.",
+    images: [
+      "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/Yeshua.jpg", 
+        "/img/yeshua1.jpg",
+      "/img/einstein.jpg",
+       "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/Yeshua.jpg",
+      "/img/yeshua1.jpg",
+      "/img/einstein.jpg",
+    ]    
   },
+
   {
+    id:1,
     title: "KBF DIV 2 LEAGUE",
     image: "/img/bball.jpg",
     synopsis:
       "Fun, structured sessions helping kids build fundamentals, discipline, and love for the game.",
-  },
+       images: [
+      "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/Yeshua.jpg",
+      "/img/yeshua1.jpg",
+      "/img/einstein.jpg",
+       "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/Yeshua.jpg",
+      "/img/yeshua1.jpg",
+      "/img/einstein.jpg",
+    ] 
+  
+    },
   {
+    id:2,
     title: "KISUMU BASKETBALL LEAGUE",
     image: "/img/bball.jpg",
     synopsis:
       "High-intensity squash training focused on agility, precision, and competitive play.",
-  },
+     images: [
+      "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/yeshua.jpg",
+      "/img/Yeshua1.jpg",
+      "/img/einstein.jpg",
+       "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/yeshua.jpg",
+      "/img/Yeshua1.jpg",
+      "/img/einstein.jpg",
+    ] 
+    },
   {
+    id:3,
     title: "KIKWETU 3*3 HANGOUT",
     image: "/img/bball.jpg",
     synopsis:
       "Train with friends or teammates in a focused group environment led by a professional coach.",
-  },
+     images: [
+      "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/yeshua.jpg",
+      "/img/Yeshua1.jpg",
+      "/img/einstein.jpg",
+       "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/yeshua.jpg",
+      "/img/Yeshua1.jpg",
+      "/img/einstein.jpg",
+    ] 
+    },
    {
+    id:4,
     title: "2025 DECEMBER HOLIDAY CAMP",
     image: "/img/bball.jpg",
     synopsis:
       "Personalized one-on-one coaching focused on technique, footwork, and match confidence.",
-  },
+   images: [
+      "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/yeshua.jpg",
+      "/img/Yeshua1.jpg",
+      "/img/yinstein.jpg",
+       "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/yeshua.jpg",
+      "/img/Yeshua1.jpg",
+      "/img/yinstein.jpg",
+    ] 
+  
+    },
   {
+    id:4,
     title: "KBF DIV 2 LEAGUE",
     image: "/img/bball.jpg",
     synopsis:
       "Fun, structured sessions helping kids build fundamentals, discipline, and love for the game.",
-  },
+   images: [
+      "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/Yeshua.jpg",
+      "/img/yeshua1.jpg",
+      "/img/einstein.jpg",
+       "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/Yeshua.jpg",
+      "/img/yeshua1.jpg",
+      "/img/einstein.jpg",
+    ] 
+    },
   {
+    id:5,
     title: "KISUMU BASKETBALL LEAGUE",
     image: "/img/bball.jpg",
     synopsis:
       "High-intensity squash training focused on agility, precision, and competitive play.",
-  },
+   images: [
+      "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/yeshua.jpg",
+      "/img/Yeshua1.jpg",
+      "/img/einstein.jpg",
+       "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/yeshua.jpg",
+      "/img/Yeshua1.jpg",
+      "/img/einstein.jpg",
+    ] 
+    },
   {
+    id:6,
     title: "KIKWETU 4*3 HANGOUT",
     image: "/img/bball.jpg",
     synopsis:
       "Train with friends or teammates in a focused group environment led by a professional coach.",
-  },
+  
+   images: [
+      "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/yeshua.jpg",
+      "/img/Yeshua1.jpg",
+      "/img/einstein.jpg",
+       "/img/cube.jpg",
+      "/img/contact.jpg",
+      "/img/innovation.jpg",
+      "/img/yeshua.jpg",
+      "/img/Yeshua1.jpg",
+      "/img/einstein.jpg",
+    ] 
+    },
 ];
  const events = [
     {

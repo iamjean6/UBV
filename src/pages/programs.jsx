@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { programs } from '../../constants';
+import { useNavigate } from "react-router-dom";
+import { ChevronUpIcon } from 'lucide-react';
 const Programs = () => {
+  const navigate = useNavigate();
   return (
     <div className='min-h-screen w-full overflow-hidden'>
         <div className='relative h-64 md:h-80 lg:h-96'>
@@ -40,6 +43,7 @@ const Programs = () => {
     className='relative aspect-[3/4] rounded-sm overflow-hidden cursor-pointer group 
     animate-[floater_6s_ease-in-out_infinite]
     transition-transform duration-300 hover:scale-[1.03] hover:-translate-y-2'
+   onClick={() => navigate(`/programs/${program.id}`)}
   >
                 <img
                   src={program.image}
@@ -47,10 +51,19 @@ const Programs = () => {
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-
-                <div className="absolute bottom-4 left-4 right-4 text-white font-semibold text-sm md:text-base">
-                  {program.title}
+                
+                <div className="absolute flex flex-col items-center bottom-4 left-4 right-4 ">
+                  <p className=' leading-tight text-white italic font-black text-xs md:text-base'>
+                    {program.title}
+                    </p>
+                  <span className='animate-bounce text-2xl text-orange-600  font-black hover:cursor-pointer'>
+                    <ChevronUpIcon />
+                  </span>
+                 
+                  
                 </div>
+                
+                
             </div>
             
         ))}

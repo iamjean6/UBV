@@ -6,6 +6,15 @@ import { Link } from 'react-router-dom';
 import Pagination from '../UI/pagination';
 
 const Merch = () => {
+  const Images=[
+    "/img/shop.jpg",
+    "img/merch1.jpg",
+    "img/merch2.jpg",
+    "img/merch3.jpg",
+    "img/merch4.jpg",
+    "img/merch5.jpg",
+  ]
+  const [currentSlide, setCurrentSlide] = useState(0);
     const [liked, setLiked] = useState({});
     const [burst, setBurst] = useState(null);
     const [products, setProducts] = useState(merch);
@@ -20,12 +29,12 @@ const Merch = () => {
     const applyFiltersAndSort = () => {
   let updated = [...merch];
 
-  // 🔹 Availability Filter
+
   if (availability === "In Stock") {
     updated = updated.filter(p => p.inStock === true);
   }
 
-  // 🔹 Price Filter
+ 
   if (priceRange === "Under 50") {
     updated = updated.filter(p => p.priceValue < 50);
   }
@@ -33,7 +42,7 @@ const Merch = () => {
     updated = updated.filter(p => p.priceValue >= 50 && p.priceValue <= 100);
   }
 
-  // 🔹 Sorting
+  
   switch (sortBy) {
     case "Price, High to low":
       updated.sort((a, b) => b.priceValue - a.priceValue);
@@ -57,25 +66,54 @@ const Merch = () => {
 useEffect(() => {
   applyFiltersAndSort();
 }, [sortBy, availability, priceRange]);
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCurrentSlide((prev) =>
+      prev === Images.length - 1 ? 0 : prev + 1
+    );
+  }, 5000); 
 
+  return () => clearInterval(interval);
+}, []);
 
   return (
     <div id="merch" className='min-h-screen w-full overflow-hidden bg-gray-100'>
-      <div className='relative h-64 md:h-80 lg:h-96 '>
-        <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage: 'url(img/shop.jpg)'}}>
-        <div className='absolute inset-0 bg-black-50'></div>
-         <div className="relative z-10 flex flex-row items-center justify-center h-full">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white font-zentry uppercase">
-                GET OUR MERCH
-            </h1>
-           
-            </div>
-            
-        </div>
-      </div>
+      
+    <div className="relative h-64 md:h-76 lg:h-84 overflow-hidden">
+
+  {Images.map((img, index) => (
+    <div
+      key={index}
+      className={`
+        absolute inset-0 bg-cover bg-center
+        transition-opacity duration-1000 ease-in-out
+        ${index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"}
+      `}
+    >
+      <div
+        className={`
+          w-full h-full bg-cover bg-center
+          ${index === currentSlide ? "animate-kenburns" : ""}
+        `}
+        style={{ backgroundImage: `url(${img})` }}
+      />
+    </div>
+  ))}
+
+  {/* Overlay */}
+  <div className="absolute inset-0 bg-black/50 z-20"></div>
+
+  {/* Text */}
+  <div className="relative z-30 flex items-center justify-center h-full">
+    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white font-zentry uppercase">
+      GET OUR MERCH
+    </h1>
+  </div>
+
+</div>
       <div className="flex flex-wrap items-center justify-between px-8 py-6 bg-white border-b text-sm">
 
-  {/* LEFT SIDE */}
+
   <div className="flex items-center gap-6">
     
     <div className="flex items-center gap-2">

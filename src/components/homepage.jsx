@@ -9,6 +9,7 @@ import Games from "../pages/games";
 import Display from "./display";
 import Footer from "./footer";
 import ScheduleSection from "./schedule";
+import Gallery from "../pages/gallery";
 
 
 
@@ -22,7 +23,8 @@ const Home=()=>{
       <Blog />
       <Shop />
       <Contacts />
-      {/*<Games />*/}  
+      {/*<Games />*/} 
+      <Gallery /> 
       <ScheduleSection/>
       <Display />
     
