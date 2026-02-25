@@ -53,7 +53,7 @@ const Programs = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 
                 <div className="absolute flex flex-col items-center bottom-4 left-4 right-4 ">
-                  <p className=' leading-tight text-white italic font-black text-xs md:text-base'>
+                  <p className=' leading-tight text-white uppercase italic font-black text-xs md:text-base'>
                     {program.title}
                     </p>
                   <span className='animate-bounce text-2xl text-orange-600  font-black hover:cursor-pointer'>

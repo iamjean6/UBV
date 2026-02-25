@@ -3,8 +3,8 @@
 const programs = [
   {
     id:0,
-    title: "2025 DECEMBER HOLIDAY CAMP",
-    image: "/img/bball.jpg",
+    title: "KISUMU BASKETBALL LEAGUE",
+    image: "/img/kbl.jpeg",
     synopsis:
       "Personalized one-on-one coaching focused on technique, footwork, and match confidence.",
     images: [
@@ -26,7 +26,7 @@ const programs = [
   {
     id:1,
     title: "KBF DIV 2 LEAGUE",
-    image: "/img/bball.jpg",
+    image: "/img/div2.jpeg",
     synopsis:
       "Fun, structured sessions helping kids build fundamentals, discipline, and love for the game.",
        images: [
@@ -47,8 +47,8 @@ const programs = [
     },
   {
     id:2,
-    title: "KISUMU BASKETBALL LEAGUE",
-    image: "/img/bball.jpg",
+    title: "3*3 Bake,Beat & BBQ",
+    image: "/img/3on3.jpeg",
     synopsis:
       "High-intensity squash training focused on agility, precision, and competitive play.",
      images: [
@@ -68,8 +68,8 @@ const programs = [
     },
   {
     id:3,
-    title: "KIKWETU 3*3 HANGOUT",
-    image: "/img/bball.jpg",
+    title: "2025 DECEMBER END YEAR CAMP",
+    image: "/img/camp.jpeg",
     synopsis:
       "Train with friends or teammates in a focused group environment led by a professional coach.",
      images: [
@@ -89,8 +89,8 @@ const programs = [
     },
    {
     id:4,
-    title: "2025 DECEMBER HOLIDAY CAMP",
-    image: "/img/bball.jpg",
+    title: "2025 AUGUST HOLIDAY CAMP",
+    image: "/img/augustcamp.jpeg",
     synopsis:
       "Personalized one-on-one coaching focused on technique, footwork, and match confidence.",
    images: [
@@ -99,20 +99,20 @@ const programs = [
       "/img/innovation.jpg",
       "/img/yeshua.jpg",
       "/img/Yeshua1.jpg",
-      "/img/yinstein.jpg",
+      "/img/einstein.jpg",
        "/img/cube.jpg",
       "/img/contact.jpg",
       "/img/innovation.jpg",
       "/img/yeshua.jpg",
       "/img/Yeshua1.jpg",
-      "/img/yinstein.jpg",
+      "/img/einstein.jpg",
     ] 
   
     },
   {
     id:4,
-    title: "KBF DIV 2 LEAGUE",
-    image: "/img/bball.jpg",
+    title: "VIKAPU ELITE COACHES CLINIC",
+    image: "/img/coachesclinic.jpeg",
     synopsis:
       "Fun, structured sessions helping kids build fundamentals, discipline, and love for the game.",
    images: [
@@ -132,8 +132,8 @@ const programs = [
     },
   {
     id:5,
-    title: "KISUMU BASKETBALL LEAGUE",
-    image: "/img/bball.jpg",
+    title: "AFTER SCHOOL ELITE TRAINING",
+    image: "/img/afterschool.jpeg",
     synopsis:
       "High-intensity squash training focused on agility, precision, and competitive play.",
    images: [
@@ -153,8 +153,8 @@ const programs = [
     },
   {
     id:6,
-    title: "KIKWETU 4*3 HANGOUT",
-    image: "/img/bball.jpg",
+    title: "2024 DECEMBER END YEAR CAMP",
+    image: "/img/2024camp.jpeg",
     synopsis:
       "Train with friends or teammates in a focused group environment led by a professional coach.",
   
@@ -423,31 +423,61 @@ const resultStyles = {
 ];
 const management=[
   {
-    firstName:"Oliver",
-    lastName:'Nyawanda',
-    position:"Head Coach",
+    firstName:"Kenneth",
+    lastName:'Odula',
+    position:"Chairman",
      img:"img/picture.avif",
     audio:"/audio/jean.mp4"
   },
   {
-    firstName:"Oliver",
-    lastName:'Nyawanda',
+    firstName:"George",
+    lastName:'Omedo',
     img:"img/picture.avif",
-    position:"Head Coach",
+    position:"Vice Chairman",
     audio:"/audio/jean.mp4"
   },{
     firstName:"Oliver",
     lastName:'Nyawanda',
-    position:"Head Coach",
+    position:"Secretary",
      img:"img/picture.avif",
     audio:"/audio/jean.mp4"
   },{
+    firstName:"Harrison",
+    lastName:'Otieno',
+    position:"Advisory Member",
+     img:"img/picture.avif",
+    audio:"/audio/jean.mp4"
+  },
+  {
+    firstName:"Dickson",
+    lastName:'Jawichre',
+    position:"Advisory Member",
+     img:"img/picture.avif",
+    audio:"/audio/jean.mp4"
+  },
+]
+const coaches = [
+  {
     firstName:"Oliver",
     lastName:'Nyawanda',
     position:"Head Coach",
      img:"img/picture.avif",
     audio:"/audio/jean.mp4"
   },
+    {
+    firstName:"Alex",
+    lastName:'Okoa',
+    position:"Player/Game Development Coach",
+     img:"img/picture.avif",
+    audio:"/audio/jean.mp4"
+  },  {
+    firstName:"Julius",
+    lastName:'Ofafa',
+    position:"S & C coach",
+     img:"img/picture.avif",
+    audio:"/audio/jean.mp4"
+  },
+
 ]
 const players = [
   {
@@ -754,6 +784,7 @@ const principles = [
 export{
     programs,
     principles,
+    coaches,
     events,
     merch,
     statusStyles,

@@ -1,8 +1,8 @@
 import PlayerCard from "../UI/playercard";
-import { players,management } from "../../constants";
+import { players,management,coaches } from "../../constants";
 import { useEffect, useState } from "react";
 import Coachescard from "../UI/coachescard";
-
+import Managementcard from "../UI/managementcard";
 const Roster = () => {
   const [activeTab , setActiveTab] = useState('ubv')
   const filteredPlayers = players.filter(
@@ -60,15 +60,28 @@ const Roster = () => {
       <div className="border-t  border-gray-200 "></div>
       <div>
           <h1 className="text-3xl py-4 font-bold text-orange-600 tracking-tight">
+          Coaching Staff
+        </h1>
+      </div>
+      <div className="border-t  border-gray-200 pb-16"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 py-4">
+        {coaches.map((coach, index) => (
+          <Managementcard key={index} coach={coach} />
+        ))}
+      </div>
+      <div className="border-t  border-gray-200 "></div>
+      <div>
+          <h1 className="text-3xl py-4 font-bold text-orange-600 tracking-tight">
           MANAGEMENT
         </h1>
          </div>
         <div className="border-t  border-gray-200 pb-16"></div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 py-4">
         {management.map((staff, index) => (
           <Coachescard key={index} staff={staff} />
         ))}
       </div>
+      
     </section>
   );
 };
