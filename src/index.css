@@ -127,9 +127,9 @@
 /* ── Model images ── */
 .claim-model--left,
 .claim-model--right {
-  width: 24%;
-  max-width: 280px;
-  height: 115%;
+  width: 28%;
+  max-width: 320px;
+  height: auto;
 }
 
 
@@ -181,10 +181,13 @@
   to   { transform: translateY(0);    opacity: 1; }
 }
 
-/* Default state — hidden before viewport trigger */
 .claim-model--left,
 .claim-model--right {
   opacity: 0;
+   width: 34%;          /* was 24% */
+  max-width: 320px;    /* was 280px */
+  height: 120%;        /* was 115% */
+  transition: opacity 0.6s ease;
 }
 
 .claim-cta-link {
@@ -217,19 +220,25 @@
 
   .claim-model--left,
   .claim-model--right {
-    width: 36%;
+  width: 34%;          /* was 24% */
+  max-width: 320px;    /* was 280px */
+  height: 120%;        /* was 115% */
+  transition: opacity 0.6s ease;
   }
 
   .claim-cta-text {
     font-size: clamp(0.75rem, 5vw, 1rem);
     letter-spacing: 0.1em;
   }
-
-  /* Toned down stretch on mobile — less dramatic */
   .claim-cta-link:hover {
     transform: scaleX(1.05);
     letter-spacing: 0.22em;
   }
+}
+.slider-track {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .gallery{
   -webkit-column-count: 3;

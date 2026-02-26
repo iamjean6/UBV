@@ -12,6 +12,7 @@ import Games from './pages/games'
 import Programs from './pages/programs'
 import Gallery from './pages/gallery'
 import Blog from './pages/blog'
+import Easter from './pages/easter'
 function App() {
   
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="/shop/:id" element={<ProductPage />} />
         <Route path="/roster" element={<Roster />} />
       </Route>
+      <Route path="/easter" element={<Easter />} />
     </Routes>
     
   )

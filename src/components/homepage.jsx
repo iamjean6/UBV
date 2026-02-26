@@ -10,6 +10,7 @@ import Display from "./display";
 import Footer from "./footer";
 import ScheduleSection from "./schedule";
 import Gallery from "../pages/gallery";
+import Easter from "../pages/easter";
 
 
 
@@ -22,6 +23,7 @@ const Home=()=>{
       <Team />
       <Blog />
       <Shop />
+      <Easter />
       <Contacts />
       {/*<Games />*/} 
       <Gallery /> 

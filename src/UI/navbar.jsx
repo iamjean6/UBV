@@ -7,6 +7,8 @@ import Sidebar from './sidebar';
 const Navbar = () => {
 
   const location = useLocation()
+  const navigate = useNavigate()
+
   const isHome =location.pathname === "/"
   const [totalQuantity, setTotalQuantity]= useState(0)
   const dispatch = useDispatch()
@@ -33,13 +35,15 @@ const Navbar = () => {
           carts.forEach(items=> total+= items.quantity)
           setTotalQuantity(total)
         },[carts])
- 
+        const handleLogoClick = () =>{
+          navigate("/easter")
+        }
   return (
    <nav className={`w-full z-50 transition-all duration-300   ${isHome ? "absolute top-0 left-0" : "relative"} ${navbarBg}`}>
       
       <div className=" mx-auto px-4 sm:px-6 text-black lg:px-8">
             <div className='flex items-center justify-between'>
-                <div className='flex items-center gap-3 px-2 py-4 '>
+                <div className='flex items-center gap-3 px-2 py-4 ' onClick={handleLogoClick}>
                     <img src="/img/badge1.jpeg" alt="Urbanville Logo" 
                     className='w-15 h-15 bg-white rounded-full flex-shrink-0'
                     />
