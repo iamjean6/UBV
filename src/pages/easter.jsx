@@ -8,7 +8,8 @@ const left = [
   { img: "/img/easter/hulvey.png" },
   { img: "/img/easter/korra.png" },
   { img: "/img/easter/drogba.png" },
-  { img: "/img/easter/dog.png" }
+  { img: "/img/easter/dog.png" },
+  { img: "/img/easter/spiderman.png" }
 ];
 
 const right = [
@@ -19,7 +20,8 @@ const right = [
   { img: "/img/easter/forrest.png" },
   { img: "/img/easter/jack.png" },
   { img: "/img/easter/cole.png" },
-  { img: "/img/easter/cat.png" }
+  { img: "/img/easter/cat.png" },
+    { img: "/img/easter/cap.png" }
 ];
 
 const Easter = () => {
