@@ -23,7 +23,6 @@ const Home=()=>{
       <Team />
       <Blog />
       <Shop />
-      <Easter />
       <Contacts />
       {/*<Games />*/} 
       <Gallery /> 
