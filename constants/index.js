@@ -781,58 +781,7 @@ const principles = [
       "We communicate clearly, honestly, and respectfully. We ask, we listen, and we clarify — because misunderstanding weakens unity.",
   },
 ];
-const right=[{
-  img:"/img/easter/Shai.png"
-},
-{
-  img:"/img/easter/larry.png"
-},
-{
-  img:"/img/easter/cr7.png"
-},
-{
-  img:"/img/easter/goggins.png"
-},
-{
-img:"/img/easter/forrest.png"
-},
-{
-  img:"/img/easter/jack.png"
-},
-{
-  img:"/img/easter/cole.png"
-},
-{
-  img:"/img/easter/cat.png"
-}
-]
-const left=[
-  {
-    img:"/img/easter/brunson.png"
-  },
-  {
-    img:"/img/easter/kobe.png"
-  },
-  {
-    img:"/img/easter/ibra.png"
-  },
-  {
-    img:"/img/easter/rocky.png"
-  },
-  {
-    img:"/img/easter/hulvey.png"
-  },
-  {
-    img:"/img/easter/korra.png"
-  },
-  {
-    img:"/img/easter/drogba.png"
-  },
-  {
-    img:"/img/easter/dog.png"
-  }
 
-]
 export{
     programs,
     principles,

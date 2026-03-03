@@ -1,19 +1,30 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, CSSProperties } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { HiX } from "react-icons/hi";
-import { programs } from "../../constants";
+
+import {PacmanLoader} from "react-spinners";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Pagination from "../UI/pagination";
-
+import { fetchPrograms } from "../services/api";
+ 
 gsap.registerPlugin(ScrollTrigger)
 const Programs = () => {
+  const override = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "red",
+};
+ 
   const cardsRef = useRef([]);
   const modalRef = useRef(null);
 
+  const [programs, setPrograms] = useState([]);
   const [activeCard, setActiveCard] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1)
   const [postsPerPage, setPostsPerPage] = useState(4)
+  const [color, setColor] = useState("#101111ff");
   
    const openCard = (program) => {
     setActiveCard(program);
@@ -40,6 +51,21 @@ const Programs = () => {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [activeCard]);
+
+
+  useEffect(()=>{
+     const loadPrograms = async ()=>{
+      try{
+        const result = await fetchPrograms()
+        setPrograms(result.data)
+      }catch (err){
+        console.error("Failed to fetch programs:", err);
+      }finally{
+        setLoading(false)
+      }
+     }
+      loadPrograms()
+  },[])
 
 useGSAP(() => {
   gsap.from(cardsRef.current, {
@@ -69,12 +95,34 @@ useGSAP(() => {
       );
     }
   }, [activeCard]);
+
 useEffect(() => {
   cardsRef.current = [];
 }, [currentPage]);
   const lastPostIndex = currentPage * postsPerPage
   const firstPostIndex = lastPostIndex - postsPerPage
   const currentPosts = programs.slice(firstPostIndex, lastPostIndex)
+      if (loading){
+    return(
+       <div className="sweet-loading">
+      <button onClick={() => setLoading(!loading)}>Toggle Loader</button>
+      <input
+        value={color}
+        onChange={(input) => setColor(input.target.value)}
+        placeholder="Color of the loader"
+      />
+
+      <PacmanLoader
+        color={color}
+        loading={loading}
+        cssOverride={override}
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+    </div>
+    )
+  }
   return (
     <section className="relative w-full">
     
@@ -98,7 +146,7 @@ useEffect(() => {
           <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
             {currentPosts.map((program, i) => (
               <div
-                key={i}
+                key={program._id || i}
                 ref={(el) => (cardsRef.current[i] = el)}
                 onClick={() => openCard(program)}
                 className="relative aspect-[3/4] overflow-hidden cursor-pointer group"
@@ -111,7 +159,7 @@ useEffect(() => {
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                <div className="absolute bottom-4 left-4 right-4 text-white font-semibold text-sm md:text-base">
+                <div className="absolute uppercase bottom-4 left-4 right-4 text-white font-semibold text-sm md:text-base">
                   {program.title}
                 </div>
               </div>
