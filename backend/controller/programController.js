@@ -3,10 +3,23 @@ import { v4 } from 'uuid';
 import { putObject } from '../util/putObject.js';
 import { getObject } from '../util/getObject.js';
 import { deleteObject } from '../util/deleteObject.js';
+import cache from '../cache/cache.js';
 
 export const getPrograms = async (req, res) => {
     try {
+        const cachedPrograms = await cache.fetchPrograms();
+        if (cachedPrograms) {
+            console.log("Programs retrieved from cache");
+            return res.status(200).json({
+                "status": "success",
+                "data": cachedPrograms
+            });
+        }
+
         const events = await program.find().sort({ _id: -1 })
+        await cache.savePrograms(events);
+        console.log("Programs retrieved from Database and cached");
+
         return res.status(200).json({
             "status": "success",
             "data": events
@@ -20,6 +33,15 @@ export const getPrograms = async (req, res) => {
 export const getOneProgram = async (req, res) => {
     try {
         const { id } = req.params
+        const cachedProgram = await cache.fetchProgramDetail(id);
+        if (cachedProgram) {
+            console.log(`Program ${id} retrieved from cache`);
+            return res.status(200).json({
+                "status": "success",
+                "data": cachedProgram
+            });
+        }
+
         const event = await program.findById(id)
 
         if (!event) {
@@ -28,7 +50,10 @@ export const getOneProgram = async (req, res) => {
                 "message": "Program not found"
             })
         }
-        await getObject(event.key)
+        await getObject(event.key);
+        await cache.saveProgramDetail(id, event);
+        console.log(`Program ${id} retrieved from Database and cached`);
+
         return res.status(200).json({
             "status": "success",
             "data": event
@@ -78,6 +103,8 @@ export const createProgram = async (req, res) => {
             images: galleryUrls,
             key: uploadResult.key
         });
+
+        await cache.invalidateProgramsCache();
 
         return res.status(201).json({
             "status": "success",
@@ -131,6 +158,9 @@ export const updateProgram = async (req, res) => {
         updateData.images = currentImages;
 
         const updatedEvent = await program.findByIdAndUpdate(id, updateData, { new: true })
+
+        await cache.invalidateProgramsCache(id);
+
         return res.status(200).json({
             "status": "success",
             "data": updatedEvent
@@ -160,6 +190,9 @@ export const deleteProgram = async (req, res) => {
             })
         }
         await program.findByIdAndDelete(id)
+
+        await cache.invalidateProgramsCache(id);
+
         return res.status(200).json({
             "status": "success",
             "message": "Program deleted successfully"
