@@ -1,15 +1,14 @@
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { s3Client } from './s3-credentials.js';
 
-export const putObject = async (file, fileName) => {
+export const putObject = async (file, fileName, contentType = "image/jpeg") => {
     try {
         console.log(`Uploading file ${fileName} to bucket ${process.env.AWS_S3_BUCKET}`);
         const params = {
             Bucket: process.env.AWS_S3_BUCKET,
             Key: `${fileName}`,
             Body: file,
-            // Only one MIME type should be specified here, simplified to image/jpeg for now or should be dynamic
-            ContentType: "image/jpeg",
+            ContentType: contentType
         }
         const command = new PutObjectCommand(params);
         const data = await s3Client.send(command);

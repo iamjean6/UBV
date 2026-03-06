@@ -4,15 +4,25 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import fileUpload from 'express-fileupload';
 import { getPrograms, getOneProgram, createProgram, updateProgram, deleteProgram } from './controller/programController.js';
+import playersRouter from './routes/sports_routes/players.js';
+import teamsRouter from './routes/sports_routes/teams.js';
+import gamesRouter from './routes/sports_routes/games.js';
+import statsRouter from './routes/sports_routes/player_stats.js';
+import profilesRouter from './routes/sports_routes/player_profiles.js';
+import leagueRouter from './routes/sports_routes/league.js';
+import authRouter from './routes/auth/routes.js';
+import productsRouter from './routes/ecommerce/products.js';
 
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
-app.use(fileUpload());
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+    useTempFiles: false
+}));
 
 // Logging Middleware
 app.use((req, res, next) => {
@@ -33,9 +43,19 @@ app.put('/api/programs/:id', updateProgram);
 app.delete('/api/programs/:id', deleteProgram);
 
 
+app.use('/api/players', playersRouter);
+app.use('/api/teams', teamsRouter);
+app.use('/api/games', gamesRouter);
+app.use('/api/stats', statsRouter);
+app.use('/api/profiles', profilesRouter);
+app.use('/api/leagues', leagueRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/products', productsRouter);
 
-// Database Connection
-mongoose.connect(process.env.DATABASE_URL)
+
+
+
+mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
         console.log('Connected to MongoDB');
         app.listen(PORT, () => {
