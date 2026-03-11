@@ -1,0 +1,234 @@
+import { useState,useEffect } from 'react';
+import { merch } from '../../constants';
+import { FiHeart } from "react-icons/fi";
+import { FaHeart } from "react-icons/fa";
+import { Link } from 'react-router-dom';
+import Pagination from '../UI/pagination';
+
+const Merch = () => {
+  const Images=[
+    "/img/shop.jpg",
+    "img/merch1.jpg",
+    "img/merch2.jpg",
+    "img/merch3.jpg",
+    "img/merch4.jpg",
+    "img/merch5.jpg",
+  ]
+  const [currentSlide, setCurrentSlide] = useState(0);
+    const [liked, setLiked] = useState({});
+    const [burst, setBurst] = useState(null);
+    const [products, setProducts] = useState(merch);
+    const [sortBy, setSortBy] = useState("Featured");
+    const [availability, setAvailability] = useState("All");
+    const [priceRange, setPriceRange] = useState("All");
+    const [currentPage, setCurrentPage] = useState(1)
+    const [postsPerPage, setPostsPerPage] = useState(8)
+     const lastPostIndex = currentPage * postsPerPage
+  const firstPostIndex = lastPostIndex - postsPerPage
+  const currentPosts = products.slice(firstPostIndex, lastPostIndex)
+    const applyFiltersAndSort = () => {
+  let updated = [...merch];
+
+
+  if (availability === "In Stock") {
+    updated = updated.filter(p => p.inStock === true);
+  }
+
+ 
+  if (priceRange === "Under 50") {
+    updated = updated.filter(p => p.priceValue < 50);
+  }
+  if (priceRange === "50-100") {
+    updated = updated.filter(p => p.priceValue >= 50 && p.priceValue <= 100);
+  }
+
+  
+  switch (sortBy) {
+    case "Price, High to low":
+      updated.sort((a, b) => b.priceValue - a.priceValue);
+      break;
+    case "Price, Low to High":
+      updated.sort((a, b) => a.priceValue - b.priceValue);
+      break;
+    case "Alphabetically, A to Z":
+      updated.sort((a, b) => a.name.localeCompare(b.name));
+      break;
+    case "Alphabetically, Z to A":
+      updated.sort((a, b) => b.name.localeCompare(a.name));
+      break;
+    default:
+      break;
+  }
+
+  setProducts(updated);
+};
+
+useEffect(() => {
+  applyFiltersAndSort();
+}, [sortBy, availability, priceRange]);
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCurrentSlide((prev) =>
+      prev === Images.length - 1 ? 0 : prev + 1
+    );
+  }, 5000); 
+
+  return () => clearInterval(interval);
+}, []);
+
+  return (
+    <div id="merch" className='min-h-screen w-full overflow-hidden bg-gray-100'>
+      
+    <div className="relative h-64 md:h-76 lg:h-84 overflow-hidden">
+
+  {Images.map((img, index) => (
+    <div
+      key={index}
+      className={`
+        absolute inset-0 bg-cover bg-center
+        transition-opacity duration-1000 ease-in-out
+        ${index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"}
+      `}
+    >
+      <div
+        className={`
+          w-full h-full bg-cover bg-center
+          ${index === currentSlide ? "animate-kenburns" : ""}
+        `}
+        style={{ backgroundImage: `url(${img})` }}
+      />
+    </div>
+  ))}
+
+  {/* Overlay */}
+  <div className="absolute inset-0 bg-black/50 z-20"></div>
+
+  {/* Text */}
+  <div className="relative z-30 flex items-center justify-center h-full">
+    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white font-zentry uppercase">
+      GET OUR MERCH
+    </h1>
+  </div>
+
+</div>
+      <div className="flex flex-wrap items-center justify-between px-8 py-6 bg-white border-b text-sm">
+
+
+  <div className="flex items-center gap-6">
+    
+    <div className="flex items-center gap-2">
+      <span className="text-gray-500">Filter:</span>
+      
+      <select
+        value={availability}
+        onChange={(e) => setAvailability(e.target.value)}
+        className="bg-transparent outline-none cursor-pointer"
+      >
+        <option value="All">Availability</option>
+        <option value="In Stock">In Stock</option>
+      </select>
+
+      <select
+        value={priceRange}
+        onChange={(e) => setPriceRange(e.target.value)}
+        className="bg-transparent outline-none cursor-pointer"
+      >
+        <option value="All">Price</option>
+        <option value="Under 50">Under 50</option>
+        <option value="50-100">50 - 100</option>
+      </select>
+    </div>
+  </div>
+
+  {/* RIGHT SIDE */}
+  <div className="flex items-center gap-6">
+
+    <div className="flex items-center gap-2">
+      <span className="text-gray-500">Sort by:</span>
+      <select
+        value={sortBy}
+        onChange={(e) => setSortBy(e.target.value)}
+        className="bg-transparent outline-none cursor-pointer"
+      >
+        <option value="Featured">Featured</option>
+        <option value="Best Selling">Best Selling</option>
+        <option value="Price, High to low">Price, High to low</option>
+        <option value="Price, Low to High">Price, Low to High</option>
+        <option value="Alphabetically, A to Z">Alphabetically, A to Z</option>
+        <option value="Alphabetically, Z to A">Alphabetically, Z to A</option>
+      </select>
+    </div>
+
+    <span className="text-gray-400">
+      {products.length} products
+    </span>
+
+  </div>
+</div>
+
+       <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2  px-8 py-16'> 
+        {products.map((merch)=>{
+            return( <div className='flex flex-col'>
+                <div className='relative w-full h-full bg-gray-100 overflow-hidden'>
+                <img
+                src={merch.img}
+                alt={merch.alt}
+                className='w-full h-full object-cover'
+                
+                />
+                <button
+                onClick={() =>{
+                     setLiked(prev => ({
+                        ...prev,
+                        [merch.id]: !prev[merch.id]
+                    }))
+                    setBurst(merch.id);
+                    setTimeout(() => setBurst(null), 600);
+                }   
+                }
+                className="absolute bottom-4 right-4 bg-white/90 backdrop-blur p-2 rounded-full shadow hover:scale-110 transition"
+                >
+                    {liked[merch.id] ? (
+                        <FaHeart className="text-red-500 text-2xl animate-ping-once" />
+                    ) : (
+                    <FiHeart className="text-gray-800 text-2xl" />
+                    )}
+                    </button>
+                    {burst === merch.id && (
+                        <FaHeart className="absolute bottom-10 right-5 text-red-500 text-xl animate-float" />
+                        )}
+
+
+            </div>
+            <div className='mt-4 space-y-1'>
+                <h3 className='text-lg font-zentry font-bold'>
+                    {merch.name}
+                </h3>
+                <p className='text-sm text-gray-600'>
+                    {merch.price}
+                </p>
+            </div> 
+            <Link to={`/shop/${merch.id}`}>
+              <button className="mt-4 w-full hover:cursor-pointer border border-gray-900 py-3 text-sm uppercase tracking-wide hover:bg-gray-900 hover:text-white transition">
+                Choose options
+            </button>
+            </Link>
+            </div>)
+        })}
+          
+      </div>
+      <div className="py-4 px-6 items-center justify-center">
+        <Pagination 
+      
+          totalPosts ={products.length}
+          postsPerPage ={postsPerPage}
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+          />
+      </div>
+      
+    </div>
+  );
+};
+
+export default Merch;
