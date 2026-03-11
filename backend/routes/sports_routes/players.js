@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
     try {
-        const { first_name, last_name, team_id, jersey_number, position, height_cm, weight_kg, age,
+        const { first_name, last_name, team_id, jersey_number, position, height, weight_kg, age,
             nickname
         } = req.body;
 
@@ -34,8 +34,8 @@ router.post('/', async (req, res) => {
         }
 
         const result = await pool.query(
-            'INSERT INTO sports.players (first_name, last_name, team_id, jersey_number, position, height_cm, weight_kg, age, nickname, image_url, intro_audio_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *',
-            [first_name, last_name, team_id, jersey_number, position, height_cm, weight_kg, age, safeNickname, final_image_url, final_audio_url]
+            'INSERT INTO sports.players (first_name, last_name, team_id, jersey_number, position, height, weight_kg, age, nickname, image_url, intro_audio_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *',
+            [first_name, last_name, team_id, jersey_number, Array.isArray(position) ? position : [position], height, weight_kg, age, safeNickname, final_image_url, final_audio_url]
         );
 
         res.status(201).json({
@@ -120,8 +120,8 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { first_name, last_name, team_id, jersey_number, position, height_cm, weight_kg, age,
-            nickname, bio
+        const { first_name, last_name, team_id, jersey_number, position, height, weight_kg, age,
+            nickname
         } = req.body;
 
         const currentPlayer = await pool.query('SELECT image_url, intro_audio_url FROM sports.players WHERE id = $1', [id]);
@@ -155,8 +155,8 @@ router.put('/:id', async (req, res) => {
         }
 
         const result = await pool.query(
-            'UPDATE sports.players SET first_name = $1, last_name = $2, team_id = $3, jersey_number = $4, position = $5, height_cm = $6, weight_kg = $7, age = $8, nickname = $9, image_url = $10, intro_audio_url = $11 WHERE id = $12 RETURNING *',
-            [first_name, last_name, team_id, jersey_number, position, height_cm, weight_kg, age, safeNickname, final_image_url, final_audio_url, id]
+            'UPDATE sports.players SET first_name = $1, last_name = $2, team_id = $3, jersey_number = $4, position = $5, height = $6, weight_kg = $7, age = $8, nickname = $9, image_url = $10, intro_audio_url = $11 WHERE id = $12 RETURNING *',
+            [first_name, last_name, team_id, jersey_number, Array.isArray(position) ? position : [position], height, weight_kg, age, safeNickname, final_image_url, final_audio_url, id]
         );
 
         await cache.invalidatePlayersCache(id);
