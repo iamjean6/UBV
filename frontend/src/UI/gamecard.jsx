@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { HiChevronDown, HiChevronUp } from "react-icons/hi"
 import { statusStyles, resultStyles } from "../../constants"
 import { ChartArea, Play } from "lucide-react"
@@ -8,6 +8,7 @@ import { cn } from "../admin/layout/Sidebar"
 
 
 const GameCard = ({ game }) => {
+  const navigate = useNavigate()
   const [expanded, setExpanded] = useState(false)
   const resultColor = resultStyles[game.result]
   const statusKey = game.type === "FINAL" ? "FINAL" : game.status
@@ -127,7 +128,10 @@ const GameCard = ({ game }) => {
             </button>
 
             {secondaryAction && (
-              <button className="px-6 flex items-center gap-2 py-2 rounded-full border hover:cursor-pointer border-orange-500 text-orange-600 font-semibold transition-all duration-200 hover:bg-orange-600 hover:text-white">
+              <button 
+                onClick={() => navigate(`/game-tracker/${game.id}`)}
+                className="px-6 flex items-center gap-2 py-2 rounded-full border border-orange-500 text-orange-600 font-semibold cursor-pointer transition-all duration-200 hover:bg-orange-600 hover:text-white"
+              >
                 {secondaryAction.icon}
                 <span className="uppercase">{secondaryAction.label}</span>
               </button>
@@ -201,7 +205,10 @@ const GameCard = ({ game }) => {
             <span className="uppercase"> Watch Replay</span>
           </button>
           {secondaryAction && (
-            <button className="px-6 flex items-center gap-2 py-2 rounded-full border hover:cursor-pointer border-orange-500 text-orange-600 font-semibold transition-all duration-200 hover:bg-orange-600 hover:text-white">
+            <button 
+              onClick={() => navigate(`/game-tracker/${game.id}`)}
+              className="px-6 flex items-center gap-2 py-2 rounded-full border cursor-pointer border-orange-500 text-orange-600 font-semibold transition-all duration-200 hover:bg-orange-600 hover:text-white"
+            >
               {secondaryAction.icon}
               <span className="uppercase">{secondaryAction.label}</span>
             </button>

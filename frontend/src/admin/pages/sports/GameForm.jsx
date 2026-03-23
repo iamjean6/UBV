@@ -83,7 +83,7 @@ export default function GameForm() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value.slice(0, 15) }));
+        setFormData(prev => ({ ...prev, [name]: value.slice(0, 30) }));
     };
 
     const getOrCreateLeague = async () => {

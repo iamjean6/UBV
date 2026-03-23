@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import GooglePayButton from '@google-pay/button-react';
 import countryData from 'country-list/data.json';
-import { CreditCard, HandCoins, ShoppingCart, Truck, MapPin } from 'lucide-react';
-import { merch } from '../../constants';
+import { CreditCard, HandCoins, ShoppingCart, Truck, MapPin, Loader2, CheckCircle2 } from 'lucide-react';
+import { clearCart } from '../store/cart';
 import { PhoneInput } from "react-international-phone"
 import "react-international-phone/style.css"
 import { loadStripe } from '@stripe/stripe-js'
+import { createOrder, simulatePayment } from '../services/api';
 
 const PAYPAL_SUPPORTED_CODES = new Set([
     'AL', 'DZ', 'AD', 'AO', 'AI', 'AR', 'AM', 'AU', 'AT', 'AZ', 'BS', 'BH', 'BD', 'BB', 'BE', 'BZ',
@@ -33,7 +34,7 @@ const PAYPAL_COUNTRIES = countryData.filter(c => PAYPAL_SUPPORTED_CODES.has(c.co
 
 
 // ─── Shared Shipping Details Form ─────────────────────────────────────────────
-const ShippingDetails = ({ phone, setPhone }) => (
+const ShippingDetails = ({ phone, setPhone, shippingInfo, setShippingInfo }) => (
     <div className="mt-6 border-t border-gray-200 pt-5 space-y-3">
         <div className="flex items-center gap-2 mb-2">
             <Truck size={16} className="text-gray-500" />
@@ -52,17 +53,11 @@ const ShippingDetails = ({ phone, setPhone }) => (
             <input
                 type="text"
                 placeholder="e.g. John Otieno"
-                pattern="[A-Za-z ]{3,50}"
-                maxLength={50}
+                value={shippingInfo.fullName}
+                onChange={(e) => setShippingInfo({ ...shippingInfo, fullName: e.target.value })}
                 required
                 className="w-full bg-white/70 border border-gray-300 rounded-xl py-2.5 px-3 text-sm focus:ring-2 focus:ring-black outline-none transition-all"
             />
-        </div>
-        {/* Company (optional) */}
-        <div>
-            <label className="block text-xs font-semibold text-gray-600 mb-1">Company <span className="text-gray-400 font-normal">(optional)</span></label>
-            <input type="text" placeholder="Company name"
-                className="w-full bg-white/70 border border-gray-300 rounded-xl py-2.5 px-3 text-sm focus:ring-2 focus:ring-black outline-none transition-all" />
         </div>
         {/* Address */}
         <div>
@@ -70,7 +65,8 @@ const ShippingDetails = ({ phone, setPhone }) => (
             <input
                 type="text"
                 placeholder="Street address"
-                maxLength={120}
+                value={shippingInfo.address}
+                onChange={(e) => setShippingInfo({ ...shippingInfo, address: e.target.value })}
                 required
                 className="w-full bg-white/70 border border-gray-300 rounded-xl py-2.5 px-3 text-sm focus:ring-2 focus:ring-black outline-none transition-all"
             />
@@ -82,8 +78,8 @@ const ShippingDetails = ({ phone, setPhone }) => (
                 <input
                     type="text"
                     placeholder="Nairobi"
-                    pattern="[A-Za-z ]{2,50}"
-                    maxLength={50}
+                    value={shippingInfo.city}
+                    onChange={(e) => setShippingInfo({ ...shippingInfo, city: e.target.value })}
                     required
                     className="w-full bg-white/70 border border-gray-300 rounded-xl py-2.5 px-3 text-sm focus:ring-2 focus:ring-black outline-none transition-all"
                 />
@@ -93,8 +89,8 @@ const ShippingDetails = ({ phone, setPhone }) => (
                 <input
                     type="text"
                     placeholder="00100"
-                    pattern="[0-9]{5}"
-                    maxLength={5}
+                    value={shippingInfo.zipCode}
+                    onChange={(e) => setShippingInfo({ ...shippingInfo, zipCode: e.target.value })}
                     required
                     className="w-full bg-white/70 border border-gray-300 rounded-xl py-2.5 px-3 text-sm focus:ring-2 focus:ring-black outline-none transition-all"
                 />
@@ -121,7 +117,7 @@ const ShippingDetails = ({ phone, setPhone }) => (
 );
 
 // ─── Delivery Fee Row ──────────────────────────────────────────────────────────
-const DELIVERY_FEE = 250;
+const DELIVERY_FEE = 0;
 
 const PriceSummaryRows = ({ subtotal, discount, total }) => (
     <div className="mt-4 pt-4 border-t border-gray-200 space-y-1.5 text-sm">
@@ -148,31 +144,89 @@ const PriceSummaryRows = ({ subtotal, discount, total }) => (
 
 const Checkout = () => {
     const { items, isAuthenticated } = useSelector((state) => state.cart);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState('credit');
-    const [phoneCode, setPhoneCode] = useState('+254');
+    const [activeTab, setActiveTab] = useState('mpesa');
     const [phone, setPhone] = useState('')
+    const [shippingInfo, setShippingInfo] = useState({
+        fullName: '',
+        address: '',
+        city: '',
+        zipCode: '',
+    });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [orderSuccess, setOrderSuccess] = useState(null);
 
 
     React.useEffect(() => {
         if (!isAuthenticated) navigate('/');
     }, [isAuthenticated, navigate]);
 
-    // ── Compute totals the same way cartsummary does ──
-    let subtotal = 0;
-    let totalDiscount = 0;
-
-    const enrichedItems = items.map((item) => {
-        const product = merch.find((m) => m.id === item.productId);
-        if (!product) return { ...item, product: null };
-        const lineSubtotal = product.priceValue * item.quantity;
-        const lineDiscount = (product.discount || 0) * product.priceValue * item.quantity;
-        subtotal += lineSubtotal;
-        totalDiscount += lineDiscount;
-        return { ...item, product };
-    });
-
+    const subtotal = items.reduce((sum, item) => sum + ((item.originalPrice || item.price || 0) * (item.quantity || 1)), 0);
+    const totalDiscount = items.reduce((sum, item) => sum + (((item.originalPrice || item.price || 0) - (item.price || 0)) * (item.quantity || 1)), 0);
     const grandTotal = subtotal - totalDiscount + DELIVERY_FEE;
+
+    const handlePurchase = async () => {
+        if (!shippingInfo.fullName || !shippingInfo.address || !shippingInfo.city || !phone) {
+            alert("Please fill in all required shipping details.");
+            return;
+        }
+
+        try {
+            setIsSubmitting(true);
+            // 1. Create Order
+            const orderResponse = await createOrder({
+                items: items,
+                total_amount: grandTotal,
+                payment_method: activeTab,
+                shipping_details: {
+                    ...shippingInfo,
+                    phone: phone
+                }
+            });
+
+            if (orderResponse.status === 'success') {
+                const orderId = orderResponse.data.orderId;
+
+                // 2. Simulate Payment (Since real methods are not yet initiated)
+                const paymentResponse = await simulatePayment({
+                    orderId: orderId,
+                    simulate_status: 'successful'
+                });
+
+                if (paymentResponse.status === 'success') {
+                    setOrderSuccess(orderId);
+                    dispatch(clearCart());
+                } else {
+                    alert("Payment simulation failed.");
+                }
+            }
+        } catch (err) {
+            console.error("Purchase error:", err);
+            alert("Failed to process purchase. Please try again.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    if (orderSuccess) {
+        return (
+            <div className="container mx-auto px-4 py-32 min-h-screen flex flex-col items-center justify-center text-center">
+                <CheckCircle2 size={80} className="text-green-500 mb-6" />
+                <h1 className="text-4xl font-zentry font-bold text-gray-900 mb-4 uppercase">Purchase Successful!</h1>
+                <p className="text-gray-600 mb-8 max-w-md">
+                    Thank you for your purchase. Your order ID is <span className="font-bold text-black">#{orderSuccess}</span>.
+                    You will receive a confirmation message shortly.
+                </p>
+                <button
+                    onClick={() => navigate('/merch')}
+                    className="px-10 py-4 bg-black text-white rounded-2xl font-bold hover:bg-neutral-800 transition-all uppercase tracking-widest text-sm"
+                >
+                    Continue Shopping
+                </button>
+            </div>
+        );
+    }
 
     const tabButtonClass = (tab, activeColor) =>
         `px-1 py-1 rounded-sm border transition-all hover:cursor-pointer ${activeTab === tab ? `${activeColor} border-transparent` : 'border-black/10 bg-white/50'
@@ -194,63 +248,39 @@ const Checkout = () => {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-
-                    {/* ── Order Summary Card (independent height) ──────────────────── */}
                     <div className="bg-white/50 backdrop-blur-md p-8 rounded-[2rem] shadow-sm border border-black/5 self-start">
                         <h2 className="text-2xl font-bold mb-6 font-zentry uppercase">Order Summary</h2>
 
                         <div className="space-y-3">
-                            {enrichedItems.map((item, index) => {
-                                if (!item.product) return (
-                                    <div key={index} className="flex justify-between items-center text-sm border-b border-gray-100 pb-2 text-gray-400">
-                                        <span>Unknown product (x{item.quantity})</span>
-                                    </div>
-                                );
-                                const { product } = item;
-                                const lineTotal = product.priceValue * item.quantity * (1 - (product.discount || 0));
-                                return (
-                                    <div key={index} className="flex items-center gap-3 border-b border-gray-100 pb-3">
-                                        <img
-                                            src={product.img}
-                                            alt={product.alt || product.name}
-                                            className="w-14 h-14 object-cover rounded-xl flex-shrink-0 border border-gray-200"
-                                        />
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-semibold text-gray-800 truncate">{product.name}</p>
-                                            <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
-                                            {product.discount > 0 && (
-                                                <p className="text-xs text-red-400">{(product.discount * 100).toFixed(0)}% off</p>
+                            {items.map((item, index) => (
+                                <div key={index} className="flex items-center gap-3 border-b border-gray-100 pb-3">
+                                    <img
+                                        src={item.image || 'https://via.placeholder.com/150'}
+                                        alt={item.name}
+                                        className="w-14 h-14 object-cover rounded-xl flex-shrink-0 border border-gray-200"
+                                    />
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-sm font-semibold text-gray-800 truncate">{item.name}</p>
+                                        <p className="text-xs text-gray-500">
+                                            Qty: {item.quantity}
+                                            {(item.size || item.color) && (
+                                                <span className="ml-2">
+                                                    ({item.size && <span>Size: {item.size}</span>}
+                                                    {item.size && item.color && <span className="mx-1">|</span>}
+                                                    {item.color && <span>Color: {item.color}</span>})
+                                                </span>
                                             )}
-                                        </div>
-                                        <span className="text-sm font-bold text-gray-800 flex-shrink-0">
-                                            KSH {lineTotal.toLocaleString()}
-                                        </span>
+                                        </p>
                                     </div>
-                                );
-                            })}
+                                    <span className="text-sm font-bold text-gray-800 flex-shrink-0">
+                                        KSH {((item.price || 0) * (item.quantity || 1)).toLocaleString()}
+                                    </span>
+                                </div>
+                            ))}
                         </div>
 
                         {/* Totals */}
-                        <div className="mt-4 space-y-1.5 text-sm">
-                            <div className="flex justify-between text-gray-600">
-                                <span>Subtotal</span>
-                                <span className="font-medium">KSH {subtotal.toLocaleString()}</span>
-                            </div>
-                            {totalDiscount > 0 && (
-                                <div className="flex justify-between text-gray-600">
-                                    <span>Discount</span>
-                                    <span className="font-medium text-red-500">- KSH {totalDiscount.toLocaleString()}</span>
-                                </div>
-                            )}
-                            <div className="flex justify-between text-gray-600">
-                                <span className="flex items-center gap-1"><Truck size={14} /> Delivery Fee</span>
-                                <span className="font-medium">KSH {DELIVERY_FEE.toLocaleString()}</span>
-                            </div>
-                            <div className="flex justify-between font-bold text-lg pt-3 border-t border-gray-200 mt-3">
-                                <span>Total</span>
-                                <span>KSH {grandTotal.toLocaleString()}</span>
-                            </div>
-                        </div>
+                        <PriceSummaryRows subtotal={subtotal} discount={totalDiscount} total={grandTotal} />
                     </div>
 
                     {/* ── Payment Method Card ───────────────────────────────────────── */}
@@ -344,11 +374,15 @@ const Checkout = () => {
                                         <label htmlFor="save" className="text-sm font-semibold text-orange-600">Save card information</label>
                                     </div>
                                 </form>
-                                <ShippingDetails phone={phone} setPhone={setPhone} />
+                                <ShippingDetails phone={phone} setPhone={setPhone} shippingInfo={shippingInfo} setShippingInfo={setShippingInfo} />
                                 <PriceSummaryRows subtotal={subtotal} discount={totalDiscount} total={grandTotal} />
 
-                                <button className="mt-4 w-full px-2 py-4 font-zentry uppercase text-xl bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors">
-                                    Checkout
+                                <button
+                                    onClick={handlePurchase}
+                                    disabled={isSubmitting}
+                                    className="mt-4 w-full flex items-center justify-center gap-2 px-2 py-4 font-zentry uppercase text-xl bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50"
+                                >
+                                    {isSubmitting ? <Loader2 className="animate-spin" /> : 'Checkout'}
                                 </button>
                             </div>
                         )}
@@ -428,14 +462,21 @@ const Checkout = () => {
                                 </form>
 
                                 {/* Shipping */}
-                                <ShippingDetails phone={phone} setPhone={setPhone} />
+                                <ShippingDetails phone={phone} setPhone={setPhone} shippingInfo={shippingInfo} setShippingInfo={setShippingInfo} />
 
                                 {/* Price summary */}
                                 <PriceSummaryRows subtotal={subtotal} discount={totalDiscount} total={grandTotal} />
 
-                                <button className="mt-4 w-full px-2 py-4 font-zentry uppercase  text-2xl bg-yellow-400 rounded-4xl hover:bg-yellow-300 transition-colors">
-
-                                    <span className="text-blue-800 uppercase">Check</span><span className=" uppercase text-blue-600">out</span>
+                                <button
+                                    onClick={handlePurchase}
+                                    disabled={isSubmitting}
+                                    className="mt-4 w-full flex items-center justify-center gap-2 px-2 py-4 font-zentry uppercase text-2xl bg-yellow-400 rounded-4xl hover:bg-yellow-300 transition-colors disabled:opacity-50"
+                                >
+                                    {isSubmitting ? <Loader2 className="animate-spin text-blue-800" /> : (
+                                        <>
+                                            <span className="text-blue-800 uppercase">Check</span><span className=" uppercase text-blue-600">out</span>
+                                        </>
+                                    )}
                                 </button>
                             </div>
                         )}
@@ -449,15 +490,22 @@ const Checkout = () => {
 
                                 {/* Cart Items list */}
                                 <ul className="text-left text-sm space-y-2 bg-gray-50 rounded-xl p-3">
-                                    {enrichedItems.map((item, index) => {
-                                        if (!item.product) return null;
-                                        const { product } = item;
-                                        const lineTotal = product.priceValue * item.quantity * (1 - (product.discount || 0));
+                                    {items.map((item, index) => {
+                                        const lineTotal = (item.price || 0) * (item.quantity || 1);
                                         return (
                                             <li key={index} className="flex items-center justify-between gap-2 border-b border-gray-100 pb-1 last:border-0 last:pb-0">
                                                 <div className="flex items-center gap-2">
-                                                    <img src={product.img} alt={product.name} className="w-8 h-8 rounded-md object-cover border border-gray-200" />
-                                                    <span className="font-medium text-gray-700">{product.name} <span className="text-gray-400">x{item.quantity}</span></span>
+                                                    <img src={item.image || 'https://via.placeholder.com/150'} alt={item.name} className="w-8 h-8 rounded-md object-cover border border-gray-200" />
+                                                    <div className="flex flex-col text-left">
+                                                        <span className="font-medium text-gray-700">{item.name} <span className="text-gray-400">x{item.quantity}</span></span>
+                                                        {(item.size || item.color) && (
+                                                            <span className="text-xs text-gray-500">
+                                                                {item.size && <span>Size: {item.size}</span>}
+                                                                {item.size && item.color && <span className="mx-1">|</span>}
+                                                                {item.color && <span>Color: {item.color}</span>}
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                 </div>
                                                 <span className="font-semibold text-gray-800">KSH {lineTotal.toLocaleString()}</span>
                                             </li>
@@ -477,11 +525,14 @@ const Checkout = () => {
                                     className="w-full bg-white/70 border border-gray-300 rounded-sm py-3 px-4 text-sm focus:ring-2 focus:ring-black outline-none transition-all" required />
 
                                 {/* Shipping */}
-                                <ShippingDetails phone={phone} setPhone={setPhone} />
+                                <ShippingDetails phone={phone} setPhone={setPhone} shippingInfo={shippingInfo} setShippingInfo={setShippingInfo} />
 
-                                <button className="flex items-center hover:cursor-pointer gap-3 justify-center w-full px-2 py-4 font-zentry uppercase text-xl bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors">
-                                    <HandCoins />
-                                    Complete Payment
+                                <button
+                                    onClick={handlePurchase}
+                                    disabled={isSubmitting}
+                                    className="flex items-center hover:cursor-pointer gap-3 justify-center w-full px-2 py-4 font-zentry uppercase text-xl bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors disabled:opacity-50"
+                                >
+                                    {isSubmitting ? <Loader2 className="animate-spin" /> : <><HandCoins /> Complete Payment</>}
                                 </button>
                             </div>
                         )}

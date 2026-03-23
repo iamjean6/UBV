@@ -1,8 +1,17 @@
 import { createClient } from "redis";
 import dotenv from "dotenv";
-const redisURL = `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
+dotenv.config();
 
-const client = createClient({ url: redisURL })
+const url = process.env.REDIS_URL || `redis://:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
+
+const client = createClient({
+    url: url,
+    socket: {
+        // Essential for TLS if URL starts with rediss://
+        tls: url.startsWith('rediss://'),
+        reconnectStrategy: (retries) => Math.min(retries * 50, 2000)
+    }
+});
 
 client.on("connect", () => console.log("Redis client connecting"));
 client.on("ready", () => console.log("Redis client ready"));

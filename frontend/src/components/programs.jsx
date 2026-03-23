@@ -49,19 +49,23 @@ const Programs = () => {
   }, [activeCard]);
 
 
+  const [totalCount, setTotalCount] = useState(0);
+
   useEffect(() => {
     const loadPrograms = async () => {
       try {
-        const result = await fetchPrograms()
-        setPrograms(result.data)
+        setLoading(true);
+        const result = await fetchPrograms(currentPage, postsPerPage);
+        setPrograms(result.data);
+        setTotalCount(result.totalCount || result.data.length);
       } catch (err) {
         console.error("Failed to fetch programs:", err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    loadPrograms()
-  }, [])
+    };
+    loadPrograms();
+  }, [currentPage, postsPerPage]);
 
   useGSAP(() => {
     gsap.from(cardsRef.current, {
@@ -95,10 +99,8 @@ const Programs = () => {
   useEffect(() => {
     cardsRef.current = [];
   }, [currentPage]);
-  const lastPostIndex = currentPage * postsPerPage
-  const firstPostIndex = lastPostIndex - postsPerPage
-  const currentPosts = programs.slice(firstPostIndex, lastPostIndex)
-  if (loading) {
+
+  if (loading && programs.length === 0) {
     return (
       <div className='flex items-center justify-center'>
         <PropagateLoader />
@@ -126,7 +128,7 @@ const Programs = () => {
           </div>
 
           <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
-            {currentPosts.map((program, i) => (
+            {programs.map((program, i) => (
               <div
                 key={program._id || i}
                 ref={(el) => (cardsRef.current[i] = el)}
@@ -136,6 +138,8 @@ const Programs = () => {
                 <img
                   src={program.image}
                   alt={program.title}
+                  loading={i < 4 ? "eager" : "lazy"}
+                  fetchpriority={i < 4 ? "high" : "auto"}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
 
@@ -148,7 +152,7 @@ const Programs = () => {
             ))}
           </div>
           <Pagination
-            totalPosts={programs.length}
+            totalPosts={totalCount}
             postsPerPage={postsPerPage}
             setCurrentPage={setCurrentPage}
             currentPage={currentPage}

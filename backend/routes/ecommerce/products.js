@@ -10,12 +10,29 @@ const router = express.Router();
 // Helper to generate slug
 const generateSlug = (name) => {
     return name.toString().toLowerCase()
-        .replace(/\s+/g, '-')           // Replace spaces with -
-        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-        .replace(/^-+/, '')             // Trim - from start of text
-        .replace(/-+$/, '');            // Trim - from end of text
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+        .replace(/^-+/, '')
+        .replace(/-+$/, '');
 };
+
+// GET all categories
+router.get('/categories', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM ecommerce.categories ORDER BY name ASC');
+        res.status(200).json({
+            status: "success",
+            data: result.rows
+        });
+    } catch (err) {
+        console.error('Error fetching categories:', err);
+        res.status(500).json({
+            status: "error",
+            message: "Internal server error while fetching categories"
+        });
+    }
+});
 
 // GET all active products (Public)
 router.get('/', async (req, res) => {

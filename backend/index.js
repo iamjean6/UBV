@@ -12,6 +12,9 @@ import profilesRouter from './routes/sports_routes/player_profiles.js';
 import leagueRouter from './routes/sports_routes/league.js';
 import authRouter from './routes/auth/routes.js';
 import productsRouter from './routes/ecommerce/products.js';
+import ordersRouter from './routes/ecommerce/orders.js';
+import { mockPaymentCallback } from './controller/mockPayment.js';
+import featuresRouter from './routes/features.js';
 
 
 const app = express();
@@ -51,6 +54,9 @@ app.use('/api/profiles', profilesRouter);
 app.use('/api/leagues', leagueRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/products', productsRouter);
+app.use('/api/orders', ordersRouter);
+app.use('/api/features', featuresRouter);
+app.post('/api/payments/mock-callback', mockPaymentCallback);
 
 
 

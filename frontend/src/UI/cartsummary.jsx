@@ -1,6 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { merch } from "../../constants";
 import { toggleAuthModal } from "../store/cart";
 
 export default function CartSummary() {
@@ -16,19 +15,14 @@ export default function CartSummary() {
   let totalDiscount = 0;
 
   cartItems.forEach((item) => {
-    const product = merch.find((m) => m.id === item.productId);
-
-    if (!product) return;
-
-    const itemSubtotal = product.priceValue * item.quantity;
-    const itemDiscount =
-      product.discount * product.priceValue * item.quantity;
+    const itemSubtotal = (item.originalPrice || item.price || 0) * (item.quantity || 1);
+    const itemDiscount = ((item.originalPrice || item.price || 0) - (item.price || 0)) * (item.quantity || 1); 
 
     subtotal += itemSubtotal;
     totalDiscount += itemDiscount;
   });
 
-  const deliveryFee = 15;
+  const deliveryFee = 0;
   const total = subtotal - totalDiscount + deliveryFee;
 
   return (

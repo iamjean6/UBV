@@ -17,13 +17,13 @@ const Blog = () => {
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10'>
                 {events.map((event)=>{
                     return(
-   <div className="bg-white relative rounded-sm flex flex-col group">
+<div className="bg-white relative rounded-sm flex flex-col group">
   <div className="relative w-full h-72 lg:h-80 overflow-hidden">
     <img
       src={event.image}
       alt={event.title}
       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-    />
+    />   
 
     
     {event.featured && (

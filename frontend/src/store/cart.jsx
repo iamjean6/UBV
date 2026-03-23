@@ -41,25 +41,35 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart(state, action) {
-      const { productId, quantity } = action.payload;
+      const { productId, quantity, variantId, name, price, originalPrice, image, size, color } = action.payload;
 
-      const existingItem = state.items.find(
-        item => item.productId === productId
+      const existingItemIndex = state.items.findIndex(
+        item => item.productId === productId && item.variantId === variantId && item.size === size && item.color === color
       );
 
-      if (existingItem) {
-        existingItem.quantity += quantity;
+      if (existingItemIndex >= 0) {
+        state.items[existingItemIndex].quantity += quantity;
       } else {
-        state.items.push({ productId, quantity });
+        state.items.push({ 
+          productId, 
+          quantity,
+          variantId,
+          name,
+          price,
+          originalPrice,
+          image,
+          size,
+          color
+        });
       }
 
       localStorage.setItem("cart", JSON.stringify(state.items));
     },
     decreaseQuantity(state, action) {
-      const { productId } = action.payload;
+      const { productId, variantId, size, color } = action.payload;
 
       const existingItem = state.items.find(
-        item => item.productId === productId
+        item => item.productId === productId && item.variantId === variantId && item.size === size && item.color === color
       );
 
       if (!existingItem) return;
@@ -68,17 +78,17 @@ const cartSlice = createSlice({
         existingItem.quantity -= 1;
       } else {
         state.items = state.items.filter(
-          item => item.productId !== productId
+          item => !(item.productId === productId && item.variantId === variantId && item.size === size && item.color === color)
         );
       }
 
       localStorage.setItem("cart", JSON.stringify(state.items));
     },
     removeFromCart(state, action) {
-      const { productId } = action.payload;
+      const { productId, variantId, size, color } = action.payload;
 
       state.items = state.items.filter(
-        item => item.productId !== productId
+        item => !(item.productId === productId && item.variantId === variantId && item.size === size && item.color === color)
       );
 
       localStorage.setItem("cart", JSON.stringify(state.items));

@@ -20,6 +20,10 @@ export const CacheKeys = {
   LEAGUE_DETAIL: "leagues:detail",
   PRODUCTS_ALL: "products:all",
   PRODUCT_DETAIL: "products:detail",
+  PLAYER_AVERAGES: "player_averages",
+  FEATURES_ALL: "features:all",
+  FEATURE_DETAIL: "features:detail",
+  FEATURE_LIKES: "features:likes",
 };
 
 function getCacheKey(key, userId) {

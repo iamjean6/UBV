@@ -42,6 +42,7 @@ export default function ProductForm() {
                             name: p.name || '',
                             description: p.description || '',
                             price: p.price || '',
+                            category: p.category_name || '',
                             status: p.is_active ? 'active' : 'draft',
                             discount_percent: p.discount_percent || 0
                         });
@@ -83,7 +84,7 @@ export default function ProductForm() {
             const data = new FormData();
 
             data.append('name', formData.name);
-            // data.append('category', formData.category);
+            data.append('category', formData.category);
             data.append('description', formData.description);
             data.append('price', formData.price);
             data.append('is_active', formData.status === 'active');
@@ -198,16 +199,15 @@ export default function ProductForm() {
                                     name="category"
                                     required
                                     maxLength={20}
-                                    className="block w-full rounded-md border-0 py-1.5 pl-7 text-[var(--foreground)] bg-[var(--background)] ring-1 ring-inset ring-[var(--input)] sm:text-sm sm:leading-6 focus:ring-[var(--ring)]"
+                                    className="block w-full rounded-md border-0 py-1.5 pl-3 text-[var(--foreground)] bg-[var(--background)] ring-1 ring-inset ring-[var(--input)] sm:text-sm sm:leading-6 focus:ring-[var(--ring)]"
                                     placeholder="eg Tees, Warmers"
-                                /*value={formData.category}
-                                onChange={(e) => {
-                                    const onlyLetters = e.target.value.replace(/[^a-zA-Z]/g, "");
-                                    setFormData(prev => ({
-                                        ...prev,
-                                        category: onlyLetters
-                                    }));
-                                }}*/
+                                    value={formData.category || ''}
+                                    onChange={(e) => {
+                                        setFormData(prev => ({
+                                            ...prev,
+                                            category: e.target.value
+                                        }));
+                                    }}
                                 />
                             </div>
                         </div>

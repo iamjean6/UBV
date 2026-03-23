@@ -7,22 +7,30 @@ import cache from '../cache/cache.js';
 
 export const getPrograms = async (req, res) => {
     try {
-        const cachedPrograms = await cache.fetchPrograms();
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 12;
+        const skip = (page - 1) * limit;
+
+        const cachedPrograms = await cache.fetchPrograms(page, limit);
         if (cachedPrograms) {
             console.log("Programs retrieved from cache");
             return res.status(200).json({
                 "status": "success",
-                "data": cachedPrograms
+                ...cachedPrograms
             });
         }
 
-        const events = await program.find().sort({ _id: -1 })
-        await cache.savePrograms(events);
+        const events = await program.find().sort({ _id: -1 }).skip(skip).limit(limit);
+        const totalCount = await program.countDocuments();
+        const totalPages = Math.ceil(totalCount / limit);
+
+        const cacheData = { data: events, currentPage: page, totalPages, totalCount };
+        await cache.savePrograms(page, limit, cacheData);
         console.log("Programs retrieved from Database and cached");
 
         return res.status(200).json({
             "status": "success",
-            "data": events
+            ...cacheData
         })
     } catch (err) {
         console.log(err)

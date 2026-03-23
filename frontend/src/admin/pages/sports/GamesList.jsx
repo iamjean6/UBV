@@ -260,7 +260,7 @@ export default function GamesList() {
                     </div>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
                     {loading ? (
                         <div className="col-span-full py-20 text-center text-[var(--muted-foreground)]">Loading finished games...</div>
                     ) : filteredGames.length === 0 ? (

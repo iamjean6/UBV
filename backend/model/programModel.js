@@ -20,6 +20,5 @@ const Schema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter program image key']
     }
-
 })
 export default mongoose.model('Program', Schema);

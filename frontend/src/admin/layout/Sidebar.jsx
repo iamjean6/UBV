@@ -45,6 +45,7 @@ const navItems = [
       { name: 'Uploads', path: '/admin/media/uploads' },
       { name: 'Banners', path: '/admin/media/banners' },
       { name: 'Programs', path: '/admin/media/programs' },
+      { name: 'Featured Stories', path: '/admin/media/features' },
     ],
   },
   {

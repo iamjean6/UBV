@@ -2,20 +2,26 @@ import { useState, useEffect } from 'react';
 import { Plus, Search, Filter, MoreVertical, Edit2, Trash2, Loader2, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '../../layout/Sidebar';
-import { fetchProducts, deleteProduct } from '../../../services/api';
+import { fetchProducts, deleteProduct, fetchCategories } from '../../../services/api';
 
 export default function ProductsList() {
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('All Categories');
     const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [deleteLoading, setDeleteLoading] = useState(null);
     const navigate = useNavigate();
 
-    const loadProducts = async () => {
+    const loadData = async () => {
         try {
             setLoading(true);
-            const data = await fetchProducts();
-            setProducts(data?.data || []);
+            const [productsData, categoriesData] = await Promise.all([
+                fetchProducts(),
+                fetchCategories()
+            ]);
+            setProducts(productsData?.data || []);
+            setCategories(categoriesData?.data || []);
         } catch (err) {
             console.error(err);
         } finally {
@@ -24,7 +30,7 @@ export default function ProductsList() {
     };
 
     useEffect(() => {
-        loadProducts();
+        loadData();
     }, []);
 
     const handleDelete = async (id) => {
@@ -32,7 +38,7 @@ export default function ProductsList() {
         try {
             setDeleteLoading(id);
             await deleteProduct(id);
-            await loadProducts();
+            await loadData();
         } catch (err) {
             console.error("Failed to delete product", err);
             alert("Failed to delete product");
@@ -48,7 +54,11 @@ export default function ProductsList() {
         return 'https://via.placeholder.com/150?text=No+Image';
     };
 
-    const filteredProducts = products.filter(p => p.name?.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filteredProducts = products.filter(p => {
+        const matchesSearch = p.name?.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesCategory = selectedCategory === 'All Categories' || p.category_name === selectedCategory;
+        return matchesSearch && matchesCategory;
+    });
 
     return (
         <div className="space-y-6">
@@ -62,7 +72,7 @@ export default function ProductsList() {
                 </div>
                 <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none flex items-center gap-2">
                     <button
-                        onClick={loadProducts}
+                        onClick={loadData}
                         disabled={loading}
                         className="flex items-center gap-2 block rounded-md bg-[var(--background)] px-3 py-2 text-center text-sm font-semibold text-[var(--foreground)] shadow-sm border border-[var(--border)] hover:bg-[var(--accent)] transition-colors"
                     >
@@ -93,8 +103,15 @@ export default function ProductsList() {
                     />
                 </div>
                 <div className="flex items-center gap-3 w-full sm:w-auto">
-                    <select className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-[var(--foreground)] bg-[var(--background)] ring-1 ring-inset ring-[var(--border)] focus:ring-2 focus:ring-[var(--ring)] sm:text-sm sm:leading-6">
-                        <option>All Categories</option>
+                    <select 
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-[var(--foreground)] bg-[var(--background)] ring-1 ring-inset ring-[var(--border)] focus:ring-2 focus:ring-[var(--ring)] sm:text-sm sm:leading-6"
+                    >
+                        <option value="All Categories">All Categories</option>
+                        {categories.map(cat => (
+                            <option key={cat.id} value={cat.name}>{cat.name}</option>
+                        ))}
                     </select>
                 </div>
             </div>

@@ -7,13 +7,6 @@ import { PacmanLoader, RotateLoader } from 'react-spinners';
 export default function GameSummary({ game }) {
     const [stats, setStats] = useState([]);
     const [loading, setLoading] = useState(true);
-    const override = {
-        display: "block",
-        margin: "0 auto",
-        borderColor: "#141414ff",
-    };
-    const [color, setColor] = useState("#141414ff");
-
     useEffect(() => {
         const loadStats = async () => {
             try {
@@ -107,12 +100,17 @@ export default function GameSummary({ game }) {
                                     <th className="pb-1 font-bold">PLAYER</th>
                                     <th className="pb-1 text-center font-bold">Min</th>
                                     <th className="pb-1 text-center font-bold">PTS</th>
+                                    <th className="pb-1 text-center font-bold">FG</th>
+                                    <th className="pb-1 text-center font-bold">3PT</th>
+                                    <th className="pb-1 text-center font-bold">FT</th>
+                                    <th className="pb-1 text-center font-bold">OR</th>
+                                    <th className="pb-1 text-center font-bold">DR</th>
                                     <th className="pb-1 text-center font-bold">REB</th>
                                     <th className="pb-1 text-center font-bold">AST</th>
                                     <th className="pb-1 text-center font-bold">STL</th>
                                     <th className="pb-1 text-center font-bold">BLK</th>
                                     <th className="pb-1 text-center font-bold">TO</th>
-                                    <th className="pb-1 text-center font-bold">FO</th>
+                                    <th className="pb-1 text-center font-bold">EFF</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-[var(--border)]/50">
@@ -120,17 +118,44 @@ export default function GameSummary({ game }) {
                                     <tr key={s.id} className="hover:bg-[var(--muted)]/20">
                                         <td className="py-1.5 flex items-center gap-2">
                                             <img src={s.image_url || '/img/picture.avif'} alt="" className="w-10 h-10 object-cover rounded-full" />
-                                            <span className="font-semibold text-sm text-[var(--foreground)]">{s.first_name} {s.last_name}</span>
-                                            <span className="text-[14px] font-industry  font-black text-[var(--muted-foreground)]">#{s.jersey_number}</span>
+                                            <div>
+                                                <div className="font-semibold text-sm text-[var(--foreground)]">{s.first_name} {s.last_name}</div>
+                                                <span className="text-[10px] font-industry font-black text-[var(--muted-foreground)]">#{s.jersey_number}</span>
+                                            </div>
                                         </td>
                                         <td className='py-1.5 text-sm text-center font-semibold text-[var(--foreground)]'>{s.minutes_played}</td>
                                         <td className="py-1.5 text-sm text-center font-semibold text-[var(--foreground)]">{s.points}</td>
-                                        <td className="py-1.5 text-sm text-center font-semibold text-[var(--muted-foreground)]">{s.rebounds}</td>
+                                        <td className="py-1.5 text-[10px] text-center font-medium text-[var(--muted-foreground)]">
+                                            {s.fg_made}/{s.fg_attempts}
+                                            <div className="text-[9px] text-blue-500 font-bold">
+                                                {s.fg_attempts > 0 ? ((s.fg_made / s.fg_attempts) * 100).toFixed(0) + '%' : '0%'}
+                                            </div>
+                                        </td>
+                                        <td className="py-1.5 text-[10px] text-center font-medium text-[var(--muted-foreground)]">
+                                            {s.three_pt_made}/{s.three_pt_attempts}
+                                            <div className="text-[9px] text-blue-500 font-bold">
+                                                {s.three_pt_attempts > 0 ? ((s.three_pt_made / s.three_pt_attempts) * 100).toFixed(0) + '%' : '0%'}
+                                            </div>
+                                        </td>
+                                        <td className="py-1.5 text-[10px] text-center font-medium text-[var(--muted-foreground)]">
+                                            {s.ft_made}/{s.ft_attempts}
+                                            <div className="text-[9px] text-blue-500 font-bold">
+                                                {s.ft_attempts > 0 ? ((s.ft_made / s.ft_attempts) * 100).toFixed(0) + '%' : '0%'}
+                                            </div>
+                                        </td>
+                                        <td className="py-1.5 text-sm text-center font-semibold text-[var(--muted-foreground)]">{s.offensive_rebounds}</td>
+                                        <td className="py-1.5 text-sm text-center font-semibold text-[var(--muted-foreground)]">{s.defensive_rebounds}</td>
+                                        <td className="py-1.5 text-sm text-center font-bold text-[var(--foreground)]">{s.rebounds}</td>
                                         <td className="py-1.5 text-sm text-center font-semibold text-[var(--muted-foreground)]">{s.assists}</td>
                                         <td className="py-1.5 text-sm text-center font-semibold text-[var(--muted-foreground)]">{s.steals}</td>
                                         <td className="py-1.5 text-sm text-center font-semibold text-[var(--muted-foreground)]">{s.blocks}</td>
                                         <td className="py-1.5 text-sm text-center font-semibold text-[var(--muted-foreground)]">{s.turnovers}</td>
-                                        <td className="py-1.5 text-sm text-center font-semibold text-[var(--muted-foreground)]">{s.fouls}</td>
+                                        <td className="py-1.5 text-sm text-center font-bold text-blue-600">
+                                            {(
+                                                (Number(s.points) + Number(s.rebounds) + Number(s.assists) + Number(s.steals) + Number(s.blocks)) -
+                                                ((Number(s.fg_attempts) - Number(s.fg_made)) + (Number(s.ft_attempts) - Number(s.ft_made)) + Number(s.turnovers))
+                                            ).toFixed(0)}
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>

@@ -208,13 +208,13 @@ async function deleteUser(userId) {
     return await setQuery(key, null, new Date(Date.now() + Number(process.env.CONTENT_CACHE_DURATION)));
 }
 
-async function savePrograms(programs) {
-    const key = CacheKeys.PROGRAMS_ALL;
+async function savePrograms(page, limit, programs) {
+    const key = `${CacheKeys.PROGRAMS_ALL}:page:${page}:limit:${limit}`;
     return await setQuery(key, programs, new Date(Date.now() + Number(process.env.CONTENT_CACHE_DURATION)));
 }
 
-async function fetchPrograms() {
-    const key = CacheKeys.PROGRAMS_ALL;
+async function fetchPrograms(page, limit) {
+    const key = `${CacheKeys.PROGRAMS_ALL}:page:${page}:limit:${limit}`;
     return await getQuery(key);
 }
 
@@ -261,6 +261,61 @@ async function invalidateProductsCache(slug = null) {
     if (slug) {
         await cache.del(`${CacheKeys.PRODUCT_DETAIL}:${slug}`);
     }
+}
+
+// --- Player Averages Cache ---
+async function savePlayerAverages(id, averages) {
+    const key = `${CacheKeys.PLAYER_AVERAGES}:${id}`;
+    return await setQuery(key, averages, new Date(Date.now() + Number(process.env.CONTENT_CACHE_DURATION)));
+}
+
+async function fetchPlayerAverages(id) {
+    const key = `${CacheKeys.PLAYER_AVERAGES}:${id}`;
+    return await getQuery(key);
+}
+
+async function invalidatePlayerAveragesCache(id) {
+    const key = `${CacheKeys.PLAYER_AVERAGES}:${id}`;
+    await cache.del(key);
+}
+
+// --- Features Cache ---
+async function saveFeatures(page, limit, features) {
+    const key = `${CacheKeys.FEATURES_ALL}:page:${page}:limit:${limit}`;
+    return await setQuery(key, features, new Date(Date.now() + Number(process.env.CONTENT_CACHE_DURATION)));
+}
+
+async function fetchFeatures(page, limit) {
+    const key = `${CacheKeys.FEATURES_ALL}:page:${page}:limit:${limit}`;
+    return await getQuery(key);
+}
+
+async function saveFeatureDetail(id, feature) {
+    const key = `${CacheKeys.FEATURE_DETAIL}:${id}`;
+    return await setQuery(key, feature, new Date(Date.now() + Number(process.env.CONTENT_CACHE_DURATION)));
+}
+
+async function fetchFeatureDetail(id) {
+    const key = `${CacheKeys.FEATURE_DETAIL}:${id}`;
+    return await getQuery(key);
+}
+
+async function invalidateFeaturesCache(id = null) {
+    await cache.del(CacheKeys.FEATURES_ALL);
+    if (id) {
+        await cache.del(`${CacheKeys.FEATURE_DETAIL}:${id}`);
+        await cache.del(`${CacheKeys.FEATURE_LIKES}:${id}`);
+    }
+}
+
+async function saveFeatureLikes(id, likes) {
+    const key = `${CacheKeys.FEATURE_LIKES}:${id}`;
+    return await setQuery(key, likes, new Date(Date.now() + Number(process.env.CONTENT_CACHE_DURATION)));
+}
+
+async function fetchFeatureLikes(id) {
+    const key = `${CacheKeys.FEATURE_LIKES}:${id}`;
+    return await getQuery(key);
 }
 
 export default {
@@ -311,5 +366,15 @@ export default {
     fetchProducts,
     saveProductDetail,
     fetchProductDetail,
-    invalidateProductsCache
+    invalidateProductsCache,
+    savePlayerAverages,
+    fetchPlayerAverages,
+    invalidatePlayerAveragesCache,
+    saveFeatures,
+    fetchFeatures,
+    saveFeatureDetail,
+    fetchFeatureDetail,
+    invalidateFeaturesCache,
+    saveFeatureLikes,
+    fetchFeatureLikes
 }

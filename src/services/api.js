@@ -33,10 +33,13 @@ export const updateProgram = async (id, formData) => {
     });
     return response.data;
 };
-
 export const deleteProgram = async (id) => {
     const response = await api.delete(`/programs/${id}`);
     return response.data;
 };
+
+export const fetchPlayers = async () => (await api.get('/players')).data;
+export const fetchTeams = async () => (await api.get('/teams')).data;
+export const fetchPlayerAverages = async (id) => (await api.get(`/stats/player/${id}/averages`)).data;
 
 export default api;

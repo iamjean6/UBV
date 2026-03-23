@@ -20,8 +20,8 @@ api.interceptors.request.use(
     }
 );
 
-export const fetchPrograms = async () => {
-    const response = await api.get('/programs');
+export const fetchPrograms = async (page = 1, limit = 12) => {
+    const response = await api.get(`/programs?page=${page}&limit=${limit}`);
     return response.data;
 };
 
@@ -77,6 +77,7 @@ export const createPlayer = async (formData) => (await api.post('/players', form
 export const updatePlayer = async (id, formData) => (await api.put(`/players/${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })).data;
 export const deletePlayer = async (id) => (await api.delete(`/players/${id}`)).data;
 
+
 export const fetchTeams = async () => (await api.get('/teams')).data;
 export const fetchOneTeam = async (id) => (await api.get(`/teams/${id}`)).data;
 export const createTeam = async (formData) => (await api.post('/teams', formData, { headers: { 'Content-Type': 'multipart/form-data' } })).data;
@@ -106,9 +107,20 @@ export const savePlayerProfile = async (data) => (await api.post('/profiles', da
 
 // Ecommerce Products API
 export const fetchProducts = async () => (await api.get('/products')).data;
+export const fetchCategories = async () => (await api.get('/products/categories')).data;
 export const fetchOneProduct = async (slug) => (await api.get(`/products/${slug}`)).data;
+export const fetchSuccessfulOrders = async () => (await api.get('/orders/successful')).data;
+export const createOrder = async (orderData) => (await api.post('/orders', orderData)).data;
+export const simulatePayment = async (data) => (await api.post('/payments/mock-callback', data)).data;
 export const createProduct = async (formData) => (await api.post('/products', formData, { headers: { 'Content-Type': 'multipart/form-data' } })).data;
 export const updateProduct = async (id, formData) => (await api.put(`/products/${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })).data;
 export const deleteProduct = async (id) => (await api.delete(`/products/${id}`)).data;
+
+export const fetchFeatures = async (page = 1, limit = 12) => (await api.get(`/features?page=${page}&limit=${limit}`)).data;
+export const fetchOneFeature = async (id) => (await api.get(`/features/${id}`)).data;
+export const createFeature = async (formData) => (await api.post('/features', formData, { headers: { 'Content-Type': 'multipart/form-data' } })).data;
+export const updateFeature = async (id, formData) => (await api.put(`/features/${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })).data;
+export const deleteFeature = async (id) => (await api.delete(`/features/${id}`)).data;
+
 
 export default api;

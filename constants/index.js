@@ -782,6 +782,29 @@ const principles = [
   },
 ];
 
+const POSITION_MAP = {
+  'PG': 'POINT GUARD',
+  'SG': 'SHOOTING GUARD',
+  'SF': 'SMALL FORWARD',
+  'PF': 'POWER FORWARD',
+  'C': 'CENTER',
+  'G': 'GUARD',
+  'F': 'FORWARD',
+  'POINT GUARD': 'POINT GUARD',
+  'SHOOTING GUARD': 'SHOOTING GUARD',
+  'SMALL FORWARD': 'SMALL FORWARD',
+  'POWER FORWARD': 'POWER FORWARD',
+  'CENTER': 'CENTER',
+  'GUARD': 'GUARD',
+  'FORWARD': 'FORWARD',
+  'COMBO GUARD': 'COMBO GUARD',
+  'PGSG': 'POINT GUARD / SHOOTING GUARD',
+  'GF': 'GUARD / FORWARD',
+  'FC': 'FORWARD / CENTER',
+  'G/F': 'GUARD / FORWARD',
+  'F/C': 'FORWARD / CENTER'
+};
+
 export{
     programs,
     principles,
@@ -793,5 +816,6 @@ export{
     resultStyles,
     players,
     management,
-    values
+    values,
+    POSITION_MAP
 }
