@@ -15,6 +15,7 @@ import productsRouter from './routes/ecommerce/products.js';
 import ordersRouter from './routes/ecommerce/orders.js';
 import { mockPaymentCallback } from './controller/mockPayment.js';
 import featuresRouter from './routes/features.js';
+import adminRouter from './routes/admin.js';
 
 
 const app = express();
@@ -56,6 +57,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/orders', ordersRouter);
 app.use('/api/features', featuresRouter);
+app.use('/api/admin', adminRouter);
 app.post('/api/payments/mock-callback', mockPaymentCallback);
 
 

@@ -4,6 +4,9 @@ import cache from '../../cache/cache.js';
 import { v4 as uuidv4 } from 'uuid';
 import { putObject } from '../../util/putObject.js';
 import { deleteObject } from '../../util/deleteObject.js';
+import { protectAdminRoute } from '../../middleware/authMiddleware.js';
+import { logAdminActivity } from '../../middleware/adminActivityLogger.js';
+import sharp from 'sharp';
 
 const router = express.Router();
 
@@ -129,7 +132,7 @@ router.get('/:slug', async (req, res) => {
 });
 
 // POST Create a new product (Admin)
-router.post('/', async (req, res) => {
+router.post('/', protectAdminRoute, logAdminActivity('CREATE_PRODUCT', 'Ecommerce'), async (req, res) => {
     const client = await pool.connect();
     try {
         await client.query('BEGIN');
@@ -224,7 +227,7 @@ router.post('/', async (req, res) => {
     }
 });
 // PUT Update an existing product (Admin)
-router.put('/:id', async (req, res) => {
+router.put('/:id', protectAdminRoute, logAdminActivity('UPDATE_PRODUCT', 'Ecommerce'), async (req, res) => {
     const client = await pool.connect();
     try {
         const { id } = req.params;
@@ -333,7 +336,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE a product (Admin)
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', protectAdminRoute, logAdminActivity('DELETE_PRODUCT', 'Ecommerce'), async (req, res) => {
     try {
         const { id } = req.params;
 

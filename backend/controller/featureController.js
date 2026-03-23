@@ -5,6 +5,7 @@ import { getObject } from "../util/getObject.js";
 import { deleteObject } from "../util/deleteObject.js";
 import cache from "../cache/cache.js";
 import mongoose from "mongoose";
+import sharp from "sharp";
 
 export const getFeatures = async (req, res) => {
     try {
@@ -90,7 +91,13 @@ export const createStory = async (req, res) => {
             });
         }
         
-        const uploadResult = await putObject(file.data, fileName, file.mimetype);
+        // Optimize cover image
+        const optimizedBuffer = await sharp(file.data)
+            .resize(1200, null, { withoutEnlargement: true })
+            .webp({ quality: 80 })
+            .toBuffer();
+
+        const uploadResult = await putObject(optimizedBuffer, fileName + ".webp", "image/webp");
         if (!uploadResult || !uploadResult.url) {
             throw new Error("Failed to upload cover image");
         }
@@ -167,8 +174,12 @@ export const updateStory = async (req, res) => {
         };
         
         if (files.file) {
-            const fileName = story.key || ("features/" + v4());
-            const uploadedImage = await putObject(files.file.data, fileName, files.file.mimetype);
+            const fileName = "features/" + v4() + ".webp";
+            const optimizedBuffer = await sharp(files.file.data)
+                .resize(1200, null, { withoutEnlargement: true })
+                .webp({ quality: 80 })
+                .toBuffer();
+            const uploadedImage = await putObject(optimizedBuffer, fileName, "image/webp");
             if (uploadedImage && uploadedImage.url) {
                 updateData.image = uploadedImage.url;
                 updateData.key = uploadedImage.key;

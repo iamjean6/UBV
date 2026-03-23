@@ -19,7 +19,9 @@ import GameStats from './pages/gamestats'
 
 // Admin Imports
 import AdminLayout from './admin/layout/AdminLayout'
+import LeaguesList from './admin/pages/sports/LeaguesList'
 import Dashboard from './admin/pages/Dashboard'
+import SuperAdminDashboard from './admin/pages/SuperAdminDashboard'
 import ProductsList from './admin/pages/ecommerce/ProductsList'
 import ProductForm from './admin/pages/ecommerce/ProductForm'
 import ProductDetails from './admin/pages/ecommerce/ProductDetails'
@@ -36,8 +38,8 @@ import TeamForm from './admin/pages/sports/TeamForm'
 import GamesList from './admin/pages/sports/GamesList'
 import GameForm from './admin/pages/sports/GameForm'
 import StatsForm from './admin/pages/sports/StatsForm'
-import LeaguesList from './admin/pages/sports/LeaguesList'
 import LeagueForm from './admin/pages/sports/LeagueForm'
+import Login from './admin/pages/Login'
 import { AuthProvider } from './admin/hooks/useAdminAuth'
 import { ProtectedRoute } from './admin/components/ProtectedRoute'
 
@@ -60,6 +62,10 @@ function App() {
         <Route path="/game-tracker/:id" element={<GameStats />} />
       </Route>
       <Route path="/easter" element={<Easter />} />
+
+      {/* Admin Auth Routes (Publicly accessible but part of Admin system) */}
+      <Route path="/admin/login" element={<AuthProvider><Login /></AuthProvider>} />
+      <Route path="/superadmin/jean774431675" element={<AuthProvider><Login isSuperAdmin={true} /></AuthProvider>} />
 
       {/* Admin Routes with AuthProvider wrapper */}
       <Route path="/admin" element={
@@ -98,6 +104,9 @@ function App() {
         <Route path="sports/games/new" element={<ProtectedRoute><GameForm /></ProtectedRoute>} />
         <Route path="sports/games/edit/:id" element={<ProtectedRoute><GameForm /></ProtectedRoute>} />
         <Route path="sports/games/:gameId/stats" element={<ProtectedRoute><StatsForm /></ProtectedRoute>} />
+
+        {/* Superadmin only routes */}
+        <Route path="superadmin/activities" element={<ProtectedRoute><SuperAdminDashboard /></ProtectedRoute>} />
 
         {/* Placeholder catch-all for other admin routes during MVP */}
         <Route path="*" element={

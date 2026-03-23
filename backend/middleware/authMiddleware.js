@@ -44,3 +44,67 @@ export const protectCustomerRoute = async (req, res, next) => {
         });
     }
 };
+
+// Middleware to protect routes that require Admin or Superadmin authentication
+export const protectAdminRoute = async (req, res, next) => {
+    let token;
+
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        try {
+            token = req.headers.authorization.split(' ')[1];
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+            if (decoded.role !== 'admin' && decoded.role !== 'superadmin') {
+                return res.status(403).json({ status: 'error', message: 'Access denied, admin role required' });
+            }
+
+            const adminCheck = await pool.query('SELECT id, username FROM auth.admins WHERE id = $1 AND is_active = true', [decoded.id]);
+
+            if (adminCheck.rows.length === 0) {
+                return res.status(401).json({ status: 'error', message: 'Not authorized, admin no longer exists' });
+            }
+
+            req.user = { id: adminCheck.rows[0].id, name: adminCheck.rows[0].username, role: decoded.role };
+            next();
+        } catch (error) {
+            console.error('Admin Auth Error:', error.message);
+            res.status(401).json({ status: 'error', message: 'Not authorized, token failed' });
+        }
+    }
+
+    if (!token) {
+        res.status(401).json({ status: 'error', message: 'Not authorized, no token' });
+    }
+};
+
+// Middleware to protect routes that require Superadmin authentication
+export const protectSuperAdminRoute = async (req, res, next) => {
+    let token;
+
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        try {
+            token = req.headers.authorization.split(' ')[1];
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+            if (decoded.role !== 'superadmin') {
+                return res.status(403).json({ status: 'error', message: 'Access denied, superadmin role required' });
+            }
+
+            const adminCheck = await pool.query('SELECT id, username FROM auth.admins WHERE id = $1 AND is_active = true', [decoded.id]);
+
+            if (adminCheck.rows.length === 0) {
+                return res.status(401).json({ status: 'error', message: 'Not authorized, admin no longer exists' });
+            }
+
+            req.user = { id: adminCheck.rows[0].id, name: adminCheck.rows[0].username, role: decoded.role };
+            next();
+        } catch (error) {
+            console.error('Superadmin Auth Error:', error.message);
+            res.status(401).json({ status: 'error', message: 'Not authorized, token failed' });
+        }
+    }
+
+    if (!token) {
+        res.status(401).json({ status: 'error', message: 'Not authorized, no token' });
+    }
+};

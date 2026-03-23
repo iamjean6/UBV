@@ -266,8 +266,8 @@ const AuthModal = ({ isOpen, onClose }) => {
                 </div>
 
                 {/* OAuth Buttons */}
-                <div className="grid grid-cols-2 gap-4">
-                    {/* Google Login Component */}
+                <div className="flex items-center justify-center">
+
                     <div className="flex items-center justify-center py-1">
                         <GoogleLogin
                             onSuccess={handleGoogleSuccess}
@@ -281,11 +281,8 @@ const AuthModal = ({ isOpen, onClose }) => {
                             width="100%"
                         />
                     </div>
-                    {/* Facebook Button */}
-                    <button className="flex items-center justify-center gap-2 py-3 bg-white/50 border border-white/20 rounded-2xl hover:bg-white/80 transition-all shadow-sm">
-                        <FaFacebookF className="w-4 h-4 text-blue-600" />
-                        <span className="text-sm font-semibold">Facebook</span>
-                    </button>
+
+
                 </div>
 
                 {/* Toggle Link */}

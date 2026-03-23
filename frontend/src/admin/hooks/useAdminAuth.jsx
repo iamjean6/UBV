@@ -1,48 +1,76 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
-// Mock Roles
 export const ROLES = {
-    SUPER_ADMIN: 'Super Admin',
-    CONTENT_ADMIN: 'Content Admin', // Sports + Media
-    SALES_ADMIN: 'Sales Admin',     // Orders + Products
-};
-
-// Define what roles can access which base paths
-const ROLE_PERMISSIONS = {
-    [ROLES.SUPER_ADMIN]: ['*'], // Access everything
-    [ROLES.CONTENT_ADMIN]: ['/admin/dashboard', '/admin/sports', '/admin/media'],
-    [ROLES.SALES_ADMIN]: ['/admin/dashboard', '/admin/ecommerce'],
+    SUPER_ADMIN: 'superadmin',
+    ADMIN: 'admin',
 };
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-    // Mock login as Super Admin by default for this MVP
-    const [user, setUser] = useState({
-        id: 1,
-        name: 'Admin User',
-        role: ROLES.SUPER_ADMIN
-    });
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const loginAs = (role) => {
-        setUser({ id: 1, name: `${role} User`, role });
+    useEffect(() => {
+        const storedUser = localStorage.getItem('adminUser');
+        const token = localStorage.getItem('adminToken');
+        if (storedUser && token) {
+            setUser(JSON.parse(storedUser));
+        }
+        setLoading(false);
+    }, []);
+
+    const login = async (username, password) => {
+        try {
+            const response = await fetch('http://localhost:5000/api/auth/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                const userData = {
+                    id: result.data.id,
+                    name: result.data.username,
+                    role: result.data.role
+                };
+                setUser(userData);
+                localStorage.setItem('adminToken', result.token);
+                localStorage.setItem('adminUser', JSON.stringify(userData));
+                return { success: true, role: result.data.role };
+            } else {
+                return { success: false, message: result.message };
+            }
+        } catch (error) {
+            console.error('Login Error:', error);
+            return { success: false, message: 'An error occurred during login' };
+        }
+    };
+
+    const logout = () => {
+        setUser(null);
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
     };
 
     const hasAccess = (path) => {
         if (!user) return false;
-        const permissions = ROLE_PERMISSIONS[user.role] || [];
-
-        return permissions.some(permission => {
-            // Direct match or wildcard
-            if (permission === '*' || permission === path) return true;
-            // Start match for nested routes (e.g., /admin/ecommerce/products matches /admin/ecommerce)
-            if (path.startsWith(permission)) return true;
-            return false;
-        });
+        // Superadmin has access to everything
+        if (user.role === ROLES.SUPER_ADMIN) return true;
+        
+        // Admin permissions: Restrict activity logs and other superadmin only stuff
+        if (user.role === ROLES.ADMIN) {
+            if (path.includes('activities')) return false;
+            return true;
+        }
+        
+        return false;
     };
 
     return (
-        <AuthContext.Provider value={{ user, loginAs, hasAccess, ROLES }}>
+        <AuthContext.Provider value={{ user, login, logout, hasAccess, ROLES, loading }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,6 +1,8 @@
 import express from 'express';
 import pool from '../../pgdb/db.js';
 import cache from '../../cache/cache.js';
+import { protectAdminRoute } from '../../middleware/authMiddleware.js';
+import { logAdminActivity } from '../../middleware/adminActivityLogger.js';
 
 const router = express.Router();
 
@@ -84,7 +86,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // CREATE game
-router.post('/', async (req, res) => {
+router.post('/', protectAdminRoute, logAdminActivity('CREATE_GAME', 'Sports'), async (req, res) => {
     try {
 
         const { home_team_id, away_team_id, venue, city, game_date, status, home_score, away_score, league_id, our_team } = req.body;
@@ -111,7 +113,7 @@ router.post('/', async (req, res) => {
 });
 
 // UPDATE game
-router.put('/:id', async (req, res) => {
+router.put('/:id', protectAdminRoute, logAdminActivity('UPDATE_GAME', 'Sports'), async (req, res) => {
     try {
         const { id } = req.params;
         const { home_team_id, away_team_id, venue, city, game_date, status, home_score, away_score, league_id, our_team } = req.body;
@@ -141,7 +143,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE game
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', protectAdminRoute, logAdminActivity('DELETE_GAME', 'Sports'), async (req, res) => {
     try {
         const { id } = req.params;
         const result = await pool.query('DELETE FROM sports.games WHERE id = $1 RETURNING *', [id]);

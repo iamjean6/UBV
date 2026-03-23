@@ -4,6 +4,7 @@ import { putObject } from '../util/putObject.js';
 import { getObject } from '../util/getObject.js';
 import { deleteObject } from '../util/deleteObject.js';
 import cache from '../cache/cache.js';
+import sharp from 'sharp';
 
 export const getPrograms = async (req, res) => {
     try {
@@ -86,7 +87,13 @@ export const createProgram = async (req, res) => {
             })
         }
 
-        const uploadResult = await putObject(file.data, fileName);
+        // Optimize main image
+        const optimizedBuffer = await sharp(file.data)
+            .resize(1200, null, { withoutEnlargement: true })
+            .webp({ quality: 80 })
+            .toBuffer();
+
+        const uploadResult = await putObject(optimizedBuffer, fileName + '.webp');
         if (!uploadResult || !uploadResult.url) {
             return res.status(500).json({
                 "status": "error",
@@ -99,7 +106,11 @@ export const createProgram = async (req, res) => {
             const filesToUpload = Array.isArray(galleryFiles) ? galleryFiles : [galleryFiles];
             for (const gFile of filesToUpload) {
                 const gFileName = "gallery/" + v4();
-                const gResult = await putObject(gFile.data, gFileName);
+                const gOptimized = await sharp(gFile.data)
+                    .resize(1200, null, { withoutEnlargement: true })
+                    .webp({ quality: 80 })
+                    .toBuffer();
+                const gResult = await putObject(gOptimized, gFileName + '.webp');
                 if (gResult?.url) galleryUrls.push(gResult.url);
             }
         }
@@ -143,9 +154,15 @@ export const updateProgram = async (req, res) => {
         let currentImages = [...event.images];
 
         if (files.file) {
-            const uploadResult = await putObject(files.file.data, event.key)
+            const fileName = "images/" + v4() + ".webp";
+            const optimizedBuffer = await sharp(files.file.data)
+                .resize(1200, null, { withoutEnlargement: true })
+                .webp({ quality: 80 })
+                .toBuffer();
+            const uploadResult = await putObject(optimizedBuffer, fileName)
             if (uploadResult && uploadResult.url) {
                 updateData.image = uploadResult.url;
+                updateData.key = uploadResult.key;
                 if (currentImages[0] === event.image) {
                     currentImages[0] = uploadResult.url;
                 } else {
@@ -157,8 +174,12 @@ export const updateProgram = async (req, res) => {
         if (galleryFiles) {
             const filesToUpload = Array.isArray(galleryFiles) ? galleryFiles : [galleryFiles];
             for (const gFile of filesToUpload) {
-                const gFileName = "gallery/" + v4();
-                const gResult = await putObject(gFile.data, gFileName);
+                const gFileName = "gallery/" + v4() + ".webp";
+                const gOptimized = await sharp(gFile.data)
+                    .resize(1200, null, { withoutEnlargement: true })
+                    .webp({ quality: 80 })
+                    .toBuffer();
+                const gResult = await putObject(gOptimized, gFileName);
                 if (gResult?.url) currentImages.push(gResult.url);
             }
         }

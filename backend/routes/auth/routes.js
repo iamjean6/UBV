@@ -49,9 +49,9 @@ router.post('/google', async (req, res) => {
 
         // 4. Issue the standard JWT token
         const jwtToken = jwt.sign(
-            { id: user.id, name: user.name },
+            { id: user.id, name: user.name, role: 'customer' },
             process.env.JWT_SECRET,
-            { expiresIn: '24h' }
+            { expiresIn: '30m' }
         );
 
         res.status(200).json({
@@ -157,9 +157,9 @@ router.post('/login', async (req, res) => {
 
 
         const token = jwt.sign(
-            { id: user.id, name: user.name },
+            { id: user.id, name: user.name, role: 'customer' },
             process.env.JWT_SECRET,
-            { expiresIn: '12h' }
+            { expiresIn: '30m' }
         );
 
         res.status(200).json({
@@ -178,6 +178,53 @@ router.post('/login', async (req, res) => {
             status: 'error',
             message: 'Internal server error'
         });
+    }
+});
+
+// Admin Login Route
+router.post('/admin/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ status: 'error', message: 'Username and password are required' });
+    }
+
+    try {
+        const result = await pool.query('SELECT * FROM auth.admins WHERE username = $1 AND is_active = true', [username]);
+
+        if (result.rows.length === 0) {
+            return res.status(401).json({ status: 'error', message: 'Invalid credentials' });
+        }
+
+        const admin = result.rows[0];
+        const isMatch = await bcrypt.compare(password, admin.password_hash);
+
+        if (!isMatch) {
+            return res.status(401).json({ status: 'error', message: 'Invalid credentials' });
+        }
+
+        // Determine role based on username
+        const role = admin.username === 'jean_obuya16' ? 'superadmin' : 'admin';
+
+        const token = jwt.sign(
+            { id: admin.id, name: admin.username, role },
+            process.env.JWT_SECRET,
+            { expiresIn: '30m' }
+        );
+
+        res.status(200).json({
+            status: 'success',
+            message: 'Admin login successful',
+            token,
+            data: {
+                id: admin.id,
+                username: admin.username,
+                role
+            }
+        });
+    } catch (err) {
+        console.error('Admin Login Error:', err);
+        res.status(500).json({ status: 'error', message: 'Internal server error' });
     }
 });
 

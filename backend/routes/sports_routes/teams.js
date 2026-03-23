@@ -4,6 +4,9 @@ import cache from '../../cache/cache.js'
 import { v4 as uuidv4 } from 'uuid'
 import { putObject } from '../../util/putObject.js'
 import { deleteObject } from '../../util/deleteObject.js'
+import { protectAdminRoute } from '../../middleware/authMiddleware.js'
+import { logAdminActivity } from '../../middleware/adminActivityLogger.js'
+import sharp from 'sharp'
 
 const router = express.Router();
 
@@ -60,15 +63,19 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', protectAdminRoute, logAdminActivity('CREATE_TEAM', 'Sports'), async (req, res) => {
     try {
         const { name, city } = req.body;
         const files = req.files || {};
         let final_logo_url = req.body.logo_url || null;
 
         if (files.logo) {
-            const fileName = `teams/logos/${uuidv4()}_${files.logo.name}`;
-            const upload = await putObject(files.logo.data, fileName, files.logo.mimetype);
+            const fileName = `teams/logos/${uuidv4()}.webp`;
+            const optimized = await sharp(files.logo.data)
+                .resize(400, 400, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+                .webp({ quality: 80 })
+                .toBuffer();
+            const upload = await putObject(optimized, fileName, 'image/webp');
             if (upload) final_logo_url = upload.url;
         }
 
@@ -90,7 +97,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', protectAdminRoute, logAdminActivity('UPDATE_TEAM', 'Sports'), async (req, res) => {
     try {
         const { id } = req.params;
         const { name, city } = req.body;
@@ -109,8 +116,12 @@ router.put('/:id', async (req, res) => {
                 const oldKey = currentTeam.rows[0].logo_url.split('.com/')[1];
                 await deleteObject(oldKey);
             }
-            const fileName = `teams/logos/${uuidv4()}_${files.logo.name}`;
-            const upload = await putObject(files.logo.data, fileName, files.logo.mimetype);
+            const fileName = `teams/logos/${uuidv4()}.webp`;
+            const optimized = await sharp(files.logo.data)
+                .resize(400, 400, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+                .webp({ quality: 80 })
+                .toBuffer();
+            const upload = await putObject(optimized, fileName, 'image/webp');
             if (upload) final_logo_url = upload.url;
         }
 
@@ -132,7 +143,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', protectAdminRoute, logAdminActivity('DELETE_TEAM', 'Sports'), async (req, res) => {
     try {
         const { id } = req.params;
 

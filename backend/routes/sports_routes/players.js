@@ -4,11 +4,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { putObject } from '../../util/putObject.js';
 import { deleteObject } from '../../util/deleteObject.js';
 import cache from '../../cache/cache.js';
+import { protectAdminRoute } from '../../middleware/authMiddleware.js';
+import { logAdminActivity } from '../../middleware/adminActivityLogger.js';
+import sharp from 'sharp';
 
 const router = express.Router();
 
 
-router.post('/', async (req, res) => {
+router.post('/', protectAdminRoute, logAdminActivity('CREATE_PLAYER', 'Sports'), async (req, res) => {
     try {
         const { first_name, last_name, team_id, jersey_number, position, height, weight_kg, age,
             nickname
@@ -23,8 +26,12 @@ router.post('/', async (req, res) => {
         let final_audio_url = req.body.intro_audio_url || null;
 
         if (files.image) {
-            const fileName = `players/images/${uuidv4()}_${files.image.name}`;
-            const upload = await putObject(files.image.data, fileName, files.image.mimetype);
+            const fileName = `players/images/${uuidv4()}.webp`;
+            const optimized = await sharp(files.image.data)
+                .resize(600, 600, { fit: 'cover' })
+                .webp({ quality: 80 })
+                .toBuffer();
+            const upload = await putObject(optimized, fileName, 'image/webp');
             if (upload) final_image_url = upload.url;
         }
         if (files.audio) {
@@ -117,7 +124,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', protectAdminRoute, logAdminActivity('UPDATE_PLAYER', 'Sports'), async (req, res) => {
     try {
         const { id } = req.params;
         const { first_name, last_name, team_id, jersey_number, position, height, weight_kg, age,
@@ -140,8 +147,12 @@ router.put('/:id', async (req, res) => {
                 const oldKey = currentPlayer.rows[0].image_url.split('.com/')[1];
                 await deleteObject(oldKey);
             }
-            const fileName = `players/images/${uuidv4()}_${files.image.name}`;
-            const upload = await putObject(files.image.data, fileName, files.image.mimetype);
+            const fileName = `players/images/${uuidv4()}.webp`;
+            const optimized = await sharp(files.image.data)
+                .resize(600, 600, { fit: 'cover' })
+                .webp({ quality: 80 })
+                .toBuffer();
+            const upload = await putObject(optimized, fileName, 'image/webp');
             if (upload) final_image_url = upload.url;
         }
         if (files.audio) {
@@ -181,7 +192,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', protectAdminRoute, logAdminActivity('DELETE_PLAYER', 'Sports'), async (req, res) => {
     try {
         const { id } = req.params;
 
