@@ -51,7 +51,7 @@ router.post('/google', async (req, res) => {
         const jwtToken = jwt.sign(
             { id: user.id, name: user.name, role: 'customer' },
             process.env.JWT_SECRET,
-            { expiresIn: '30m' }
+            { expiresIn: '2h' }
         );
 
         res.status(200).json({
@@ -159,7 +159,7 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign(
             { id: user.id, name: user.name, role: 'customer' },
             process.env.JWT_SECRET,
-            { expiresIn: '30m' }
+            { expiresIn: '2h' }
         );
 
         res.status(200).json({
@@ -209,7 +209,7 @@ router.post('/admin/login', async (req, res) => {
         const token = jwt.sign(
             { id: admin.id, name: admin.username, role },
             process.env.JWT_SECRET,
-            { expiresIn: '30m' }
+            { expiresIn: '2h' }
         );
 
         res.status(200).json({

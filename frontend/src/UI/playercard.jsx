@@ -11,22 +11,22 @@ const PlayerCard = ({ player }) => {
   const formatPosition = (pos) => {
     if (!pos) return '-';
     const upperPos = pos.toString().toUpperCase();
-    
+
     // Check direct mapping first (e.g. PG, SF, POINT GUARD)
     if (POSITION_MAP[upperPos]) {
-        return POSITION_MAP[upperPos];
+      return POSITION_MAP[upperPos];
     }
 
     // Special case for combined abbreviations like PGSG if NOT in map
     // The POSITION_MAP I added doesn't have PGSG, but let's see.
     // I'll add common combinations to the map in index.js too just in case.
-    
+
     // Split by common delimiters
     const parts = pos.toString().split(/[\/\s,]+/).filter(Boolean);
     if (parts.length > 1) {
-        return parts
-          .map(p => POSITION_MAP[p.toUpperCase()] || p)
-          .join(' / ');
+      return parts
+        .map(p => POSITION_MAP[p.toUpperCase()] || p)
+        .join(' / ');
     }
 
     return pos;
@@ -82,7 +82,7 @@ const PlayerCard = ({ player }) => {
 
         <div className="w-1/2 flex justify-end items-end">
           <img
-            src={player.image_url}
+            src={player.image_url || '/img/picture.avif'}
             alt={player.first_name}
             className="h-64 object-contain"
           />

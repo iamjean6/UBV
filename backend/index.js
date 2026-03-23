@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import morgan from 'morgan';
 import fileUpload from 'express-fileupload';
 import { getPrograms, getOneProgram, createProgram, updateProgram, deleteProgram } from './controller/programController.js';
 import playersRouter from './routes/sports_routes/players.js';
@@ -29,10 +30,7 @@ app.use(fileUpload({
 }));
 
 // Logging Middleware
-app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-    next();
-});
+app.use(morgan('dev'));
 
 // Test Route
 app.get('/', (req, res) => {

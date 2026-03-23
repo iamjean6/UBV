@@ -9,9 +9,12 @@ const api = axios.create({
 // Request interceptor to add the JWT token to headers
 api.interceptors.request.use(
     (config) => {
+        const adminToken = localStorage.getItem('adminToken');
         const token = localStorage.getItem('token');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+        const activeToken = adminToken || token;
+
+        if (activeToken) {
+            config.headers.Authorization = `Bearer ${activeToken}`;
         }
         return config;
     },

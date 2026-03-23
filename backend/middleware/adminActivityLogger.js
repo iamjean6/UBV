@@ -27,6 +27,9 @@ export const logAdminActivity = (action, module) => {
                         INSERT INTO auth.admin_activities (admin_id, admin_username, action, target_module, target_id, details, ip_address)
                         VALUES ($1, $2, $3, $4, $5, $6, $7)
                     `, [adminId, adminUsername, action || req.method, module, targetId, JSON.stringify(details), req.ip])
+                    .then(() => {
+                        console.log(`\x1b[36m[ADMIN_ACTIVITY]\x1b[0m ${adminUsername} performed ${action || req.method} on ${module} (ID: ${targetId || 'N/A'})`);
+                    })
                     .catch(err => console.error('Error logging admin activity:', err));
                 }
             }
