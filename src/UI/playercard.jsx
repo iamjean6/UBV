@@ -1,6 +1,6 @@
 import { ExternalLink, ShoppingCart, Volume, Volume2, VolumeIcon } from 'lucide-react';
 import { useState } from 'react';
-import { POSITION_MAP } from '../../../constants';
+import { POSITION_MAP } from '../../constants';
 
 const PlayerCard = ({ player }) => {
   const handlePlayAudio = () => {
