@@ -1,30 +1,29 @@
-import { useSelector } from "react-redux";
-import { merch } from "../../constants";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toggleAuthModal } from "../store/cart";
 
 export default function CartSummary() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.cart.isAuthenticated);
   const cartItems = useSelector((state) => state.cart.items);
   const totalItems = cartItems.reduce(
     (sum, item) => sum + item.quantity,
     0
   );
-let subtotal = 0;
-let totalDiscount = 0;
+  let subtotal = 0;
+  let totalDiscount = 0;
 
-cartItems.forEach((item) => {
-  const product = merch.find((m) => m.id === item.productId);
+  cartItems.forEach((item) => {
+    const itemSubtotal = (item.originalPrice || item.price || 0) * (item.quantity || 1);
+    const itemDiscount = ((item.originalPrice || item.price || 0) - (item.price || 0)) * (item.quantity || 1); 
 
-  if (!product) return;
+    subtotal += itemSubtotal;
+    totalDiscount += itemDiscount;
+  });
 
-  const itemSubtotal = product.priceValue * item.quantity;
-  const itemDiscount =
-    product.discount * product.priceValue * item.quantity;
-
-  subtotal += itemSubtotal;
-  totalDiscount += itemDiscount;
-});
-
-const deliveryFee = 15;
-const total = subtotal - totalDiscount + deliveryFee;
+  const deliveryFee = 0;
+  const total = subtotal - totalDiscount + deliveryFee;
 
   return (
     <div className="rounded-3xl border border-neutral-300 p-4 xl:p-6 xl:w-full xl:h-94">
@@ -61,7 +60,16 @@ const total = subtotal - totalDiscount + deliveryFee;
         <p>KES {total}</p>
       </div>
 
-      <button className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-3xl bg-black text-white transition-colors cursor-pointer hover:bg-gray-900">
+      <button
+        onClick={() => {
+          if (isAuthenticated) {
+            navigate('/checkout');
+          } else {
+            dispatch(toggleAuthModal());
+          }
+        }}
+        className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-3xl bg-black text-white transition-colors cursor-pointer hover:bg-gray-900"
+      >
         Go to Checkout
         <i className="bx bx-arrow-right text-2xl"></i>
       </button>

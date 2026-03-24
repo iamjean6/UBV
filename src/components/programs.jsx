@@ -3,19 +3,15 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { HiX } from "react-icons/hi";
 
-import {PacmanLoader} from "react-spinners";
+import { PacmanLoader, PropagateLoader } from "react-spinners";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Pagination from "../UI/pagination";
 import { fetchPrograms } from "../services/api";
- 
+
 gsap.registerPlugin(ScrollTrigger)
 const Programs = () => {
-  const override = {
-  display: "block",
-  margin: "0 auto",
-  borderColor: "red",
-};
- 
+
+
   const cardsRef = useRef([]);
   const modalRef = useRef(null);
 
@@ -25,8 +21,8 @@ const Programs = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [postsPerPage, setPostsPerPage] = useState(4)
   const [color, setColor] = useState("#101111ff");
-  
-   const openCard = (program) => {
+
+  const openCard = (program) => {
     setActiveCard(program);
   };
 
@@ -40,12 +36,12 @@ const Programs = () => {
     });
   };
 
- 
+
   useEffect(() => {
     document.body.style.overflow = activeCard ? "hidden" : "auto";
   }, [activeCard]);
 
-  
+
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && closeCard();
     window.addEventListener("keydown", onKey);
@@ -53,39 +49,43 @@ const Programs = () => {
   }, [activeCard]);
 
 
-  useEffect(()=>{
-     const loadPrograms = async ()=>{
-      try{
-        const result = await fetchPrograms()
-        setPrograms(result.data)
-      }catch (err){
+  const [totalCount, setTotalCount] = useState(0);
+
+  useEffect(() => {
+    const loadPrograms = async () => {
+      try {
+        setLoading(true);
+        const result = await fetchPrograms(currentPage, postsPerPage);
+        setPrograms(result.data);
+        setTotalCount(result.totalCount || result.data.length);
+      } catch (err) {
         console.error("Failed to fetch programs:", err);
-      }finally{
-        setLoading(false)
+      } finally {
+        setLoading(false);
       }
-     }
-      loadPrograms()
-  },[])
+    };
+    loadPrograms();
+  }, [currentPage, postsPerPage]);
 
-useGSAP(() => {
-  gsap.from(cardsRef.current, {
-    opacity: 0,
-    y: 60,
-    duration: 1,
-    stagger: 0.15,
-    ease: "power3.out",
+  useGSAP(() => {
+    gsap.from(cardsRef.current, {
+      opacity: 0,
+      y: 60,
+      duration: 1,
+      stagger: 0.15,
+      ease: "power3.out",
 
-    scrollTrigger: {
-      trigger: cardsRef.current,
-      start: "top 80%",
-      toggleActions: "play none none reverse",
-    },
-  });
-}, []);
+      scrollTrigger: {
+        trigger: cardsRef.current,
+        start: "top 80%",
+        toggleActions: "play none none reverse",
+      },
+    });
+  }, []);
 
 
 
-  
+
   useGSAP(() => {
     if (activeCard && modalRef.current) {
       gsap.fromTo(
@@ -96,36 +96,20 @@ useGSAP(() => {
     }
   }, [activeCard]);
 
-useEffect(() => {
-  cardsRef.current = [];
-}, [currentPage]);
-  const lastPostIndex = currentPage * postsPerPage
-  const firstPostIndex = lastPostIndex - postsPerPage
-  const currentPosts = programs.slice(firstPostIndex, lastPostIndex)
-      if (loading){
-    return(
-       <div className="sweet-loading">
-      <button onClick={() => setLoading(!loading)}>Toggle Loader</button>
-      <input
-        value={color}
-        onChange={(input) => setColor(input.target.value)}
-        placeholder="Color of the loader"
-      />
+  useEffect(() => {
+    cardsRef.current = [];
+  }, [currentPage]);
 
-      <PacmanLoader
-        color={color}
-        loading={loading}
-        cssOverride={override}
-        size={150}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
-    </div>
+  if (loading && programs.length === 0) {
+    return (
+      <div className='flex items-center justify-center'>
+        <PropagateLoader />
+      </div>
     )
   }
   return (
     <section className="relative w-full">
-    
+
       <div
         className="relative min-h-screen bg-cover bg-center"
         style={{ backgroundImage: "url('/img/badge2.jpeg')" }}
@@ -133,7 +117,7 @@ useEffect(() => {
         <div className="absolute inset-0 bg-black/50" />
 
         <div className="relative z-10 px-6 py-16">
-       
+
           <div className="text-center text-white mb-12 space-y-3">
             <h2 className="text-sm font-semibold tracking-widest uppercase opacity-80">
               Our Programs
@@ -144,7 +128,7 @@ useEffect(() => {
           </div>
 
           <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
-            {currentPosts.map((program, i) => (
+            {programs.map((program, i) => (
               <div
                 key={program._id || i}
                 ref={(el) => (cardsRef.current[i] = el)}
@@ -154,6 +138,8 @@ useEffect(() => {
                 <img
                   src={program.image}
                   alt={program.title}
+                  loading={i < 4 ? "eager" : "lazy"}
+                  fetchpriority={i < 4 ? "high" : "auto"}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
 
@@ -165,11 +151,11 @@ useEffect(() => {
               </div>
             ))}
           </div>
-          <Pagination 
-          totalPosts ={programs.length}
-          postsPerPage ={postsPerPage}
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
+          <Pagination
+            totalPosts={totalCount}
+            postsPerPage={postsPerPage}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
           />
 
           {activeCard && (

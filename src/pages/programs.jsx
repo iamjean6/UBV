@@ -2,19 +2,14 @@ import { useState, useEffect } from 'react';
 import { fetchPrograms } from '../services/api';
 import { useNavigate } from "react-router-dom";
 import { ChevronUpIcon } from 'lucide-react';
-import { PacmanLoader } from "react-spinners";
+import { PropagateLoader } from "react-spinners";
 
 
 const Programs = () => {
   const navigate = useNavigate();
   const [programs, setPrograms] = useState([]);
   const [loading, setLoading] = useState(true);
-  const override = {
-    display: "block",
-    margin: "0 auto",
-    borderColor: "#141414ff",
-  };
-  const [color, setColor] = useState("#141414ff");
+
   useEffect(() => {
     const loadPrograms = async () => {
       try {
@@ -31,23 +26,12 @@ const Programs = () => {
 
   if (loading) {
     return (
-      <div className="sweet-loading">
-        <button onClick={() => setLoading(!loading)}>Toggle Loader</button>
-        <input
-          value={color}
-          onChange={(input) => setColor(input.target.value)}
-          placeholder="Color of the loader"
-        />
-
-        <PacmanLoader
-          color={color}
-          loading={loading}
-          cssOverride={override}
-          size={150}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
+      <div className='min-h-screen relative w-full px-12 py-10'>
+        <div className='flex items-center justify-center'>
+          <PropagateLoader />
+        </div>
       </div>
+
     )
   }
 

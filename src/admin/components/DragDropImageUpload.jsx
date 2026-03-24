@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { UploadCloud, X } from 'lucide-react';
 
-export default function DragDropImageUpload({ onImageUpload, multiple= true }) {
+export default function DragDropImageUpload({ onImageUpload, multiple = true }) {
     const [dragActive, setDragActive] = useState(false);
     const [imagePreviews, setImagePreviews] = useState([]);
 
@@ -24,21 +24,20 @@ export default function DragDropImageUpload({ onImageUpload, multiple= true }) {
         );
 
         if (validFiles.length === 0) return;
-           const filesToUse = multiple ? validFiles : [validFiles[0]];
+        const filesToUse = multiple ? validFiles : [validFiles[0]];
         const newImages = filesToUse.map(file => ({
             file,
             preview: URL.createObjectURL(file)
         }));
 
-        setImagePreviews(prev => [...prev, ...newImages]);
-
-         if (multiple) {
-        setImagePreviews(prev => [...prev, ...newImages]);
-        if (onImageUpload) onImageUpload(filesToUse);
-    } else {
-        setImagePreviews(newImages);
-        if (onImageUpload) onImageUpload(filesToUse[0]);
-    }
+        if (multiple) {
+            const updatedImages = [...imagePreviews, ...newImages];
+            setImagePreviews(updatedImages);
+            if (onImageUpload) onImageUpload(updatedImages.map(img => img.file));
+        } else {
+            setImagePreviews(newImages);
+            if (onImageUpload) onImageUpload(filesToUse[0]);
+        }
     };
 
     const handleDrop = (e) => {
@@ -70,11 +69,10 @@ export default function DragDropImageUpload({ onImageUpload, multiple= true }) {
     return (
         <div className="mt-2">
             <div
-                className={`flex justify-center rounded-lg border-2 border-dashed px-6 py-10 transition-colors ${
-                    dragActive
-                        ? 'border-[var(--primary)] bg-[var(--primary)]/5'
-                        : 'border-[var(--border)] hover:border-[var(--muted-foreground)]'
-                }`}
+                className={`flex justify-center rounded-lg border-2 border-dashed px-6 py-10 transition-colors ${dragActive
+                    ? 'border-[var(--primary)] bg-[var(--primary)]/5'
+                    : 'border-[var(--border)] hover:border-[var(--muted-foreground)]'
+                    }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}

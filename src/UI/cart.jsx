@@ -17,7 +17,6 @@ export default function CartDrawer() {
     dispatch(toggleStatusTab());
   };
 
-  // Close when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -54,15 +53,14 @@ export default function CartDrawer() {
     };
   }, [statusTab, dispatch]);
 
-  const  goToShop = () =>{
+  const goToShop = () => {
     navigate("/merch")
   }
   return (
     <>
       <div
-        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-300 ${
-          statusTab ? "opacity-100 visible" : "opacity-0 invisible"
-        }`}
+        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-300 ${statusTab ? "opacity-100 visible" : "opacity-0 invisible"
+          }`}
       />
 
       {/* DRAWER */}
@@ -84,23 +82,23 @@ export default function CartDrawer() {
         <div className="flex flex-col h-[calc(100%-80px)]">
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {items.length === 0 ? (
-                <div className="relative min-h-[60vh] flex items-center justify-center">
-                    <div className="  rounded-2xl p-8 flex flex-col items-center space-y-1">
-                        <img
-                        src="/videos/sad.gif"
-                        alt="Empty cart"
-                        className="w-72 h-72 animate-pulse object-contain rounded-sm "
-                        />
-                        <p className="text-gray-500 text-xl font-medium text-center">
-                             Your cart is empty
-                        </p>
-                        <button onClick={goToShop}>
-                            <span className="underline hover:cursor-pointer font-zentry hover:text-orange-600">Visit our shop</span>
-                        </button>
-                        </div>
+              <div className="relative min-h-[60vh] flex items-center justify-center">
+                <div className="  rounded-2xl p-8 flex flex-col items-center space-y-1">
+                  <img
+                    src="/videos/sad.gif"
+                    alt="Empty cart"
+                    className="w-72 h-72 animate-pulse object-contain rounded-sm "
+                  />
+                  <p className="text-gray-500 text-xl font-medium text-center">
+                    Your cart is empty
+                  </p>
+                  <button onClick={goToShop}>
+                    <span className="underline hover:cursor-pointer font-zentry hover:text-orange-600">Visit our shop</span>
+                  </button>
+                </div>
 
-                        </div>
-              
+              </div>
+
             ) : (
               items.map((item) => (
                 <CartItem key={item.productId} data={item} />

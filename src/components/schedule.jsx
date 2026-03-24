@@ -1,6 +1,7 @@
 import { CalendarCheck, ChevronLeft, ChevronRight, Repeat, TvMinimalPlay } from "lucide-react";
 import { useState, useEffect } from "react";
-import { games } from "../../constants";
+import { fetchGames } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 /* ===================== */
 /* Countdown Hook */
@@ -38,6 +39,8 @@ function CountdownDisplay({ targetMs }) {
 }
 
 function GameCard({ game }) {
+  const navigate = useNavigate();
+
   const gameDate = new Date(game.date);
   const day = gameDate.toLocaleString("default", { weekday: "short" });
   const formattedDate = gameDate.toLocaleDateString();
@@ -48,7 +51,7 @@ function GameCard({ game }) {
   const isUpcoming = game.type === "UPCOMING";
   const won = game.result === "W";
 
-  
+
   const hoursRemaining = (countdownTarget - Date.now()) / (1000 * 60 * 60);
   const showTimer = hoursRemaining <= 24;
 
@@ -68,9 +71,8 @@ function GameCard({ game }) {
             </p>
             <div className="flex items-center font-mongoose gap-2">
               <span
-                className={`text-5xl font-black font-industry leading-none ${
-                  won ? "text-orange-600" : "text-red-600"
-                }`}
+                className={`text-5xl font-black font-industry leading-none ${won ? "text-orange-600" : "text-red-600"
+                  }`}
               >
                 {game.homeScore}
               </span>
@@ -97,15 +99,15 @@ function GameCard({ game }) {
                 <CountdownDisplay targetMs={countdownTarget} />
               ) : (
                 <div className="  text-[60px] font-barlow flex flex-row items-center justify-center gap-1">
-    <span className=" font-black text-black  leading-none">
-      {gameDate.getDate()}
-    </span>
-    <span className=" font-black   tracking-tight">
-      {gameDate
-        .toLocaleString("default", { month: "short" })
-        .toUpperCase()}
-    </span>
-  </div>
+                  <span className=" font-black text-black  leading-none">
+                    {gameDate.getDate()}
+                  </span>
+                  <span className=" font-black   tracking-tight">
+                    {gameDate
+                      .toLocaleString("default", { month: "short" })
+                      .toUpperCase()}
+                  </span>
+                </div>
               )}
 
               <span className="text-black text-4xl px-2 font-black uppercase tracking-wider">
@@ -120,7 +122,7 @@ function GameCard({ game }) {
 
       <div className="border-t border-gray-200">
         {isFinal && (
-          <button className="w-full flex items-center justify-center gap-2 py-2 font-zentry text-2xl tracking-widest uppercase text-orange-600 hover:text-white hover:bg-gray-800 transition-colors">
+          <button onClick={() => navigate(`/game-tracker/${game.id}`)} className="w-full flex items-center justify-center gap-2 py-2 font-zentry text-2xl tracking-widest uppercase text-orange-600 hover:text-white hover:bg-gray-800 transition-colors">
             <Repeat />
             Game Recap
           </button>
@@ -143,15 +145,55 @@ function GameCard({ game }) {
 /* Schedule */
 /* ===================== */
 export default function Schedule() {
+  const [games, setGames] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const loadGames = async () => {
+      try {
+        const response = await fetchGames();
+        if (response && response.status === 'success') {
+          // Map backend SQL rows to UI format
+          const mappedGames = response.data.map(g => {
+            const isHome = g.our_team === 'HOME' || g.home_team_name?.toLowerCase().includes('urbanville');
+            return {
+              id: g.id,
+              date: g.game_date,
+              venue: g.venue,
+              city: g.city,
+              opponent: isHome ? g.away_team_name : g.home_team_name,
+              logo: isHome ? g.away_team_logo : g.home_team_logo,
+              status: isHome ? "HOME" : "AWAY",
+              type: g.status, // UPCOMING or FINAL
+              result: g.status === 'FINAL' ? (
+                isHome ? (g.home_score > g.away_score ? 'W' : 'L') : (g.away_score > g.home_score ? 'W' : 'L')
+              ) : null,
+              homeScore: g.home_score,
+              awayScore: g.away_score
+            };
+          });
+          setGames(mappedGames);
+        }
+      } catch (error) {
+        console.error("Error loading games:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadGames();
+  }, []);
+
   const sortedGames = [...games].sort(
     (a, b) => new Date(a.date) - new Date(b.date)
   );
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  if (loading) return <div className="py-20 text-center font-mongoose text-4xl">Loading Schedule...</div>;
+  if (sortedGames.length === 0) return null;
 
-  const activeMonth = new Date(sortedGames[currentIndex].date)
-    .toLocaleString("default", { month: "short" })
-    .toUpperCase();
+  const activeMonth = sortedGames[currentIndex]
+    ? new Date(sortedGames[currentIndex].date).toLocaleString("default", { month: "short" }).toUpperCase()
+    : "";
 
   const months = [
     ...new Set(
@@ -201,11 +243,10 @@ export default function Schedule() {
         <button
           onClick={goPrev}
           disabled={!canGoPrev}
-          className={`animate-bounce px-1 text-2xl transition-colors ${
-            canGoPrev
-              ? "text-gray-600 hover:text-orange-600 cursor-pointer"
-              : "text-gray-300 cursor-default"
-          }`}
+          className={`animate-bounce px-1 text-2xl transition-colors ${canGoPrev
+            ? "text-gray-600 hover:text-orange-600 cursor-pointer"
+            : "text-gray-300 cursor-default"
+            }`}
         >
           <ChevronLeft />
         </button>
@@ -227,11 +268,10 @@ export default function Schedule() {
                   setCurrentIndex(firstIndex);
                 }
               }}
-              className={`px-2 py-1 text-sm md:text-xl font-industry tracking-widest uppercase transition-colors ${
-                isActive
-                  ? "text-blue-800 font-bold"
-                  : "text-gray-600 hover:text-orange-600 hover:cursor-pointer"
-              }`}
+              className={`px-2 py-1 text-sm md:text-xl font-industry tracking-widest uppercase transition-colors ${isActive
+                ? "text-blue-800 font-bold"
+                : "text-gray-600 hover:text-orange-600 hover:cursor-pointer"
+                }`}
             >
               {m}
             </button>
@@ -241,11 +281,10 @@ export default function Schedule() {
         <button
           onClick={goNext}
           disabled={!canGoNext}
-          className={`animate-bounce px-1 text-2xl transition-colors ${
-            canGoNext
-              ? "text-gray-600 hover:text-orange-600 cursor-pointer"
-              : "text-gray-300 cursor-default"
-          }`}
+          className={`animate-bounce px-1 text-2xl transition-colors ${canGoNext
+            ? "text-gray-600 hover:text-orange-600 cursor-pointer"
+            : "text-gray-300 cursor-default"
+            }`}
         >
           <ChevronRight />
         </button>

@@ -8,6 +8,14 @@ export default defineConfig({
     host: true,
     allowedHosts: true
   },
+  optimizeDeps: {
+    exclude: ['backend']
+  },
+  build: {
+    rollupOptions: {
+      external: ['backend/**']
+    }
+  },
   plugins: [
     react({
       babel: {

@@ -1,34 +1,60 @@
-import { useState } from 'react';
-import { Plus, Search, Edit2, Trash2 } from 'lucide-react';
-import { games } from '../../../../constants';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Plus, Search, Edit2, Trash2, Building2, Activity } from 'lucide-react';
+import { fetchTeams, deleteTeam } from '../../../services/api';
 
 export default function TeamsList() {
     const [searchTerm, setSearchTerm] = useState('');
+    const [teams, setTeams] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
-    // Extract unique opponents from games mock for now
-    const initialTeams = Array.from(new Set(games.map(g => g.opponent))).map((name, id) => ({
-        id: id + 1,
-        name: name,
-        logo: games.find(g => g.opponent === name)?.logo || '/img/magic.png'
-    }));
+    useEffect(() => {
+        loadTeams();
+    }, []);
 
-    const [teams, setTeams] = useState(initialTeams);
+    const loadTeams = async () => {
+        try {
+            setLoading(true);
+            const response = await fetchTeams();
+            if (response.status === 'success') {
+                setTeams(response.data);
+            }
+        } catch (err) {
+            console.error('Error loading teams:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleDelete = async (id) => {
+        if (window.confirm('Are you sure you want to delete this team?')) {
+            try {
+                await deleteTeam(id);
+                loadTeams();
+            } catch (err) {
+                console.error('Error deleting team:', err);
+            }
+        }
+    };
 
     const filteredTeams = teams.filter(t =>
-        t.name.toLowerCase().includes(searchTerm.toLowerCase())
+        t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (t.city && t.city.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
     return (
         <div className="space-y-6">
             <div className="sm:flex sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight text-[var(--foreground)]">Opponent Teams</h1>
+                    <h1 className="text-2xl font-bold tracking-tight text-[var(--foreground)]">Teams</h1>
                     <p className="mt-2 text-sm text-[var(--muted-foreground)]">
-                        Manage opponent teams and their logos for game scheduling.
+                        Manage your teams, cities, and logos for game scheduling.
                     </p>
                 </div>
                 <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <button
+                        onClick={() => navigate('/admin/sports/teams/new')}
                         className="flex items-center gap-2 rounded-md bg-[var(--primary)] px-3 py-2 text-sm font-semibold text-[var(--primary-foreground)] shadow-sm hover:bg-[var(--primary)]/90 transition-colors"
                     >
                         <Plus className="h-4 w-4" />
@@ -53,28 +79,43 @@ export default function TeamsList() {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {filteredTeams.map((team) => (
-                    <div key={team.id} className="relative flex items-center space-x-3 rounded-lg border border-[var(--border)] bg-[var(--card)] px-6 py-5 shadow-sm hover:border-[var(--ring)] transition-colors">
-                        <div className="flex-shrink-0">
-                            <img className="h-10 w-10 rounded-full object-contain bg-white p-1 border border-[var(--border)]" src={team.logo} alt="" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                            <div className="focus:outline-none">
-                                <span className="absolute inset-0" aria-hidden="true" />
+                {loading ? (
+                    <div className="col-span-full py-20 text-center text-[var(--muted-foreground)]">Loading teams...</div>
+                ) : filteredTeams.length === 0 ? (
+                    <div className="col-span-full py-20 text-center text-[var(--muted-foreground)] border-2 border-dashed border-[var(--border)] rounded-xl">
+                        No teams found. Click "Add Team" to get started.
+                    </div>
+                ) : (
+                    filteredTeams.map((team) => (
+                        <div key={team.id} className="relative flex items-center space-x-3 rounded-lg border border-[var(--border)] bg-[var(--card)] px-6 py-5 shadow-sm hover:border-[var(--ring)] transition-colors group">
+                            <div className="flex-shrink-0 h-10 w-10 rounded-full border border-[var(--border)] flex items-center justify-center overflow-hidden bg-white">
+                                {team.logo_url ? (
+                                    <img className="h-full w-full object-contain p-1" src={team.logo_url} alt="" />
+                                ) : (
+                                    <Building2 className="h-5 w-5 text-[var(--muted-foreground)]/40" />
+                                )}
+                            </div>
+                            <div className="min-w-0 flex-1">
                                 <p className="text-sm font-medium text-[var(--foreground)]">{team.name}</p>
-                                <p className="truncate text-sm text-[var(--muted-foreground)]">Opponent</p>
+                                <p className="truncate text-sm text-[var(--muted-foreground)]">{team.city || 'No city set'}</p>
+                            </div>
+                            <div className="flex gap-2 relative z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button
+                                    onClick={() => navigate(`/admin/sports/teams/edit/${team.id}`)}
+                                    className="text-[var(--muted-foreground)] hover:text-[var(--primary)] p-1"
+                                >
+                                    <Edit2 className="h-4 w-4" />
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(team.id)}
+                                    className="text-[var(--muted-foreground)] hover:text-red-500 p-1"
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                </button>
                             </div>
                         </div>
-                        <div className="flex gap-2 relative z-10">
-                            <button className="text-[var(--muted-foreground)] hover:text-[var(--primary)] p-1">
-                                <Edit2 className="h-4 w-4" />
-                            </button>
-                            <button className="text-[var(--muted-foreground)] hover:text-red-500 p-1">
-                                <Trash2 className="h-4 w-4" />
-                            </button>
-                        </div>
-                    </div>
-                ))}
+                    ))
+                )}
             </div>
         </div>
     );
